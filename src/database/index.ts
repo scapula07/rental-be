@@ -14,8 +14,6 @@ let path = config.mongoDb.mongoPath;
 const MONGO_URI = `mongodb+srv://${username}:${password}${path}`;
 
 const connectDB = async () => {
-  console.log("conncect DP");
-  console.log(MONGO_URI);
   try {
     // mongodb connection string
     const con = await mongoose.connect(MONGO_URI);
