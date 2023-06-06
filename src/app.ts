@@ -7,6 +7,7 @@ import connectDB from "./database";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import errorMiddleware from "./apis/middlewares/error.middleware";
+import morganMiddleware from "./apis/middlewares/morgan.middleware";
 
 import routes from "./apis/routes/index.routes";
 
@@ -33,6 +34,7 @@ app.use(express.json());
 // app.use(express.urlencoded());
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(morganMiddleware);
 
 // mongoDB connection
 connectDB();
