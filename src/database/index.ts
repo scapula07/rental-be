@@ -22,9 +22,9 @@ const connectDB = async () => {
 
     logger.info(`MongoDB connected: ${con.connection.host}`);
   } catch (err: any) {
-    logger.error("Connection broken");
-    console.log(err);
+    logger.error("MONGODB Connection broken");
     logger.error(err.message);
+    console.log(err);
     process.exit(1);
   }
 };
