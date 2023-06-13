@@ -17,3 +17,10 @@
 2023-06-06 04:34:58:3458 [32minfo[39m: [32mChecking the API status: Everything is OK[39m
 2023-06-06 04:34:58:3458 [35mhttp[39m: [35m::1 GET /api/status 304 - - 1.794 ms[39m
 [35m[39m
+2023-06-13 14:41:15:4115 [35mhttp[39m: [35m::1 GET / 304 - - 2.586 ms[39m
+[35m[39m
+2023-06-13 14:47:02:472 [35mhttp[39m: [35m::1 GET / 304 - - 1.217 ms[39m
+[35m[39m
+2023-06-13 14:47:34:4734 [32minfo[39m: [32mChecking the API status: Everything is OK[39m
+2023-06-13 14:47:34:4734 [35mhttp[39m: [35m::1 GET /api/status 304 - - 4.804 ms[39m
+[35m[39m
