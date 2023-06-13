@@ -13,6 +13,9 @@
 /build
 dist/
 
+#logs
+logs/
+
 # misc
 .env
 .DS_Store

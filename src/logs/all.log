@@ -1,7 +1,0 @@
-2023-06-13 17:23:22:2322 [32minfo[39m: [32mListening on port http://localhost:6969[39m
-2023-06-13 17:24:37:2437 [31merror[39m: [31mConnection broken[39m
-2023-06-13 17:25:54:2554 [32minfo[39m: [32mListening on port http://localhost:6969[39m
-2023-06-13 17:25:56:2556 [32minfo[39m: [32mListening on port http://localhost:6969[39m
-2023-06-13 17:26:14:2614 [32minfo[39m: [32mMongoDB connected: cluster0-shard-00-00.tnwwg.mongodb.net[39m
-2023-06-13 17:26:18:2618 [32minfo[39m: [32mListening on port http://localhost:6969[39m
-2023-06-13 17:26:23:2623 [32minfo[39m: [32mMongoDB connected: cluster0-shard-00-02.tnwwg.mongodb.net[39m
