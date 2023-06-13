@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 
 import config from "../config";
 
+import logger from "../utils/logger";
+
 dotenv.config();
 
 //  remember to replace with appropriate names
@@ -14,17 +16,15 @@ let path = config.mongoDb.mongoPath;
 const MONGO_URI = `mongodb+srv://${username}:${password}${path}`;
 
 const connectDB = async () => {
-  console.log("conncect DP");
-  console.log(MONGO_URI);
   try {
     // mongodb connection string
     const con = await mongoose.connect(MONGO_URI);
 
-    console.log(`MongoDB connected: ${con.connection.host}`);
+    logger.info(`MongoDB connected: ${con.connection.host}`);
   } catch (err: any) {
-    console.log("Connection broken");
+    logger.error("MONGODB Connection broken");
+    logger.error(err.message);
     console.log(err);
-    console.log(err.message);
     process.exit(1);
   }
 };

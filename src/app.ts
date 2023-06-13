@@ -7,6 +7,9 @@ import connectDB from "./database";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import errorMiddleware from "./apis/middlewares/error.middleware";
+import morganMiddleware from "./apis/middlewares/morgan.middleware";
+
+import logger from "./utils/logger";
 
 import routes from "./apis/routes/index.routes";
 
@@ -33,6 +36,7 @@ app.use(express.json());
 // app.use(express.urlencoded());
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(morganMiddleware);
 
 // mongoDB connection
 connectDB();
@@ -40,6 +44,15 @@ connectDB();
 app.get("/", (request, response) => {
   response.send("Hello world!");
 });
+
+app.get("/api/status", (req, res) => {
+  logger.info("Checking the API status: Everything is OK");
+  res.status(200).send({
+    status: "UP",
+    message: "The API is up and running!",
+  });
+});
+
 // Load Routers
 app.use("/api/v1", routes);
 
