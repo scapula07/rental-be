@@ -3,6 +3,7 @@ import app from "./app";
 import config from "./config";
 
 import logger from "./utils/logger";
+import swaggerDocs from "./utils/swagger";
 
 const PORT = config.port || 9999;
 
@@ -13,4 +14,6 @@ process.env.NODE_ENV !== "production" &&
     logger.info(`Listening on port http://localhost:${PORT}`)
   );
 
-server.listen(PORT);
+server.listen(PORT, () => {
+  swaggerDocs(app, Number(PORT));
+});
