@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import logger from "../utils/logger";
-import { verifyJwt } from "../utils/jwt";
+import logger from "../../utils/logger";
+import { verifyJwt } from "../../utils/jwt";
 
 export default function auth(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
