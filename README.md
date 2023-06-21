@@ -1,7 +1,7 @@
 ###To do
 - [ ] Logging with Winston
 - [ ] Documentation with Swagger
-- [ ] Create schema with Prisma
+- [ ] Create schema with Mongoose
 - [ ] Validation with Zod 
 - [ ] Caching with Redis
 - [ ] Testing with Jest
