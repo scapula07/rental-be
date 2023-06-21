@@ -17,6 +17,12 @@ export interface IUser extends Document {
   };
   driverLicense: {
     url: string;
+    details: {
+      licenseNumber: string;
+      expiryDate: Date;
+      issuedDate: Date;
+      licenseClass: string;
+    };
     uploaded: boolean;
   };
   insurance: {
