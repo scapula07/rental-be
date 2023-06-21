@@ -6,12 +6,14 @@ export interface IUser extends Document {
   lastname: string;
   email: string;
   password: string;
+  phone: string;
+  dateOfBirth: Date;
   address: {
     street: string;
     city: string;
     state: string;
     country: string;
-    postalCode: string;
+    postalCode: Number;
   };
   driverLicense: {
     url: string;
@@ -21,7 +23,7 @@ export interface IUser extends Document {
     url: string;
     uploaded: boolean;
   };
-  role: string;
+  role: Array<string>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -31,6 +33,8 @@ const UserSchema = new Schema<IUser>(
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
+    phone: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
 
     // Address
     address: {
@@ -38,20 +42,32 @@ const UserSchema = new Schema<IUser>(
       city: { type: String, required: true },
       state: { type: String, required: true },
       country: { type: String, required: true },
-      postalCode: { type: String, required: true },
+      postalCode: { type: Number, required: true },
     },
 
     // File upload
-    driverLicense: { url: String, uploaded: Boolean, required: false },
+    driverLicense: {
+      url: String,
+      details: {
+        licenseNumber: String,
+        expiryDate: Date,
+        issuedDate: Date,
+        licenseClass: String,
+      },
+      uploaded: Boolean,
+      required: false,
+    },
     insurance: { url: String, uploaded: Boolean, required: false },
 
     // User Role
-    role: {
-      type: String,
-      enum: { values: ["user", "partner", "admin"] },
-      default: "user",
-      required: true,
-    },
+    role: [
+      {
+        type: String,
+        enum: { values: ["user", "partner", "admin"] },
+        default: "user",
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -71,3 +87,5 @@ UserSchema.pre("save", async function (next) {
 // };
 
 const Users = model<IUser>("User", UserSchema);
+
+export default Users;
