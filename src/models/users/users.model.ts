@@ -24,10 +24,12 @@ export interface IUser extends Document {
       licenseClass: string;
     };
     uploaded: boolean;
+    approved: boolean;
   };
   insurance: {
     url: string;
     uploaded: boolean;
+    approved: boolean;
   };
   role: Array<string>;
 }
@@ -61,9 +63,15 @@ const UserSchema = new Schema<IUser>(
         licenseClass: String,
       },
       uploaded: Boolean,
+      approved: Boolean,
       required: false,
     },
-    insurance: { url: String, uploaded: Boolean, required: false },
+    insurance: {
+      url: String,
+      uploaded: Boolean,
+      approved: Boolean,
+      required: false,
+    },
 
     // User Role
     role: [
