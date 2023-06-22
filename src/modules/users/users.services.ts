@@ -72,4 +72,11 @@ export default class UsersService {
       return users;
     } catch (error) {}
   };
+
+  deleteUser = async (id: string) => {
+    try {
+      const deletedUser = await this.users.findByIdAndDelete(id);
+      return deletedUser;
+    } catch (error) {}
+  };
 }
