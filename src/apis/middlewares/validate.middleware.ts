@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import { AnyZodObject, ZodError } from 'zod';
-import HttpException from '../../exception/HttpException';
+import { NextFunction, Request, Response } from "express";
+import { AnyZodObject, ZodError } from "zod";
+import InvalidInputException from "../../exception/InvalidInput";
 
 export const validate =
   (schema: AnyZodObject) =>
@@ -15,8 +15,10 @@ export const validate =
       next();
     } catch (err: any) {
       if (err instanceof ZodError) {
+        const returnMessage = new InvalidInputException();
         return res.status(400).json({
-          status: 'fail',
+          status: returnMessage.status,
+          message: returnMessage.message,
           error: err.errors,
         });
       }
