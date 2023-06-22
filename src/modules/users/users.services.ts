@@ -8,6 +8,7 @@ interface IUser {
   phone: string;
   dateOfBirth: Date;
   address: {
+    houseNumber: string;
     street: string;
     city: string;
     state: string;
