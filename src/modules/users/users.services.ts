@@ -17,6 +17,18 @@ interface IUser {
   };
 }
 
+interface IUpdateUser {
+  phone: string;
+  address: {
+    houseNumber: string;
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: Number;
+  };
+}
+
 export default class UsersService {
   users = Users;
 
@@ -53,7 +65,7 @@ export default class UsersService {
     }
   };
 
-  updateUser = async (id: string, userData: IUser) => {
+  updateUser = async (id: string, userData: IUpdateUser) => {
     try {
       const updatedUser = await this.users.findByIdAndUpdate(
         id,

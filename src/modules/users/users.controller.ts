@@ -61,7 +61,7 @@ export default class UsersController {
     }
   };
 
-  login = async (req: Request, res: Response, next: NextFunction) => {
+  userLogin = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     try {
@@ -101,7 +101,42 @@ export default class UsersController {
     }
   };
 
-  updateData = async (req: Request, res: Response, next: NextFunction) => {};
+  updateData = async (req: Request, res: Response, next: NextFunction) => {
+    const { phone, address, id } = req.body;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      const updatedUser = await this.usersService.updateUser(id, {
+        phone,
+        address,
+      });
+
+      const data = {
+        id: updatedUser?._id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        password: updatedUser?.password,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+        role: updatedUser?.role,
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "user updated", data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   uploadDriverLicense = async (
     req: Request,
@@ -127,7 +162,35 @@ export default class UsersController {
     next: NextFunction
   ) => {};
 
-  getUser = async (req: Request, res: Response, next: NextFunction) => {};
+  getUser = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      const data = {
+        id: user?._id,
+        firstname: user?.firstname,
+        lastname: user?.lastname,
+        email: user?.email,
+        password: user?.password,
+        phone: user?.phone,
+        dateOfBirth: user?.dateOfBirth,
+        address: { ...user?.address },
+        driverLicense: { ...user?.driverLicense },
+        insurance: { ...user?.insurance },
+        role: user?.role,
+      };
+
+      res.status(200).json({ status: "success", message: "user found", data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   getAllUsers = async (req: Request, res: Response, next: NextFunction) => {};
 
