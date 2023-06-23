@@ -192,7 +192,39 @@ export default class UsersController {
     }
   };
 
-  getAllUsers = async (req: Request, res: Response, next: NextFunction) => {};
+  getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await this.usersService.getAllUsers();
+
+      if (!users) {
+        throw next(new NotFoundException("Users not found"));
+      }
+
+      const data = [];
+
+      users.forEach((user) => {
+        data.push({
+          id: user?._id,
+          firstname: user?.firstname,
+          lastname: user?.lastname,
+          email: user?.email,
+          password: user?.password,
+          phone: user?.phone,
+          dateOfBirth: user?.dateOfBirth,
+          address: { ...user?.address },
+          driverLicense: { ...user?.driverLicense },
+          insurance: { ...user?.insurance },
+          role: user?.role,
+        });
+      });
+
+      res
+        .status(200)
+        .json({ status: "success", message: "users found", data: users });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   resetPassword = async (req: Request, res: Response, next: NextFunction) => {};
 
