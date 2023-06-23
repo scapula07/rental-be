@@ -5,6 +5,7 @@ import InvalidInputException from "../../exception/InvalidInput";
 import NotFoundException from "../../exception/NotFound";
 import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
+import { generateShortCode } from "../../utils/generateShortCode";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -44,7 +45,6 @@ export default class UsersController {
         firstname: newUser?.firstname,
         lastname: newUser?.lastname,
         email: newUser?.email,
-        password: newUser?.password,
         phone: newUser?.phone,
         dateOfBirth: newUser?.dateOfBirth,
         address: { ...newUser?.address },
@@ -84,7 +84,6 @@ export default class UsersController {
         firstname: user?.firstname,
         lastname: user?.lastname,
         email: user?.email,
-        password: user?.password,
         phone: user?.phone,
         dateOfBirth: user?.dateOfBirth,
         address: { ...user?.address },
@@ -121,7 +120,6 @@ export default class UsersController {
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
-        password: updatedUser?.password,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
         address: { ...updatedUser?.address },
@@ -177,7 +175,6 @@ export default class UsersController {
         firstname: user?.firstname,
         lastname: user?.lastname,
         email: user?.email,
-        password: user?.password,
         phone: user?.phone,
         dateOfBirth: user?.dateOfBirth,
         address: { ...user?.address },
@@ -208,7 +205,6 @@ export default class UsersController {
           firstname: user?.firstname,
           lastname: user?.lastname,
           email: user?.email,
-          password: user?.password,
           phone: user?.phone,
           dateOfBirth: user?.dateOfBirth,
           address: { ...user?.address },
@@ -226,13 +222,66 @@ export default class UsersController {
     }
   };
 
-  resetPassword = async (req: Request, res: Response, next: NextFunction) => {};
-
-  forgotPassword = async (
+  updatePassword = async (
     req: Request,
     res: Response,
     next: NextFunction
   ) => {};
 
-  deleteUser = async (req: Request, res: Response, next: NextFunction) => {};
+  forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.body;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      // generate new password
+      const newPassword = generateShortCode();
+
+      // update user with new password
+      const updatedUser = await this.usersService.updatePassword(
+        id,
+        newPassword
+      );
+
+      // send email with new password
+
+      const data = {
+        id: updatedUser?._id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        password: updatedUser?.password,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+        role: updatedUser?.role,
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "Password updated", data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }

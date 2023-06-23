@@ -78,6 +78,19 @@ export default class UsersService {
     } catch (error) {}
   };
 
+  updatePassword = async (id: string, password: string) => {
+    try {
+      const updatedUser = await this.users.findByIdAndUpdate(
+        id,
+        {
+          password: password,
+        },
+        { new: true, password: 0 } //Don't return password
+      );
+      return updatedUser;
+    } catch (error) {}
+  };
+
   getAllUsers = async () => {
     try {
       const users = await this.users.find({}, { password: 0 });
