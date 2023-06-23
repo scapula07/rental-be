@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import UsersService from "./users.services";
 import HttpException from "../../exception/HttpException";
+import InvalidInputException from "../../exception/InvalidInput";
+import NotFoundException from "../../exception/NotFound";
 import { signJwt } from "../../utils/jwt";
+import { matchPassword } from "../../utils/matchPassword";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -20,7 +23,7 @@ export default class UsersController {
       // Check if email already exists
       const user = await this.usersService.getUserByEmail(email);
 
-      if (!user) {
+      if (user) {
         throw next(new HttpException(409, "Email already exists"));
       }
 
@@ -58,7 +61,45 @@ export default class UsersController {
     }
   };
 
-  login = async (req: Request, res: Response, next: NextFunction) => {};
+  login = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+
+    try {
+      const user = await this.usersService.getUserByEmail(email);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      const isMatch = await matchPassword(password, user.password);
+
+      if (!isMatch) {
+        throw next(new InvalidInputException("Invalid credentials"));
+      }
+
+      const token = signJwt(user?._id);
+
+      const data = {
+        id: user?._id,
+        firstname: user?.firstname,
+        lastname: user?.lastname,
+        email: user?.email,
+        password: user?.password,
+        phone: user?.phone,
+        dateOfBirth: user?.dateOfBirth,
+        address: { ...user?.address },
+        driverLicense: { ...user?.driverLicense },
+        insurance: { ...user?.insurance },
+        role: user?.role,
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "user logged in", data, token });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   updateData = async (req: Request, res: Response, next: NextFunction) => {};
 
