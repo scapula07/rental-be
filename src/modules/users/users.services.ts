@@ -18,14 +18,30 @@ interface IUser {
 }
 
 interface IUpdateUser {
-  phone: string;
-  address: {
+  phone?: string;
+  address?: {
     houseNumber: string;
     street: string;
     city: string;
     state: string;
     country: string;
     postalCode: Number;
+  };
+  driverLicense?: {
+    url: string;
+    details: {
+      licenseNumber: string;
+      expiryDate: Date;
+      issuedDate: Date;
+      licenseClass: string;
+    };
+    uploaded: boolean;
+    approved: boolean;
+  };
+  insurance?: {
+    url: string;
+    uploaded: boolean;
+    approved: boolean;
   };
 }
 

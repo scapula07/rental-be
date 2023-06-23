@@ -6,6 +6,7 @@ import NotFoundException from "../../exception/NotFound";
 import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
+import { date } from "zod";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -140,21 +141,56 @@ export default class UsersController {
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {};
+  ) => {
+    const { licenseNumber, expiryDate, issuedDate, licenseClass, id } =
+      req.body;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      // Extract file and upload to cloud
+
+      // update user driver license data
+      const updatedUser = await this.usersService.updateUser(id, {
+        driverLicense: {
+          url: "url",
+          details: {
+            licenseNumber,
+            expiryDate: new Date(expiryDate),
+            issuedDate: new Date(issuedDate),
+            licenseClass,
+          },
+          uploaded: true,
+          approved: false,
+        },
+      });
+
+      const data = {
+        id: updatedUser?._id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+        role: updatedUser?.role,
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "driver license updated", data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   uploadInsurance = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
-
-  updateDriverLicense = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
-
-  updateInsurance = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -280,6 +316,10 @@ export default class UsersController {
       if (!user) {
         throw next(new NotFoundException("User not found"));
       }
+
+      await this.usersService.deleteUser(id);
+
+      res.status(200).json({ status: "success", message: "User deleted" });
     } catch (error) {
       console.log(error);
     }
