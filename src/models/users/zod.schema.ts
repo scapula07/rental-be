@@ -1,6 +1,6 @@
 import { object, string, number, date, TypeOf } from "zod";
 
-export const CreateUserInput = object({
+export const CreateUserSchema = object({
   body: object({
     firstname: string({
       required_error: "firstname is required",
@@ -48,3 +48,8 @@ export const CreateUserInput = object({
     path: ["confirm"], // path of error
   }),
 });
+
+export type CreateUserInput = Omit<
+  TypeOf<typeof CreateUserSchema>,
+  "body.passwordConfirmation"
+>;

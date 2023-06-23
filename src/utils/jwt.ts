@@ -3,6 +3,7 @@ import config from "../config";
 
 const accessTokenPrivateKey = config.jwt.accessTokenPrivateKey || "";
 const accessTokenPublicKey = config.jwt.accessTokenPublicKey || "";
+
 export const signJwt = (payload: Object, options: SignOptions = {}) => {
   return jwt.sign(payload, accessTokenPrivateKey, options);
 };
