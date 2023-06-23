@@ -190,11 +190,47 @@ export default class UsersController {
     }
   };
 
-  uploadInsurance = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+  uploadInsurance = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.body;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      // Extract file and upload to cloud
+
+      // update user insurance data
+      const updatedUser = await this.usersService.updateUser(id, {
+        insurance: {
+          url: "url",
+          uploaded: true,
+          approved: false,
+        },
+      });
+
+      const data = {
+        id: updatedUser?._id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+        role: updatedUser?.role,
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "insurance updated", data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   getUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -258,11 +294,31 @@ export default class UsersController {
     }
   };
 
-  updatePassword = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+  updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+    const { id, oldPassword, newPassword } = req.body;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      const isMatch = await matchPassword(oldPassword, user.password);
+
+      if (!isMatch) {
+        throw next(new InvalidInputException("Invalid credentials"));
+      }
+
+      // Update password with new password
+      const updatedUser = await this.usersService.updatePassword(
+        id,
+        newPassword
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.body;
@@ -301,7 +357,11 @@ export default class UsersController {
 
       res
         .status(200)
-        .json({ status: "success", message: "Password updated", data });
+        .json({
+          status: "success",
+          message: "Password updated - Check email for new password",
+          data,
+        });
     } catch (error) {
       console.log(error);
     }
