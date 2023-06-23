@@ -315,6 +315,24 @@ export default class UsersController {
         id,
         newPassword
       );
+
+      const data = {
+        id: updatedUser?._id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        password: updatedUser?.password,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+        role: updatedUser?.role,
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "Password updated", data });
     } catch (error) {
       console.log(error);
     }
@@ -355,13 +373,11 @@ export default class UsersController {
         role: updatedUser?.role,
       };
 
-      res
-        .status(200)
-        .json({
-          status: "success",
-          message: "Password updated - Check email for new password",
-          data,
-        });
+      res.status(200).json({
+        status: "success",
+        message: "Password updated - Check email for new password",
+        data,
+      });
     } catch (error) {
       console.log(error);
     }
