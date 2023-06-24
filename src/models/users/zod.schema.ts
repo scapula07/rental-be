@@ -60,6 +60,39 @@ export const LoginUserSchema = object({
   }),
 });
 
+export const UpdateUserSchema = object({
+  body: object({
+    phone: string().min(7, "Phone number too short - should be 7 minimum"),
+    address: object({
+      houseNumber: string(),
+      street: string(),
+      city: string(),
+      state: string(),
+      country: string(),
+      postalCode: number().min(
+        4,
+        "postal code too short - should be 4 minimum"
+      ),
+    }),
+    driverLicense: object({
+      url: string(),
+      details: object({
+        licenseNumber: string(),
+        expiryDate: date(),
+        issuedDate: date(),
+        licenseClass: string(),
+      }),
+      uploaded: string(),
+      approved: string(),
+    }),
+    insurance: object({
+      url: string(),
+      uploaded: string(),
+      approved: string(),
+    }),
+  }),
+});
+
 export type CreateUserInput = Omit<
   TypeOf<typeof CreateUserSchema>,
   "body.passwordConfirmation"

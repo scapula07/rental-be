@@ -1,7 +1,7 @@
 import HttpException from "./HttpException";
 
 class InvalidInputException extends HttpException {
-  constructor(message: string) {
+  constructor(message?: string) {
     super(400, message || "Invalid input");
   }
 }

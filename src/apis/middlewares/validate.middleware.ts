@@ -1,11 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { AnyZodObject, ZodError } from "zod";
 import InvalidInputException from "../../exception/InvalidInput";
+import HttpException from "../../exception/HttpException";
 
 export const validate =
   (schema: AnyZodObject) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
+      // Check if req.body is empty
+      if (Object.keys(req.body).length === 0) {
+        throw next(new HttpException(400, "No data found"));
+      }
+
       schema.parse({
         params: req.params,
         query: req.query,
