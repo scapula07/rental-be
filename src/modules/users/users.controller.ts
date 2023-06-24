@@ -152,7 +152,7 @@ export default class UsersController {
         throw next(new NotFoundException("User not found"));
       }
 
-      // Extract file and upload to cloud
+      // Extract file and delete previous and upload to cloud
 
       // update user driver license data
       const updatedUser = await this.usersService.updateUser(id, {
@@ -200,7 +200,7 @@ export default class UsersController {
         throw next(new NotFoundException("User not found"));
       }
 
-      // Extract file and upload to cloud
+      // Extract file and delete previous and upload to cloud
 
       // update user insurance data
       const updatedUser = await this.usersService.updateUser(id, {
