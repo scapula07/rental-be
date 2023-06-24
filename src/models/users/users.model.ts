@@ -8,7 +8,9 @@ export interface IUser extends Document {
   password: string;
   phone: string;
   dateOfBirth: Date;
+  profileImage: string;
   address: {
+    houseNumber: string;
     street: string;
     city: string;
     state: string;
@@ -24,10 +26,12 @@ export interface IUser extends Document {
       licenseClass: string;
     };
     uploaded: boolean;
+    approved: boolean;
   };
   insurance: {
     url: string;
     uploaded: boolean;
+    approved: boolean;
   };
   role: Array<string>;
 }
@@ -41,9 +45,10 @@ const UserSchema = new Schema<IUser>(
     password: { type: String, required: true },
     phone: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
-
+    profileImage: { type: String, required: false },
     // Address
     address: {
+      houseNumber: { type: String, required: true },
       street: { type: String, required: true },
       city: { type: String, required: true },
       state: { type: String, required: true },
@@ -61,9 +66,15 @@ const UserSchema = new Schema<IUser>(
         licenseClass: String,
       },
       uploaded: Boolean,
+      approved: Boolean,
       required: false,
     },
-    insurance: { url: String, uploaded: Boolean, required: false },
+    insurance: {
+      url: String,
+      uploaded: Boolean,
+      approved: Boolean,
+      required: false,
+    },
 
     // User Role
     role: [
