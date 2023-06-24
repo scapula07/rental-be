@@ -62,6 +62,7 @@ export const LoginUserSchema = object({
 
 export const UpdateUserSchema = object({
   body: object({
+    id: string({ required_error: "user id is required" }),
     phone: string().min(7, "Phone number too short - should be 7 minimum"),
     address: object({
       houseNumber: string(),
@@ -74,22 +75,37 @@ export const UpdateUserSchema = object({
         "postal code too short - should be 4 minimum"
       ),
     }),
-    driverLicense: object({
-      url: string(),
-      details: object({
-        licenseNumber: string(),
-        expiryDate: date(),
-        issuedDate: date(),
-        licenseClass: string(),
-      }),
-      uploaded: string(),
-      approved: string(),
+  }),
+});
+
+export const UpdateDriverLicenseSchema = object({
+  body: object({
+    id: string({ required_error: "user id is required" }),
+    licenseNumber: string({
+      required_error: "license number is required",
     }),
-    insurance: object({
-      url: string(),
-      uploaded: string(),
-      approved: string(),
+    expiryDate: string({
+      required_error: "expiry date is required",
     }),
+  }),
+});
+
+export const UpdatePasswordSchema = object({
+  body: object({
+    id: string({ required_error: "user id is required" }),
+    oldPassword: string({
+      required_error: "email is required",
+    }).email("not a valid email"),
+    newPassword: string({
+      required_error: "password is required",
+    }).min(12, "password too short - should be 12 chars minimum"),
+  }),
+});
+export const ForgotPasswordSchema = object({
+  body: object({
+    email: string({
+      required_error: "email is required",
+    }).email("not a valid email"),
   }),
 });
 

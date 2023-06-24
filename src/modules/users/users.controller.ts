@@ -339,10 +339,10 @@ export default class UsersController {
   };
 
   forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.body;
+    const { email } = req.body;
 
     try {
-      const user = await this.usersService.getUserById(id);
+      const user = await this.usersService.getUserByEmail(email);
 
       if (!user) {
         throw next(new NotFoundException("User not found"));
@@ -353,7 +353,7 @@ export default class UsersController {
 
       // update user with new password
       const updatedUser = await this.usersService.updatePassword(
-        id,
+        user?._id,
         newPassword
       );
 
