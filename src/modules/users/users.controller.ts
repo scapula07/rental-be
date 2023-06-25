@@ -62,7 +62,7 @@ export default class UsersController {
     }
   };
 
-  userLogin = async (req: Request, res: Response, next: NextFunction) => {
+  loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     try {
@@ -101,8 +101,9 @@ export default class UsersController {
     }
   };
 
-  updateData = async (req: Request, res: Response, next: NextFunction) => {
-    const { phone, address, id } = req.body;
+  updateUser = async (req: Request, res: Response, next: NextFunction) => {
+    const { phone, address } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -142,8 +143,8 @@ export default class UsersController {
     res: Response,
     next: NextFunction
   ) => {
-    const { licenseNumber, expiryDate, issuedDate, licenseClass, id } =
-      req.body;
+    const { licenseNumber, expiryDate, issuedDate, licenseClass } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -191,7 +192,7 @@ export default class UsersController {
   };
 
   uploadInsurance = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -295,7 +296,8 @@ export default class UsersController {
   };
 
   updatePassword = async (req: Request, res: Response, next: NextFunction) => {
-    const { id, oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
