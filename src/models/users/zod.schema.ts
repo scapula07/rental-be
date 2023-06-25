@@ -87,6 +87,9 @@ export const UpdateDriverLicenseSchema = object({
     expiryDate: string({
       required_error: "expiry date is required",
     }),
+    issuedDate: string({
+      required_error: "issues date is required",
+    }),
   }),
 });
 
