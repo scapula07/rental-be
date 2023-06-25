@@ -67,13 +67,11 @@ const UserSchema = new Schema<IUser>(
       },
       uploaded: Boolean,
       approved: Boolean,
-      required: false,
     },
     insurance: {
       url: String,
       uploaded: Boolean,
       approved: Boolean,
-      required: false,
     },
 
     // User Role

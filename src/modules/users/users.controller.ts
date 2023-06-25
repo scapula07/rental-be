@@ -266,13 +266,13 @@ export default class UsersController {
     try {
       const users = await this.usersService.getAllUsers();
 
-      if (!users) {
+      if (users?.length === 0) {
         throw next(new NotFoundException("Users not found"));
       }
 
       const data = [];
 
-      users.forEach((user) => {
+      users?.forEach((user) => {
         data.push({
           id: user?._id,
           firstname: user?.firstname,
