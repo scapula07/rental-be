@@ -1,4 +1,5 @@
 import Users from "../../models/users/users.model";
+import logger from "../../utils/logger";
 
 interface IUser {
   firstname: string;
@@ -57,7 +58,7 @@ export default class UsersService {
       });
       return newUser;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -67,7 +68,7 @@ export default class UsersService {
 
       return user;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -77,7 +78,7 @@ export default class UsersService {
 
       return user;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
