@@ -6,7 +6,7 @@ import NotFoundException from "../../exception/NotFound";
 import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
-import { date } from "zod";
+import logger from "../../utils/logger";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -58,7 +58,7 @@ export default class UsersController {
         .status(201)
         .json({ status: "success", message: "user created", data, token });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -97,7 +97,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "user logged in", data, token });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -133,7 +133,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "user updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -186,7 +186,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "driver license updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -228,7 +228,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "insurance updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -257,7 +257,7 @@ export default class UsersController {
 
       res.status(200).json({ status: "success", message: "user found", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -290,7 +290,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "users found", data: users });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -334,7 +334,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "Password updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -379,7 +379,7 @@ export default class UsersController {
         data,
       });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -397,7 +397,7 @@ export default class UsersController {
 
       res.status(200).json({ status: "success", message: "User deleted" });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 }
