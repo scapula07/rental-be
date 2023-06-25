@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import config from "../config";
+import logger from "./logger";
 
 cloudinary.config({
   cloud_name: config.cloudinary.cloud_name,
@@ -13,6 +14,6 @@ export const fileUploader = async (file: any) => {
     const result = await cloudinary.uploader.upload(file.path);
     return result;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };

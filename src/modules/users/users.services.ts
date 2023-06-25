@@ -50,8 +50,6 @@ export default class UsersService {
   users = Users;
 
   createUser = async (userData: IUser) => {
-    console.log(userData);
-
     try {
       const newUser = await this.users.create({
         ...userData,
