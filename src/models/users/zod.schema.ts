@@ -3,7 +3,7 @@ import { object, string, number, date, TypeOf } from "zod";
 /**
  * @openapi
  * components:
- *  schemas:
+ *  schema:
  *   CreateUserInput:
  *    type: object
  *    required:
@@ -14,7 +14,7 @@ import { object, string, number, date, TypeOf } from "zod";
  *      - email
  *      - phone
  *      - dateOfBirth
- *      - address:
+ *      - address
  *        - houseNumber
  *        - street
  *        - city
@@ -23,35 +23,49 @@ import { object, string, number, date, TypeOf } from "zod";
  *        - postalCode
  *    properties:
  *      firstname:
- *        type: string
+ *       type: string
+ *       default: John
  *      lastname:
- *        type: string
+ *       type: string
+ *       default: Doe
  *      password:
- *        type: string
+ *       type: string
+ *       default: password123
  *      passwordConfirmation:
- *        type: string
+ *       type: string
+ *       default: password123
  *      email:
  *        type: string
+ *        default: johndoe@email.com
  *      phone:
  *        type: string
+ *        default: 1234567
  *      dateOfBirth:
  *        type: string
  *        format: date
+ *        default: 1990-01-01
  *      address:
  *        type: object
+ *        required: true
  *        properties:
  *          houseNumber:
  *            type: string
+ *            default: 123
  *          street:
  *            type: string
+ *            default: Main Street
  *          city:
  *            type: string
+ *            default: Toronto
  *          state:
  *            type: string
+ *            default: Ontario
  *          country:
  *            type: string
+ *            default: Canada
  *          postalCode:
  *            type: number
+ *            default: 1234
  */
 export const CreateUserSchema = object({
   body: object({
@@ -102,6 +116,23 @@ export const CreateUserSchema = object({
   }),
 });
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   LoginUserInput:
+ *    type: object
+ *    required:
+ *      - password
+ *      - email
+ *    properties:
+ *      password:
+ *       type: string
+ *       default: password123
+ *      email:
+ *        type: string
+ *        default: johndoe@email.com
+ */
 export const LoginUserSchema = object({
   body: object({
     email: string({
@@ -113,6 +144,39 @@ export const LoginUserSchema = object({
   }),
 });
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   UpdateUserInput:
+ *    type: object
+ *    properties:
+ *      phone:
+ *       type: string
+ *       default: 1234567
+ *      address:
+ *        type: object
+ *        required: true
+ *        properties:
+ *          houseNumber:
+ *            type: string
+ *            default: 123
+ *          street:
+ *            type: string
+ *            default: Main Street
+ *          city:
+ *            type: string
+ *            default: Toronto
+ *          state:
+ *            type: string
+ *            default: Ontario
+ *          country:
+ *            type: string
+ *            default: Canada
+ *          postalCode:
+ *            type: number
+ *            default: 1234
+ */
 export const UpdateUserSchema = object({
   body: object({
     phone: string().min(7, "Phone number too short - should be 7 minimum"),
@@ -163,6 +227,20 @@ export const UpdatePasswordSchema = object({
     id: string({ required_error: "user id is required" }),
   }),
 });
+
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   ForgotPasswordInput:
+ *    type: object
+ *    required:
+ *      - email
+ *    properties:
+ *      email:
+ *        type: string
+ *        default: johndoe@email.com
+ */
 export const ForgotPasswordSchema = object({
   body: object({
     email: string({
