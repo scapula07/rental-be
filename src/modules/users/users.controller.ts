@@ -6,7 +6,8 @@ import NotFoundException from "../../exception/NotFound";
 import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
-import { date } from "zod";
+import logger from "../../utils/logger";
+import { fileUploader } from "../../utils/fileUploader";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -58,11 +59,11 @@ export default class UsersController {
         .status(201)
         .json({ status: "success", message: "user created", data, token });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
-  userLogin = async (req: Request, res: Response, next: NextFunction) => {
+  loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     try {
@@ -97,12 +98,13 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "user logged in", data, token });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
-  updateData = async (req: Request, res: Response, next: NextFunction) => {
-    const { phone, address, id } = req.body;
+  updateUser = async (req: Request, res: Response, next: NextFunction) => {
+    const { phone, address } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -133,7 +135,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "user updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -142,10 +144,15 @@ export default class UsersController {
     res: Response,
     next: NextFunction
   ) => {
-    const { licenseNumber, expiryDate, issuedDate, licenseClass, id } =
-      req.body;
+    const { licenseNumber, expiryDate, issuedDate, licenseClass } = req.body;
+    const { id } = req.params;
 
     try {
+      // Check if file is uploaded
+      if (!req.files || Object.keys(req.files).length === 0) {
+        throw next(new InvalidInputException("Please upload a file"));
+      }
+
       const user = await this.usersService.getUserById(id);
 
       if (!user) {
@@ -186,12 +193,12 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "driver license updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
   uploadInsurance = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -228,7 +235,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "insurance updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -257,7 +264,7 @@ export default class UsersController {
 
       res.status(200).json({ status: "success", message: "user found", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -265,13 +272,13 @@ export default class UsersController {
     try {
       const users = await this.usersService.getAllUsers();
 
-      if (!users) {
+      if (users?.length === 0) {
         throw next(new NotFoundException("Users not found"));
       }
 
       const data = [];
 
-      users.forEach((user) => {
+      users?.forEach((user) => {
         data.push({
           id: user?._id,
           firstname: user?.firstname,
@@ -290,12 +297,13 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "users found", data: users });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
   updatePassword = async (req: Request, res: Response, next: NextFunction) => {
-    const { id, oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
+    const { id } = req.params;
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -334,7 +342,7 @@ export default class UsersController {
         .status(200)
         .json({ status: "success", message: "Password updated", data });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -379,7 +387,7 @@ export default class UsersController {
         data,
       });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -397,7 +405,7 @@ export default class UsersController {
 
       res.status(200).json({ status: "success", message: "User deleted" });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 }

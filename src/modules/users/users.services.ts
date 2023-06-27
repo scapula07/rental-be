@@ -1,4 +1,5 @@
 import Users from "../../models/users/users.model";
+import logger from "../../utils/logger";
 
 interface IUser {
   firstname: string;
@@ -49,15 +50,13 @@ export default class UsersService {
   users = Users;
 
   createUser = async (userData: IUser) => {
-    console.log(userData);
-
     try {
       const newUser = await this.users.create({
         ...userData,
       });
       return newUser;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -67,7 +66,7 @@ export default class UsersService {
 
       return user;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -77,7 +76,7 @@ export default class UsersService {
 
       return user;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 

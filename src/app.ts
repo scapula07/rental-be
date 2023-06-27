@@ -6,6 +6,7 @@ import bodyparser from "body-parser";
 import connectDB from "./database";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 import errorMiddleware from "./apis/middlewares/error.middleware";
 import morganMiddleware from "./apis/middlewares/morgan.middleware";
 
@@ -37,6 +38,7 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cookieParser());
 app.use(morganMiddleware);
+app.use(fileUpload());
 
 // mongoDB connection
 connectDB();

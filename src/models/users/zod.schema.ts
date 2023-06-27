@@ -1,5 +1,72 @@
 import { object, string, number, date, TypeOf } from "zod";
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   CreateUserInput:
+ *    type: object
+ *    required:
+ *      - firstname
+ *      - lastname
+ *      - password
+ *      - passwordConfirmation
+ *      - email
+ *      - phone
+ *      - dateOfBirth
+ *      - address
+ *        - houseNumber
+ *        - street
+ *        - city
+ *        - state
+ *        - country
+ *        - postalCode
+ *    properties:
+ *      firstname:
+ *       type: string
+ *       example: John
+ *      lastname:
+ *       type: string
+ *       example: Doe
+ *      password:
+ *       type: string
+ *       example: password123
+ *      passwordConfirmation:
+ *       type: string
+ *       example: password123
+ *      email:
+ *        type: string
+ *        example: johndoe@email.com
+ *      phone:
+ *        type: string
+ *        example: 1234567
+ *      dateOfBirth:
+ *        type: string
+ *        format: date
+ *        example: 1990-01-01
+ *      address:
+ *        type: object
+ *        required: true
+ *        properties:
+ *          houseNumber:
+ *            type: string
+ *            example: 123
+ *          street:
+ *            type: string
+ *            example: Main Street
+ *          city:
+ *            type: string
+ *            example: Toronto
+ *          state:
+ *            type: string
+ *            example: Ontario
+ *          country:
+ *            type: string
+ *            example: Canada
+ *          postalCode:
+ *            type: number
+ *            example: 1234
+ */
 export const CreateUserSchema = object({
   body: object({
     firstname: string({
@@ -49,6 +116,23 @@ export const CreateUserSchema = object({
   }),
 });
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   LoginUserInput:
+ *    type: object
+ *    required:
+ *      - password
+ *      - email
+ *    properties:
+ *      password:
+ *       type: string
+ *       example: password123
+ *      email:
+ *        type: string
+ *        example: johndoe@email.com
+ */
 export const LoginUserSchema = object({
   body: object({
     email: string({
@@ -60,9 +144,41 @@ export const LoginUserSchema = object({
   }),
 });
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   UpdateUserInput:
+ *    type: object
+ *    properties:
+ *      phone:
+ *       type: string
+ *       example: 1234567
+ *      address:
+ *        type: object
+ *        required: true
+ *        properties:
+ *          houseNumber:
+ *            type: string
+ *            example: 123
+ *          street:
+ *            type: string
+ *            example: Main Street
+ *          city:
+ *            type: string
+ *            example: Toronto
+ *          state:
+ *            type: string
+ *            example: Ontario
+ *          country:
+ *            type: string
+ *            example: Canada
+ *          postalCode:
+ *            type: number
+ *            example: 1234
+ */
 export const UpdateUserSchema = object({
   body: object({
-    id: string({ required_error: "user id is required" }),
     phone: string().min(7, "Phone number too short - should be 7 minimum"),
     address: object({
       houseNumber: string(),
@@ -76,23 +192,70 @@ export const UpdateUserSchema = object({
       ),
     }),
   }),
+  params: object({
+    id: string({ required_error: "user id is required" }),
+  }),
 });
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   UploadLicenseInput:
+ *    type: object
+ *    required:
+ *      - licenseNumber
+ *      - expiryDate
+ *      - issuedDate
+ *    properties:
+ *      licenseNumber:
+ *        type: string
+ *        example: 1234567
+ *      expiryDate:
+ *        type: string
+ *        example: 2021-02-01
+ *      issuedDate:
+ *        type: string
+ *        example: 2021-01-01
+ */
 export const UpdateDriverLicenseSchema = object({
   body: object({
-    id: string({ required_error: "user id is required" }),
     licenseNumber: string({
       required_error: "license number is required",
     }),
     expiryDate: string({
       required_error: "expiry date is required",
     }),
+    issuedDate: string({
+      required_error: "issues date is required",
+    }),
+  }),
+  params: object({
+    id: string({ required_error: "user id is required" }),
   }),
 });
 
+export const UploadInsurance = object({});
+
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   UpdatePasswordInput:
+ *    type: object
+ *    required:
+ *      - oldPassword
+ *      - newPassword
+ *    properties:
+ *      oldPassword:
+ *        type: string
+ *        example: password123
+ *      newPassword:
+ *        type: string
+ *        example: password123
+ */
 export const UpdatePasswordSchema = object({
   body: object({
-    id: string({ required_error: "user id is required" }),
     oldPassword: string({
       required_error: "email is required",
     }).email("not a valid email"),
@@ -100,7 +263,24 @@ export const UpdatePasswordSchema = object({
       required_error: "password is required",
     }).min(12, "password too short - should be 12 chars minimum"),
   }),
+  params: object({
+    id: string({ required_error: "user id is required" }),
+  }),
 });
+
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   ForgotPasswordInput:
+ *    type: object
+ *    required:
+ *      - email
+ *    properties:
+ *      email:
+ *        type: string
+ *        example: johndoe@email.com
+ */
 export const ForgotPasswordSchema = object({
   body: object({
     email: string({
