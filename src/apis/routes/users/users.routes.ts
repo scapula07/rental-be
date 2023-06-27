@@ -80,7 +80,7 @@ router.post("/login", userController.loginUser);
  *        content:
  *          application/json:
  *              schema:
- *                  $ref: '#/components/schema/LoginUserInput'
+ *                  $ref: '#/components/schema/ForgotPasswordInput'
  *     responses:
  *       '200':
  *         description: Successful response
@@ -90,9 +90,94 @@ router.post("/login", userController.loginUser);
  *         description: Internal server error
  */
 router.post("/forgot-password", userController.forgotPassword);
+/**
+ * @openapi
+ * /api/v1/users/password/{id}:
+ *  put:
+ *     tags: [Users]
+ *     summary: Update password
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *          type: string
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schema/UpdatePasswordInput'
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '400':
+ *         description: Bad request
+ *       '500':
+ *         description: Internal server error
+ */
 router.put("/password/:id", userController.updatePassword);
-router.put("/:id/driver-license", userController.uploadDriverLicense);
-router.put("/:id/insurance", userController.uploadInsurance);
+/**
+ * @openapi
+ * /api/v1/users/driver-license/{id}:
+ *  put:
+ *     tags: [Users]
+ *     summary: Upload driver license / license details
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *          type: string
+ *       - in: formData
+ *         name: file
+ *         type: file
+ *         description: File for user driver license
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schema/UploadLicenseInput'
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '400':
+ *         description: Bad request
+ *       '500':
+ *         description: Internal server error
+ */
+router.put("/driver-license/:id", userController.uploadDriverLicense);
+/**
+ * @openapi
+ * /api/v1/users/insurance/{id}:
+ *  put:
+ *     tags: [Users]
+ *     summary: Upload insurance
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *          type: string
+ *       - in: formData
+ *         name: file
+ *         type: file
+ *         description: File for user insurance
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '400':
+ *         description: Bad request
+ *       '500':
+ *         description: Internal server error
+ */
+router.put("/insurance/:id", userController.uploadInsurance);
 /**
  * @openapi
  * /api/v1/users/{id}:

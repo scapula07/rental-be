@@ -7,6 +7,7 @@ import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
 import logger from "../../utils/logger";
+import { fileUploader } from "../../utils/fileUploader";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -147,6 +148,11 @@ export default class UsersController {
     const { id } = req.params;
 
     try {
+      // Check if file is uploaded
+      if (!req.files || Object.keys(req.files).length === 0) {
+        throw next(new InvalidInputException("Please upload a file"));
+      }
+
       const user = await this.usersService.getUserById(id);
 
       if (!user) {

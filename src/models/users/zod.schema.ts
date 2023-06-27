@@ -24,48 +24,48 @@ import { object, string, number, date, TypeOf } from "zod";
  *    properties:
  *      firstname:
  *       type: string
- *       default: John
+ *       example: John
  *      lastname:
  *       type: string
- *       default: Doe
+ *       example: Doe
  *      password:
  *       type: string
- *       default: password123
+ *       example: password123
  *      passwordConfirmation:
  *       type: string
- *       default: password123
+ *       example: password123
  *      email:
  *        type: string
- *        default: johndoe@email.com
+ *        example: johndoe@email.com
  *      phone:
  *        type: string
- *        default: 1234567
+ *        example: 1234567
  *      dateOfBirth:
  *        type: string
  *        format: date
- *        default: 1990-01-01
+ *        example: 1990-01-01
  *      address:
  *        type: object
  *        required: true
  *        properties:
  *          houseNumber:
  *            type: string
- *            default: 123
+ *            example: 123
  *          street:
  *            type: string
- *            default: Main Street
+ *            example: Main Street
  *          city:
  *            type: string
- *            default: Toronto
+ *            example: Toronto
  *          state:
  *            type: string
- *            default: Ontario
+ *            example: Ontario
  *          country:
  *            type: string
- *            default: Canada
+ *            example: Canada
  *          postalCode:
  *            type: number
- *            default: 1234
+ *            example: 1234
  */
 export const CreateUserSchema = object({
   body: object({
@@ -128,10 +128,10 @@ export const CreateUserSchema = object({
  *    properties:
  *      password:
  *       type: string
- *       default: password123
+ *       example: password123
  *      email:
  *        type: string
- *        default: johndoe@email.com
+ *        example: johndoe@email.com
  */
 export const LoginUserSchema = object({
   body: object({
@@ -153,29 +153,29 @@ export const LoginUserSchema = object({
  *    properties:
  *      phone:
  *       type: string
- *       default: 1234567
+ *       example: 1234567
  *      address:
  *        type: object
  *        required: true
  *        properties:
  *          houseNumber:
  *            type: string
- *            default: 123
+ *            example: 123
  *          street:
  *            type: string
- *            default: Main Street
+ *            example: Main Street
  *          city:
  *            type: string
- *            default: Toronto
+ *            example: Toronto
  *          state:
  *            type: string
- *            default: Ontario
+ *            example: Ontario
  *          country:
  *            type: string
- *            default: Canada
+ *            example: Canada
  *          postalCode:
  *            type: number
- *            default: 1234
+ *            example: 1234
  */
 export const UpdateUserSchema = object({
   body: object({
@@ -197,6 +197,27 @@ export const UpdateUserSchema = object({
   }),
 });
 
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   UploadLicenseInput:
+ *    type: object
+ *    required:
+ *      - licenseNumber
+ *      - expiryDate
+ *      - issuedDate
+ *    properties:
+ *      licenseNumber:
+ *        type: string
+ *        example: 1234567
+ *      expiryDate:
+ *        type: string
+ *        example: 2021-02-01
+ *      issuedDate:
+ *        type: string
+ *        example: 2021-01-01
+ */
 export const UpdateDriverLicenseSchema = object({
   body: object({
     licenseNumber: string({
@@ -214,6 +235,25 @@ export const UpdateDriverLicenseSchema = object({
   }),
 });
 
+export const UploadInsurance = object({});
+
+/**
+ * @openapi
+ * components:
+ *  schema:
+ *   UpdatePasswordInput:
+ *    type: object
+ *    required:
+ *      - oldPassword
+ *      - newPassword
+ *    properties:
+ *      oldPassword:
+ *        type: string
+ *        example: password123
+ *      newPassword:
+ *        type: string
+ *        example: password123
+ */
 export const UpdatePasswordSchema = object({
   body: object({
     oldPassword: string({
@@ -239,7 +279,7 @@ export const UpdatePasswordSchema = object({
  *    properties:
  *      email:
  *        type: string
- *        default: johndoe@email.com
+ *        example: johndoe@email.com
  */
 export const ForgotPasswordSchema = object({
   body: object({
