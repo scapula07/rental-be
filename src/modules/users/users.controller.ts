@@ -148,11 +148,6 @@ export default class UsersController {
     const { id } = req.params;
 
     try {
-      // Check if file is uploaded
-      if (!req.files || Object.keys(req.files).length === 0) {
-        throw next(new InvalidInputException("Please upload a file"));
-      }
-
       const user = await this.usersService.getUserById(id);
 
       if (!user) {
@@ -160,6 +155,7 @@ export default class UsersController {
       }
 
       // Extract file and delete previous and upload to cloud
+      const fileUpload = fileUploader(req.files?.file);
 
       // update user driver license data
       const updatedUser = await this.usersService.updateUser(id, {
