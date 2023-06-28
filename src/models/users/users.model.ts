@@ -33,7 +33,7 @@ export interface IUser extends Document {
     uploaded: boolean;
     approved: boolean;
   };
-  role: Array<string>;
+  roles: Array<string>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -75,11 +75,11 @@ const UserSchema = new Schema<IUser>(
     },
 
     // User Role
-    role: [
+    roles: [
       {
         type: String,
         enum: { values: ["user", "partner", "admin"] },
-        default: "user",
+        default: ["user"],
         required: true,
       },
     ],

@@ -57,6 +57,7 @@ export default class UsersService {
       return newUser;
     } catch (error) {
       logger.error(error);
+      console.log(error);
     }
   };
 
