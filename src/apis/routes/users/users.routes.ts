@@ -1,5 +1,16 @@
 import { Router } from "express";
+import { Request, Response, NextFunction } from "express";
 import UserController from "../../../modules/users/users.controller";
+import { validate } from "../../middlewares/validate.middleware";
+import auth from "../../middlewares/auth.middleware";
+import {
+  CreateUserSchema,
+  LoginUserSchema,
+  ForgotPasswordSchema,
+  UpdatePasswordSchema,
+  UpdateUserSchema,
+  UpdateDriverLicenseSchema,
+} from "../../../models/users/zod.schema";
 
 const router = Router();
 
@@ -26,7 +37,16 @@ const userController = new UserController();
  *       '500':
  *         description: Internal server error
  */
-router.get("/", userController.getAllUsers);
+router.get(
+  "/",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+
+    next();
+  },
+  userController.getAllUsers
+);
 /**
  * @openapi
  * /api/v1/users/:
@@ -47,7 +67,7 @@ router.get("/", userController.getAllUsers);
  *       '500':
  *         description: Internal server error
  */
-router.post("/", userController.registerUser);
+router.post("/", validate(CreateUserSchema), userController.registerUser);
 /**
  * @openapi
  * /api/v1/users/login:
@@ -68,7 +88,7 @@ router.post("/", userController.registerUser);
  *       '500':
  *         description: Internal server error
  */
-router.post("/login", userController.loginUser);
+router.post("/login", validate(LoginUserSchema), userController.loginUser);
 /**
  * @openapi
  * /api/v1/users/forgot-password:
@@ -89,7 +109,16 @@ router.post("/login", userController.loginUser);
  *       '500':
  *         description: Internal server error
  */
-router.post("/forgot-password", userController.forgotPassword);
+router.post(
+  "/forgot-password",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+    validate(ForgotPasswordSchema);
+    next();
+  },
+  userController.forgotPassword
+);
 /**
  * @openapi
  * /api/v1/users/password/{id}:
@@ -117,7 +146,17 @@ router.post("/forgot-password", userController.forgotPassword);
  *       '500':
  *         description: Internal server error
  */
-router.put("/password/:id", userController.updatePassword);
+router.put(
+  "/password/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+    validate(UpdatePasswordSchema);
+    next();
+  },
+
+  userController.updatePassword
+);
 /**
  * @openapi
  * /api/v1/users/driver-license/{id}:
@@ -151,7 +190,17 @@ router.put("/password/:id", userController.updatePassword);
  *       '500':
  *         description: Internal server error
  */
-router.put("/driver-license/:id", userController.uploadDriverLicense);
+router.put(
+  "/driver-license/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+    validate(UpdateDriverLicenseSchema);
+    next();
+  },
+
+  userController.uploadDriverLicense
+);
 /**
  * @openapi
  * /api/v1/users/insurance/{id}:
@@ -177,7 +226,16 @@ router.put("/driver-license/:id", userController.uploadDriverLicense);
  *       '500':
  *         description: Internal server error
  */
-router.put("/insurance/:id", userController.uploadInsurance);
+router.put(
+  "/insurance/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+
+    next();
+  },
+  userController.uploadInsurance
+);
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -205,7 +263,17 @@ router.put("/insurance/:id", userController.uploadInsurance);
  *       '500':
  *         description: Internal server error
  */
-router.put("/:id", userController.updateUser);
+router.put(
+  "/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+    validate(UpdateUserSchema);
+    next();
+  },
+
+  userController.updateUser
+);
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -227,7 +295,16 @@ router.put("/:id", userController.updateUser);
  *       '500':
  *         description: Internal server error
  */
-router.delete("/:id", userController.deleteUser);
+router.delete(
+  "/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+
+    next();
+  },
+  userController.deleteUser
+);
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -249,6 +326,15 @@ router.delete("/:id", userController.deleteUser);
  *       '500':
  *         description: Internal server error
  */
-router.get("/:id", userController.getUser);
+router.get(
+  "/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+
+    next();
+  },
+  userController.getUser
+);
 
 export default router;

@@ -40,10 +40,13 @@ export default class UsersController {
         address,
       });
 
-      const token = signJwt(newUser?._id);
+      console.log(newUser);
+      console.log(newUser?.id);
+
+      const token = signJwt(newUser?.id);
 
       const data = {
-        id: newUser?._id,
+        id: newUser?.id,
         firstname: newUser?.firstname,
         lastname: newUser?.lastname,
         email: newUser?.email,
@@ -52,7 +55,7 @@ export default class UsersController {
         address: { ...newUser?.address },
         driverLicense: { ...newUser?.driverLicense },
         insurance: { ...newUser?.insurance },
-        role: newUser?.role,
+        roles: newUser?.roles,
       };
 
       res
@@ -60,6 +63,7 @@ export default class UsersController {
         .json({ status: "success", message: "user created", data, token });
     } catch (error) {
       logger.error(error);
+      console.log(error);
     }
   };
 
@@ -79,10 +83,10 @@ export default class UsersController {
         throw next(new InvalidInputException("Invalid credentials"));
       }
 
-      const token = signJwt(user?._id);
+      const token = signJwt(user?.id);
 
       const data = {
-        id: user?._id,
+        id: user?.id,
         firstname: user?.firstname,
         lastname: user?.lastname,
         email: user?.email,
@@ -91,7 +95,7 @@ export default class UsersController {
         address: { ...user?.address },
         driverLicense: { ...user?.driverLicense },
         insurance: { ...user?.insurance },
-        role: user?.role,
+        roles: user?.roles,
       };
 
       res
@@ -119,7 +123,7 @@ export default class UsersController {
       });
 
       const data = {
-        id: updatedUser?._id,
+        id: updatedUser?.id,
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
@@ -128,7 +132,7 @@ export default class UsersController {
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        role: updatedUser?.role,
+        roles: updatedUser?.roles,
       };
 
       res
@@ -148,11 +152,6 @@ export default class UsersController {
     const { id } = req.params;
 
     try {
-      // Check if file is uploaded
-      if (!req.files || Object.keys(req.files).length === 0) {
-        throw next(new InvalidInputException("Please upload a file"));
-      }
-
       const user = await this.usersService.getUserById(id);
 
       if (!user) {
@@ -160,6 +159,7 @@ export default class UsersController {
       }
 
       // Extract file and delete previous and upload to cloud
+      const fileUpload = fileUploader(req.files?.file);
 
       // update user driver license data
       const updatedUser = await this.usersService.updateUser(id, {
@@ -177,7 +177,7 @@ export default class UsersController {
       });
 
       const data = {
-        id: updatedUser?._id,
+        id: updatedUser?.id,
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
@@ -186,7 +186,7 @@ export default class UsersController {
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        role: updatedUser?.role,
+        roles: updatedUser?.roles,
       };
 
       res
@@ -219,7 +219,7 @@ export default class UsersController {
       });
 
       const data = {
-        id: updatedUser?._id,
+        id: updatedUser?.id,
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
@@ -228,7 +228,7 @@ export default class UsersController {
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        role: updatedUser?.role,
+        roles: updatedUser?.roles,
       };
 
       res
@@ -250,7 +250,7 @@ export default class UsersController {
       }
 
       const data = {
-        id: user?._id,
+        id: user?.id,
         firstname: user?.firstname,
         lastname: user?.lastname,
         email: user?.email,
@@ -259,7 +259,7 @@ export default class UsersController {
         address: { ...user?.address },
         driverLicense: { ...user?.driverLicense },
         insurance: { ...user?.insurance },
-        role: user?.role,
+        roles: user?.roles,
       };
 
       res.status(200).json({ status: "success", message: "user found", data });
@@ -280,7 +280,7 @@ export default class UsersController {
 
       users?.forEach((user) => {
         data.push({
-          id: user?._id,
+          id: user?.id,
           firstname: user?.firstname,
           lastname: user?.lastname,
           email: user?.email,
@@ -289,7 +289,7 @@ export default class UsersController {
           address: { ...user?.address },
           driverLicense: { ...user?.driverLicense },
           insurance: { ...user?.insurance },
-          role: user?.role,
+          roles: user?.roles,
         });
       });
 
@@ -325,7 +325,7 @@ export default class UsersController {
       );
 
       const data = {
-        id: updatedUser?._id,
+        id: updatedUser?.id,
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
@@ -335,7 +335,7 @@ export default class UsersController {
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        role: updatedUser?.role,
+        roles: updatedUser?.roles,
       };
 
       res
@@ -361,14 +361,14 @@ export default class UsersController {
 
       // update user with new password
       const updatedUser = await this.usersService.updatePassword(
-        user?._id,
+        user?.id,
         newPassword
       );
 
       // send email with new password
 
       const data = {
-        id: updatedUser?._id,
+        id: updatedUser?.id,
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
@@ -378,7 +378,7 @@ export default class UsersController {
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        role: updatedUser?.role,
+        roles: updatedUser?.roles,
       };
 
       res.status(200).json({

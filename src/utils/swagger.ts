@@ -3,6 +3,7 @@ import swaggerJsDocs from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
 import logger from "./logger";
+import auth from "../apis/middlewares/auth.middleware";
 
 const options: swaggerJsDocs.Options = {
   definition: {
@@ -14,9 +15,11 @@ const options: swaggerJsDocs.Options = {
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: "http",
+          type: "apiKey",
           scheme: "bearer",
+          name: "authorization",
           bearerFormat: "JWT",
+          in: "header",
         },
       },
 

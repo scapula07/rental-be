@@ -30,10 +30,10 @@ import { object, string, number, date, TypeOf } from "zod";
  *       example: Doe
  *      password:
  *       type: string
- *       example: password123
+ *       example: password12345
  *      passwordConfirmation:
  *       type: string
- *       example: password123
+ *       example: password12345
  *      email:
  *        type: string
  *        example: johndoe@email.com
@@ -87,7 +87,7 @@ export const CreateUserSchema = object({
     phone: string({
       required_error: "Phone number is required",
     }).min(7, "Phone number too short - should be 7 minimum"),
-    dateOfBirth: date({
+    dateOfBirth: string({
       required_error: "date of birth is required",
     }),
     address: object({
@@ -110,10 +110,22 @@ export const CreateUserSchema = object({
         required_error: "postal code is required",
       }).min(4, "postal code too short - should be 4 minimum"),
     }),
-  }).refine((data) => data.password === data.passwordConfirmation, {
-    message: "Passwords don't match",
-    path: ["confirm"], // path of error
-  }),
+  })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: "Passwords don't match",
+      path: ["confirm"], // path of error
+    })
+    .refine(
+      (data) => {
+        // check date string if it is a valid date
+        const date = new Date(data.dateOfBirth);
+        return date instanceof Date && !isNaN(date.valueOf());
+      },
+      {
+        message: "Invalid date",
+        path: ["dateOfBirth"],
+      }
+    ),
 });
 
 /**
@@ -128,7 +140,7 @@ export const CreateUserSchema = object({
  *    properties:
  *      password:
  *       type: string
- *       example: password123
+ *       example: password12345
  *      email:
  *        type: string
  *        example: johndoe@email.com
