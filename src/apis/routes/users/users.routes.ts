@@ -114,10 +114,9 @@ router.post(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
+    validate(ForgotPasswordSchema);
     next();
   },
-  validate(ForgotPasswordSchema),
   userController.forgotPassword
 );
 /**
@@ -152,10 +151,10 @@ router.put(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
+    validate(UpdatePasswordSchema);
     next();
   },
-  validate(UpdatePasswordSchema),
+
   userController.updatePassword
 );
 /**
@@ -196,10 +195,10 @@ router.put(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
+    validate(UpdateDriverLicenseSchema);
     next();
   },
-  validate(UpdateDriverLicenseSchema),
+
   userController.uploadDriverLicense
 );
 /**
@@ -269,10 +268,10 @@ router.put(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
+    validate(UpdateUserSchema);
     next();
   },
-  validate(UpdateUserSchema),
+
   userController.updateUser
 );
 /**

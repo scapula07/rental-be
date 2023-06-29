@@ -4,7 +4,10 @@ import HttpException from "../../exception/HttpException";
 import { verifyJwt } from "../../utils/jwt";
 
 export default function auth(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers["authorization"];
+
+  console.log("authHeader", authHeader);
+
   if (!authHeader) {
     logger.warn("No authorization header");
     throw new HttpException(401, "No authorization header");
