@@ -27,6 +27,8 @@ const userController = new UserController();
  * @openapi
  * /api/v1/users/:
  *  get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get all users
  *     tags: [Users]
  *     responses:
@@ -42,8 +44,6 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.getAllUsers
 );
@@ -115,7 +115,6 @@ router.post(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(ForgotPasswordSchema);
-    next();
   },
   userController.forgotPassword
 );
@@ -123,6 +122,8 @@ router.post(
  * @openapi
  * /api/v1/users/password/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Update password
  *     parameters:
@@ -152,7 +153,6 @@ router.put(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(UpdatePasswordSchema);
-    next();
   },
 
   userController.updatePassword
@@ -161,6 +161,8 @@ router.put(
  * @openapi
  * /api/v1/users/driver-license/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Upload driver license / license details
  *     consumes:
@@ -196,7 +198,6 @@ router.put(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(UpdateDriverLicenseSchema);
-    next();
   },
 
   userController.uploadDriverLicense
@@ -205,6 +206,8 @@ router.put(
  * @openapi
  * /api/v1/users/insurance/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Upload insurance
  *     parameters:
@@ -231,8 +234,6 @@ router.put(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.uploadInsurance
 );
@@ -240,6 +241,8 @@ router.put(
  * @openapi
  * /api/v1/users/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Update a user
  *     parameters:
@@ -269,7 +272,6 @@ router.put(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(UpdateUserSchema);
-    next();
   },
 
   userController.updateUser
@@ -278,6 +280,8 @@ router.put(
  * @openapi
  * /api/v1/users/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     summary: delete a user by ID
  *     tags: [Users]
  *     parameters:
@@ -300,8 +304,6 @@ router.delete(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.deleteUser
 );
@@ -309,6 +311,8 @@ router.delete(
  * @openapi
  * /api/v1/users/{id}:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a user by ID
  *     tags: [Users]
  *     parameters:
@@ -331,8 +335,6 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.getUser
 );

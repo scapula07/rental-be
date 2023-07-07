@@ -14,11 +14,9 @@ const options: swaggerJsDocs.Options = {
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: "apiKey",
+          type: "http",
           scheme: "bearer",
-          name: "authorization",
           bearerFormat: "JWT",
-          in: "header",
         },
       },
 

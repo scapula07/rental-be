@@ -208,6 +208,7 @@ export default class UsersController {
       }
 
       // Extract file and delete previous and upload to cloud
+      const fileUpload = fileUploader(req.files?.file);
 
       // update user insurance data
       const updatedUser = await this.usersService.updateUser(id, {
