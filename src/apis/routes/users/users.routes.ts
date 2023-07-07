@@ -27,6 +27,8 @@ const userController = new UserController();
  * @openapi
  * /api/v1/users/:
  *  get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get all users
  *     tags: [Users]
  *     responses:
@@ -120,6 +122,8 @@ router.post(
  * @openapi
  * /api/v1/users/password/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Update password
  *     parameters:
@@ -157,6 +161,8 @@ router.put(
  * @openapi
  * /api/v1/users/driver-license/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Upload driver license / license details
  *     consumes:
@@ -200,6 +206,8 @@ router.put(
  * @openapi
  * /api/v1/users/insurance/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Upload insurance
  *     parameters:
@@ -233,6 +241,8 @@ router.put(
  * @openapi
  * /api/v1/users/{id}:
  *  put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     summary: Update a user
  *     parameters:
@@ -270,6 +280,8 @@ router.put(
  * @openapi
  * /api/v1/users/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     summary: delete a user by ID
  *     tags: [Users]
  *     parameters:
@@ -300,7 +312,7 @@ router.delete(
  * /api/v1/users/{id}:
  *   get:
  *     security:
- *       - bearerAuth: []
+ *      - bearerAuth: []
  *     summary: Get a user by ID
  *     tags: [Users]
  *     parameters:
