@@ -42,8 +42,6 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.getAllUsers
 );
@@ -115,7 +113,6 @@ router.post(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(ForgotPasswordSchema);
-    next();
   },
   userController.forgotPassword
 );
@@ -152,7 +149,6 @@ router.put(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(UpdatePasswordSchema);
-    next();
   },
 
   userController.updatePassword
@@ -196,7 +192,6 @@ router.put(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(UpdateDriverLicenseSchema);
-    next();
   },
 
   userController.uploadDriverLicense
@@ -231,8 +226,6 @@ router.put(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.uploadInsurance
 );
@@ -269,7 +262,6 @@ router.put(
     // Call the middleware function with req, res, and next
     auth(req, res, next);
     validate(UpdateUserSchema);
-    next();
   },
 
   userController.updateUser
@@ -300,8 +292,6 @@ router.delete(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.deleteUser
 );
@@ -331,8 +321,6 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
-
-    next();
   },
   userController.getUser
 );
