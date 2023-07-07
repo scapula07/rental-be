@@ -404,7 +404,7 @@ export default class UsersController {
       }
 
       //Check if user is admin
-      if ((user?.roles as Array<String>)?.includes("admin")) {
+      if (!(user?.roles as Array<String>)?.includes("admin")) {
         throw next(new UnAuthorizedException());
       }
 
