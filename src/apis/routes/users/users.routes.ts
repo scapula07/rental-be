@@ -299,6 +299,8 @@ router.delete(
  * @openapi
  * /api/v1/users/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a user by ID
  *     tags: [Users]
  *     parameters:
