@@ -3,6 +3,7 @@ import UsersService from "./users.services";
 import HttpException from "../../exception/HttpException";
 import InvalidInputException from "../../exception/InvalidInput";
 import NotFoundException from "../../exception/NotFound";
+import UnAuthorizedException from "../../exception/Unauthorized";
 import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
@@ -400,6 +401,11 @@ export default class UsersController {
 
       if (!user) {
         throw next(new NotFoundException("User not found"));
+      }
+
+      //Check if user is admin
+      if ((user?.roles as Array<String>)?.includes("admin")) {
+        throw next(new UnAuthorizedException());
       }
 
       await this.usersService.deleteUser(id);

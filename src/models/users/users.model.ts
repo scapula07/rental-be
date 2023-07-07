@@ -1,4 +1,11 @@
-import { Types, Schema, Document, model, Model } from "mongoose";
+import {
+  Types,
+  Schema,
+  Document,
+  model,
+  Model,
+  SchemaDefinitionProperty,
+} from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
@@ -33,7 +40,7 @@ export interface IUser extends Document {
     uploaded: boolean;
     approved: boolean;
   };
-  roles: Array<string>;
+  roles: SchemaDefinitionProperty<string[]>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -75,14 +82,12 @@ const UserSchema = new Schema<IUser>(
     },
 
     // User Role
-    roles: [
-      {
-        type: String,
-        enum: { values: ["user", "partner", "admin"] },
-        default: ["user"],
-        required: true,
-      },
-    ],
+    roles: {
+      type: [String],
+      enum: { values: ["user", "partner", "admin"] },
+      default: ["user"],
+      required: true,
+    },
   },
   {
     timestamps: true,
