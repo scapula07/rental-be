@@ -3,8 +3,10 @@ import config from "../config";
 
 const accessTokenPrivateKey = config.jwt.accessTokenPrivateKey || "";
 const accessTokenPublicKey = config.jwt.accessTokenPublicKey || "";
+const accessTokenExpiresIn = config.jwt.accessTokenExpiresIn;
 
 export const signJwt = (payload: Object, options: SignOptions = {}) => {
+  options.expiresIn = `${accessTokenExpiresIn}m`;
   return jwt.sign(payload, accessTokenPrivateKey, options);
 };
 
