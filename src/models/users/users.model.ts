@@ -15,7 +15,10 @@ export interface IUser extends Document {
   password: string;
   phone: string;
   dateOfBirth: Date;
-  profileImage: string;
+  profileImage: {
+    publicId: string;
+    url: string;
+  };
   address: {
     houseNumber: string;
     street: string;
@@ -25,6 +28,7 @@ export interface IUser extends Document {
     postalCode: Number;
   };
   driverLicense: {
+    publicId: string;
     url: string;
     details: {
       licenseNumber: string;
@@ -36,6 +40,7 @@ export interface IUser extends Document {
     approved: boolean;
   };
   insurance: {
+    publicId: string;
     url: string;
     uploaded: boolean;
     approved: boolean;
@@ -52,7 +57,7 @@ const UserSchema = new Schema<IUser>(
     password: { type: String, required: true },
     phone: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
-    profileImage: { type: String, required: false },
+    profileImage: { publicId: String, url: String },
     // Address
     address: {
       houseNumber: { type: String, required: true },
@@ -65,6 +70,7 @@ const UserSchema = new Schema<IUser>(
 
     // File upload
     driverLicense: {
+      publicId: String,
       url: String,
       details: {
         licenseNumber: String,
@@ -76,6 +82,7 @@ const UserSchema = new Schema<IUser>(
       approved: Boolean,
     },
     insurance: {
+      publicId: String,
       url: String,
       uploaded: Boolean,
       approved: Boolean,

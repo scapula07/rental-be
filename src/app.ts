@@ -38,7 +38,12 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cookieParser());
 app.use(morganMiddleware);
-app.use(fileUpload());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 // mongoDB connection
 connectDB();

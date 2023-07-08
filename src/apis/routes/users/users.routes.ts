@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import UserController from "../../../modules/users/users.controller";
 import { validate } from "../../middlewares/validate.middleware";
+import checkFileUpload from "../../middlewares/checkFileUpload.middleware";
 import auth from "../../middlewares/auth.middleware";
 import {
   CreateUserSchema,
@@ -121,7 +122,7 @@ router.post(
 /**
  * @openapi
  * /api/v1/users/password/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -147,7 +148,7 @@ router.post(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/password/:id",
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
@@ -160,7 +161,7 @@ router.put(
 /**
  * @openapi
  * /api/v1/users/driver-license/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -177,11 +178,12 @@ router.put(
  *       - in: formData
  *         name: file
  *         type: file
+ *         required: true
  *         description: File for user driver license
  *     requestBody:
  *        required: true
  *        content:
- *          application/json:
+ *          multipart/form-data:
  *              schema:
  *                  $ref: '#/components/schema/UploadLicenseInput'
  *     responses:
@@ -192,11 +194,12 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/driver-license/:id",
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
+    checkFileUpload(req, res, next);
     validate(UpdateDriverLicenseSchema);
   },
 
@@ -205,7 +208,7 @@ router.put(
 /**
  * @openapi
  * /api/v1/users/insurance/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -221,6 +224,13 @@ router.put(
  *         name: file
  *         type: file
  *         description: File for user insurance
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *          schema:
+ *            name: filś
+ *            type: string
+ *            format: binary
  *     responses:
  *       '200':
  *         description: Successful response
@@ -229,18 +239,19 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/insurance/:id",
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next
     auth(req, res, next);
+    checkFileUpload(req, res, next);
   },
   userController.uploadInsurance
 );
 /**
  * @openapi
  * /api/v1/users/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -266,7 +277,7 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/:id",
   (req: Request, res: Response, next: NextFunction) => {
     // Call the middleware function with req, res, and next

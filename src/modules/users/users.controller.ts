@@ -8,7 +8,8 @@ import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
 import logger from "../../utils/logger";
-import { fileUploader } from "../../utils/fileUploader";
+import { fileUploader, fileDestroyer, folders } from "../../utils/fileUploader";
+import { FileArray } from "express-fileupload";
 
 export default class UsersController {
   usersService = new UsersService();
@@ -160,7 +161,10 @@ export default class UsersController {
       }
 
       // Extract file and delete previous and upload to cloud
-      const fileUpload = fileUploader(req.files?.file);
+      const fileUpload = fileUploader(
+        req.files as FileArray,
+        folders.driverLicense
+      );
 
       // update user driver license data
       const updatedUser = await this.usersService.updateUser(id, {
@@ -208,8 +212,19 @@ export default class UsersController {
         throw next(new NotFoundException("User not found"));
       }
 
+      // Check if file is uploaded
+      if (user?.insurance.publicId) {
+        // Delete file from cloud
+        await fileDestroyer(user?.insurance.publicId);
+      }
+
       // Extract file and delete previous and upload to cloud
-      const fileUpload = fileUploader(req.files?.file);
+      const fileUpload = await fileUploader(
+        req.files as FileArray,
+        folders.insurance
+      );
+
+      console.log("fileUpload", fileUpload);
 
       // update user insurance data
       const updatedUser = await this.usersService.updateUser(id, {
@@ -238,6 +253,7 @@ export default class UsersController {
         .json({ status: "success", message: "insurance updated", data });
     } catch (error) {
       logger.error(error);
+      console.log(error);
     }
   };
 
