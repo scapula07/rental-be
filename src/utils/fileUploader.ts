@@ -29,17 +29,6 @@ export const fileUploader = async (
   files: FileArray,
   folder: string
 ): Promise<UploadApiResponse> => {
-  console.log("files", files);
-
-  Object.keys(files).forEach(async (key) => {
-    console.log("key", key);
-    console.log("files[key]", files[key]);
-    console.log(
-      "files[key].tempFilePath",
-      (files[key] as UploadedFile).tempFilePath
-    );
-  });
-
   const file = Object.keys(files)[0];
 
   const result = await cloudinary.uploader.upload(
