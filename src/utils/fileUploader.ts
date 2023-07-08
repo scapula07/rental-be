@@ -1,5 +1,5 @@
 import { FileArray, UploadedFile } from "express-fileupload";
-import { v2 as cloudinary } from "cloudinary";
+import { UploadApiResponse, v2 as cloudinary } from "cloudinary";
 import config from "../config";
 import logger from "./logger";
 import fileUpload from "express-fileupload";
@@ -25,32 +25,31 @@ export const folders: Ifolder = {
   driverLicense: "driverLicense",
 };
 
-export const fileUploader = async (files: FileArray, folder: string) => {
+export const fileUploader = async (
+  files: FileArray,
+  folder: string
+): Promise<UploadApiResponse> => {
   console.log("files", files);
 
-  try {
-    Object.keys(files).forEach(async (key) => {
-      console.log("key", key);
-      console.log("files[key]", files[key]);
-      console.log(
-        "files[key].tempFilePath",
-        (files[key] as UploadedFile).tempFilePath
-      );
-    });
-
-    const file = Object.keys(files)[0];
-
-    const result = await cloudinary.uploader.upload(
-      (files[file] as UploadedFile).tempFilePath,
-      {
-        folder: folder,
-      }
+  Object.keys(files).forEach(async (key) => {
+    console.log("key", key);
+    console.log("files[key]", files[key]);
+    console.log(
+      "files[key].tempFilePath",
+      (files[key] as UploadedFile).tempFilePath
     );
+  });
 
-    return result;
-  } catch (error) {
-    logger.error(error);
-  }
+  const file = Object.keys(files)[0];
+
+  const result = await cloudinary.uploader.upload(
+    (files[file] as UploadedFile).tempFilePath,
+    {
+      folder: folder,
+    }
+  );
+
+  return result;
 };
 
 export const fileDestroyer = async (public_id: string) => {

@@ -160,8 +160,14 @@ export default class UsersController {
         throw next(new NotFoundException("User not found"));
       }
 
+      // Check if file is uploaded
+      if (user?.driverLicense.publicId) {
+        // Delete file from cloud
+        await fileDestroyer(user?.insurance.publicId);
+      }
+
       // Extract file and delete previous and upload to cloud
-      const fileUpload = fileUploader(
+      const { public_id, secure_url } = await fileUploader(
         req.files as FileArray,
         folders.driverLicense
       );
@@ -169,7 +175,8 @@ export default class UsersController {
       // update user driver license data
       const updatedUser = await this.usersService.updateUser(id, {
         driverLicense: {
-          url: "url",
+          publicId: public_id,
+          url: secure_url,
           details: {
             licenseNumber,
             expiryDate: new Date(expiryDate),
@@ -219,17 +226,16 @@ export default class UsersController {
       }
 
       // Extract file and delete previous and upload to cloud
-      const fileUpload = await fileUploader(
+      const { public_id, secure_url } = await fileUploader(
         req.files as FileArray,
         folders.insurance
       );
 
-      console.log("fileUpload", fileUpload);
-
       // update user insurance data
       const updatedUser = await this.usersService.updateUser(id, {
         insurance: {
-          url: "url",
+          publicId: public_id,
+          url: secure_url,
           uploaded: true,
           approved: false,
         },

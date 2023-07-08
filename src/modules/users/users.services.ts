@@ -19,6 +19,10 @@ interface IUser {
 }
 
 interface IUpdateUser {
+  profileImage?: {
+    publicId: string;
+    url: string;
+  };
   phone?: string;
   address?: {
     houseNumber: string;
@@ -29,6 +33,7 @@ interface IUpdateUser {
     postalCode: Number;
   };
   driverLicense?: {
+    publicId: string;
     url: string;
     details: {
       licenseNumber: string;
@@ -40,6 +45,7 @@ interface IUpdateUser {
     approved: boolean;
   };
   insurance?: {
+    publicId: string;
     url: string;
     uploaded: boolean;
     approved: boolean;
