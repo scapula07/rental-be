@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import UserController from "../../../modules/users/users.controller";
 import { validate } from "../../middlewares/validate.middleware";
+import checkFileUpload from "../../middlewares/checkFileUpload.middleware";
 import auth from "../../middlewares/auth.middleware";
 import {
   CreateUserSchema,
@@ -39,14 +40,7 @@ const userController = new UserController();
  *       '500':
  *         description: Internal server error
  */
-router.get(
-  "/",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
-  userController.getAllUsers
-);
+router.get("/", auth, userController.getAllUsers);
 /**
  * @openapi
  * /api/v1/users/:
@@ -111,17 +105,14 @@ router.post("/login", validate(LoginUserSchema), userController.loginUser);
  */
 router.post(
   "/forgot-password",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(ForgotPasswordSchema);
-  },
+  auth,
+  validate(ForgotPasswordSchema),
   userController.forgotPassword
 );
 /**
  * @openapi
  * /api/v1/users/password/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -147,20 +138,16 @@ router.post(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/password/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(UpdatePasswordSchema);
-  },
-
+  auth,
+  validate(UpdatePasswordSchema),
   userController.updatePassword
 );
 /**
  * @openapi
  * /api/v1/users/driver-license/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -174,14 +161,10 @@ router.put(
  *         description: ID of the user
  *         schema:
  *          type: string
- *       - in: formData
- *         name: file
- *         type: file
- *         description: File for user driver license
  *     requestBody:
  *        required: true
  *        content:
- *          application/json:
+ *          multipart/form-data:
  *              schema:
  *                  $ref: '#/components/schema/UploadLicenseInput'
  *     responses:
@@ -192,20 +175,17 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/driver-license/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(UpdateDriverLicenseSchema);
-  },
-
+  auth,
+  checkFileUpload,
+  validate(UpdateDriverLicenseSchema),
   userController.uploadDriverLicense
 );
 /**
  * @openapi
  * /api/v1/users/insurance/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -217,10 +197,15 @@ router.put(
  *         description: ID of the user
  *         schema:
  *          type: string
- *       - in: formData
- *         name: file
- *         type: file
- *         description: File for user insurance
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *          schema:
+ *            name: file
+ *            type: string
+ *            format: binary
+ *            required: true
  *     responses:
  *       '200':
  *         description: Successful response
@@ -229,18 +214,52 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/insurance/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
+  auth,
+  checkFileUpload,
   userController.uploadInsurance
 );
 /**
  * @openapi
+ * /api/v1/users/profile-image/{id}:
+ *  patch:
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Users]
+ *     summary: Upload profile image
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *          type: string
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *          schema:
+ *            name: file
+ *            type: string
+ *            format: binary
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '400':
+ *         description: Bad request
+ *       '500':
+ *         description: Internal server error
+ */
+router.patch(
+  "/profile-image/:id",
+  auth,
+  checkFileUpload,
+  userController.updateProfileImage
+);
+/**
+ * @openapi
  * /api/v1/users/{id}:
- *  put:
+ *  patch:
  *     security:
  *       - bearerAuth: []
  *     tags: [Users]
@@ -266,14 +285,10 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.put(
+router.patch(
   "/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(UpdateUserSchema);
-  },
-
+  auth,
+  validate(UpdateUserSchema),
   userController.updateUser
 );
 /**
@@ -299,14 +314,7 @@ router.put(
  *       '500':
  *         description: Internal server error
  */
-router.delete(
-  "/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
-  userController.deleteUser
-);
+router.delete("/:id", auth, userController.deleteUser);
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -330,13 +338,6 @@ router.delete(
  *       '500':
  *         description: Internal server error
  */
-router.get(
-  "/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
-  userController.getUser
-);
+router.get("/:id", auth, userController.getUser);
 
 export default router;

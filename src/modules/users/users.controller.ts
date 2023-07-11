@@ -3,11 +3,52 @@ import UsersService from "./users.services";
 import HttpException from "../../exception/HttpException";
 import InvalidInputException from "../../exception/InvalidInput";
 import NotFoundException from "../../exception/NotFound";
+import UnAuthorizedException from "../../exception/Unauthorized";
 import { signJwt } from "../../utils/jwt";
 import { matchPassword } from "../../utils/matchPassword";
 import { generateShortCode } from "../../utils/generateShortCode";
 import logger from "../../utils/logger";
-import { fileUploader } from "../../utils/fileUploader";
+import { fileUploader, fileDestroyer, folders } from "../../utils/fileUploader";
+import { FileArray } from "express-fileupload";
+
+type IUserOutput = {
+  id: any;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  dateOfBirth: Date;
+  profileImage: {
+    publicId: string;
+    url: string;
+  };
+  address: {
+    houseNumber: string;
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: Number;
+  };
+  driverLicense?: {
+    publicId: string;
+    url: string;
+    details: {
+      licenseNumber: string;
+      expiryDate: Date;
+      issuedDate: Date;
+      licenseClass: string;
+    };
+    uploaded: boolean;
+    approved: boolean;
+  };
+  insurance?: {
+    publicId: string;
+    url: string;
+    uploaded: boolean;
+    approved: boolean;
+  };
+};
 
 export default class UsersController {
   usersService = new UsersService();
@@ -55,7 +96,6 @@ export default class UsersController {
         address: { ...newUser?.address },
         driverLicense: { ...newUser?.driverLicense },
         insurance: { ...newUser?.insurance },
-        roles: newUser?.roles,
       };
 
       res
@@ -92,10 +132,10 @@ export default class UsersController {
         email: user?.email,
         phone: user?.phone,
         dateOfBirth: user?.dateOfBirth,
+        profileImage: user?.profileImage,
         address: { ...user?.address },
         driverLicense: { ...user?.driverLicense },
         insurance: { ...user?.insurance },
-        roles: user?.roles,
       };
 
       res
@@ -129,10 +169,10 @@ export default class UsersController {
         email: updatedUser?.email,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -140,6 +180,62 @@ export default class UsersController {
         .json({ status: "success", message: "user updated", data });
     } catch (error) {
       logger.error(error);
+    }
+  };
+
+  updateProfileImage = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      // Check if file is uploaded
+      if (user?.profileImage.publicId) {
+        // Delete file from cloud
+        await fileDestroyer(user?.profileImage.publicId);
+      }
+
+      // Extract file and delete previous and upload to cloud
+      const { public_id, secure_url } = await fileUploader(
+        req.files as FileArray,
+        folders.profileImage // folder to upload to
+      );
+
+      // update user insurance data
+      const updatedUser = await this.usersService.updateUser(id, {
+        profileImage: {
+          publicId: public_id,
+          url: secure_url,
+        },
+      });
+
+      const data = {
+        id: updatedUser?.id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "profile image updated", data });
+    } catch (error) {
+      logger.error(error);
+      // console.log(error);
     }
   };
 
@@ -158,13 +254,23 @@ export default class UsersController {
         throw next(new NotFoundException("User not found"));
       }
 
+      // Check if file is uploaded
+      if (user?.driverLicense.publicId) {
+        // Delete file from cloud
+        await fileDestroyer(user?.insurance.publicId);
+      }
+
       // Extract file and delete previous and upload to cloud
-      const fileUpload = fileUploader(req.files?.file);
+      const { public_id, secure_url } = await fileUploader(
+        req.files as FileArray,
+        folders.driverLicense
+      );
 
       // update user driver license data
       const updatedUser = await this.usersService.updateUser(id, {
         driverLicense: {
-          url: "url",
+          publicId: public_id,
+          url: secure_url,
           details: {
             licenseNumber,
             expiryDate: new Date(expiryDate),
@@ -183,10 +289,10 @@ export default class UsersController {
         email: updatedUser?.email,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -207,13 +313,23 @@ export default class UsersController {
         throw next(new NotFoundException("User not found"));
       }
 
+      // Check if file is uploaded
+      if (user?.insurance.publicId) {
+        // Delete file from cloud
+        await fileDestroyer(user?.insurance.publicId);
+      }
+
       // Extract file and delete previous and upload to cloud
-      const fileUpload = fileUploader(req.files?.file);
+      const { public_id, secure_url } = await fileUploader(
+        req.files as FileArray,
+        folders.insurance // folder to upload to
+      );
 
       // update user insurance data
       const updatedUser = await this.usersService.updateUser(id, {
         insurance: {
-          url: "url",
+          publicId: public_id,
+          url: secure_url,
           uploaded: true,
           approved: false,
         },
@@ -226,10 +342,10 @@ export default class UsersController {
         email: updatedUser?.email,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -237,6 +353,7 @@ export default class UsersController {
         .json({ status: "success", message: "insurance updated", data });
     } catch (error) {
       logger.error(error);
+      // console.log(error);
     }
   };
 
@@ -257,10 +374,10 @@ export default class UsersController {
         email: user?.email,
         phone: user?.phone,
         dateOfBirth: user?.dateOfBirth,
+        profileImage: user?.profileImage,
         address: { ...user?.address },
         driverLicense: { ...user?.driverLicense },
         insurance: { ...user?.insurance },
-        roles: user?.roles,
       };
 
       res.status(200).json({ status: "success", message: "user found", data });
@@ -277,7 +394,7 @@ export default class UsersController {
         throw next(new NotFoundException("Users not found"));
       }
 
-      const data = [];
+      const data: IUserOutput[] = [];
 
       users?.forEach((user) => {
         data.push({
@@ -287,16 +404,16 @@ export default class UsersController {
           email: user?.email,
           phone: user?.phone,
           dateOfBirth: user?.dateOfBirth,
+          profileImage: user?.profileImage,
           address: { ...user?.address },
           driverLicense: { ...user?.driverLicense },
           insurance: { ...user?.insurance },
-          roles: user?.roles,
         });
       });
 
       res
         .status(200)
-        .json({ status: "success", message: "users found", data: users });
+        .json({ status: "success", message: "users found", data: data });
     } catch (error) {
       logger.error(error);
     }
@@ -330,13 +447,12 @@ export default class UsersController {
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
-        password: updatedUser?.password,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -373,13 +489,12 @@ export default class UsersController {
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
-        password: updatedUser?.password,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res.status(200).json({
@@ -400,6 +515,11 @@ export default class UsersController {
 
       if (!user) {
         throw next(new NotFoundException("User not found"));
+      }
+
+      //Check if user is admin
+      if (!(user?.roles as Array<String>)?.includes("admin")) {
+        throw next(new UnAuthorizedException());
       }
 
       await this.usersService.deleteUser(id);

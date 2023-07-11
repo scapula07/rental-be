@@ -219,6 +219,7 @@ export const UpdateUserSchema = object({
  *      - licenseNumber
  *      - expiryDate
  *      - issuedDate
+ *      - licenseImage
  *    properties:
  *      licenseNumber:
  *        type: string
@@ -229,6 +230,11 @@ export const UpdateUserSchema = object({
  *      issuedDate:
  *        type: string
  *        example: 2021-01-01
+ *      licenseClass:
+ *        type: string
+ *      licenseImage:
+ *        type: string
+ *        format: binary
  */
 export const UpdateDriverLicenseSchema = object({
   body: object({
