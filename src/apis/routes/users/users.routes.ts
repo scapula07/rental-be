@@ -228,7 +228,7 @@ router.patch(
  *       content:
  *         multipart/form-data:
  *          schema:
- *            name: filś
+ *            name: file
  *            type: string
  *            format: binary
  *     responses:
@@ -247,6 +247,49 @@ router.patch(
     checkFileUpload(req, res, next);
   },
   userController.uploadInsurance
+);
+/**
+ * @openapi
+ * /api/v1/users/profile-image/{id}:
+ *  patch:
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Users]
+ *     summary: Upload profile image
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *          type: string
+ *       - in: formData
+ *         name: file
+ *         type: file
+ *         description: File for profile image
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *          schema:
+ *            name: file
+ *            type: string
+ *            format: binary
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '400':
+ *         description: Bad request
+ *       '500':
+ *         description: Internal server error
+ */
+router.patch(
+  "/profile-image/:id",
+  (req: Request, res: Response, next: NextFunction) => {
+    // Call the middleware function with req, res, and next
+    auth(req, res, next);
+    checkFileUpload(req, res, next);
+  },
+  userController.updateProfileImage
 );
 /**
  * @openapi
