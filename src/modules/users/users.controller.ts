@@ -183,6 +183,62 @@ export default class UsersController {
     }
   };
 
+  updateProfileImage = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { id } = req.params;
+
+    try {
+      const user = await this.usersService.getUserById(id);
+
+      if (!user) {
+        throw next(new NotFoundException("User not found"));
+      }
+
+      // Check if file is uploaded
+      if (user?.profileImage.publicId) {
+        // Delete file from cloud
+        await fileDestroyer(user?.profileImage.publicId);
+      }
+
+      // Extract file and delete previous and upload to cloud
+      const { public_id, secure_url } = await fileUploader(
+        req.files as FileArray,
+        folders.insurance
+      );
+
+      // update user insurance data
+      const updatedUser = await this.usersService.updateUser(id, {
+        profileImage: {
+          publicId: public_id,
+          url: secure_url,
+        },
+      });
+
+      const data = {
+        id: updatedUser?.id,
+        firstname: updatedUser?.firstname,
+        lastname: updatedUser?.lastname,
+        email: updatedUser?.email,
+        phone: updatedUser?.phone,
+        dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
+        address: { ...updatedUser?.address },
+        driverLicense: { ...updatedUser?.driverLicense },
+        insurance: { ...updatedUser?.insurance },
+      };
+
+      res
+        .status(200)
+        .json({ status: "success", message: "insurance updated", data });
+    } catch (error) {
+      logger.error(error);
+      console.log(error);
+    }
+  };
+
   uploadDriverLicense = async (
     req: Request,
     res: Response,
