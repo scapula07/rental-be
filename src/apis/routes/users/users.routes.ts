@@ -161,11 +161,6 @@ router.patch(
  *         description: ID of the user
  *         schema:
  *          type: string
- *       - in: formData
- *         name: file
- *         type: file
- *         required: true
- *         description: File for user driver license
  *     requestBody:
  *        required: true
  *        content:
@@ -203,12 +198,14 @@ router.patch(
  *         schema:
  *          type: string
  *     requestBody:
+ *       required: true
  *       content:
  *         multipart/form-data:
  *          schema:
  *            name: file
  *            type: string
  *            format: binary
+ *            required: true
  *     responses:
  *       '200':
  *         description: Successful response

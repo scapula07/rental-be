@@ -189,7 +189,6 @@ export default class UsersController {
     next: NextFunction
   ) => {
     const { id } = req.params;
-    console.log(id);
 
     try {
       const user = await this.usersService.getUserById(id);
