@@ -11,6 +11,45 @@ import logger from "../../utils/logger";
 import { fileUploader, fileDestroyer, folders } from "../../utils/fileUploader";
 import { FileArray } from "express-fileupload";
 
+type IUserOutput = {
+  id: any;
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  dateOfBirth: Date;
+  profileImage: {
+    publicId: string;
+    url: string;
+  };
+  address: {
+    houseNumber: string;
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: Number;
+  };
+  driverLicense?: {
+    publicId: string;
+    url: string;
+    details: {
+      licenseNumber: string;
+      expiryDate: Date;
+      issuedDate: Date;
+      licenseClass: string;
+    };
+    uploaded: boolean;
+    approved: boolean;
+  };
+  insurance?: {
+    publicId: string;
+    url: string;
+    uploaded: boolean;
+    approved: boolean;
+  };
+};
+
 export default class UsersController {
   usersService = new UsersService();
 
@@ -57,7 +96,6 @@ export default class UsersController {
         address: { ...newUser?.address },
         driverLicense: { ...newUser?.driverLicense },
         insurance: { ...newUser?.insurance },
-        roles: newUser?.roles,
       };
 
       res
@@ -94,10 +132,10 @@ export default class UsersController {
         email: user?.email,
         phone: user?.phone,
         dateOfBirth: user?.dateOfBirth,
+        profileImage: user?.profileImage,
         address: { ...user?.address },
         driverLicense: { ...user?.driverLicense },
         insurance: { ...user?.insurance },
-        roles: user?.roles,
       };
 
       res
@@ -131,10 +169,10 @@ export default class UsersController {
         email: updatedUser?.email,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -195,10 +233,10 @@ export default class UsersController {
         email: updatedUser?.email,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -248,10 +286,10 @@ export default class UsersController {
         email: updatedUser?.email,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -280,10 +318,10 @@ export default class UsersController {
         email: user?.email,
         phone: user?.phone,
         dateOfBirth: user?.dateOfBirth,
+        profileImage: user?.profileImage,
         address: { ...user?.address },
         driverLicense: { ...user?.driverLicense },
         insurance: { ...user?.insurance },
-        roles: user?.roles,
       };
 
       res.status(200).json({ status: "success", message: "user found", data });
@@ -300,7 +338,7 @@ export default class UsersController {
         throw next(new NotFoundException("Users not found"));
       }
 
-      const data = [];
+      const data: IUserOutput[] = [];
 
       users?.forEach((user) => {
         data.push({
@@ -310,16 +348,16 @@ export default class UsersController {
           email: user?.email,
           phone: user?.phone,
           dateOfBirth: user?.dateOfBirth,
+          profileImage: user?.profileImage,
           address: { ...user?.address },
           driverLicense: { ...user?.driverLicense },
           insurance: { ...user?.insurance },
-          roles: user?.roles,
         });
       });
 
       res
         .status(200)
-        .json({ status: "success", message: "users found", data: users });
+        .json({ status: "success", message: "users found", data: data });
     } catch (error) {
       logger.error(error);
     }
@@ -353,13 +391,12 @@ export default class UsersController {
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
-        password: updatedUser?.password,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res
@@ -396,13 +433,12 @@ export default class UsersController {
         firstname: updatedUser?.firstname,
         lastname: updatedUser?.lastname,
         email: updatedUser?.email,
-        password: updatedUser?.password,
         phone: updatedUser?.phone,
         dateOfBirth: updatedUser?.dateOfBirth,
+        profileImage: updatedUser?.profileImage,
         address: { ...updatedUser?.address },
         driverLicense: { ...updatedUser?.driverLicense },
         insurance: { ...updatedUser?.insurance },
-        roles: updatedUser?.roles,
       };
 
       res.status(200).json({
