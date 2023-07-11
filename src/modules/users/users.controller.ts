@@ -189,6 +189,7 @@ export default class UsersController {
     next: NextFunction
   ) => {
     const { id } = req.params;
+    console.log(id);
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -206,7 +207,7 @@ export default class UsersController {
       // Extract file and delete previous and upload to cloud
       const { public_id, secure_url } = await fileUploader(
         req.files as FileArray,
-        folders.insurance
+        folders.profileImage // folder to upload to
       );
 
       // update user insurance data
@@ -232,10 +233,10 @@ export default class UsersController {
 
       res
         .status(200)
-        .json({ status: "success", message: "insurance updated", data });
+        .json({ status: "success", message: "profile image updated", data });
     } catch (error) {
       logger.error(error);
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -322,7 +323,7 @@ export default class UsersController {
       // Extract file and delete previous and upload to cloud
       const { public_id, secure_url } = await fileUploader(
         req.files as FileArray,
-        folders.insurance
+        folders.insurance // folder to upload to
       );
 
       // update user insurance data
@@ -353,7 +354,7 @@ export default class UsersController {
         .json({ status: "success", message: "insurance updated", data });
     } catch (error) {
       logger.error(error);
-      console.log(error);
+      // console.log(error);
     }
   };
 

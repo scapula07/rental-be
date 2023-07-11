@@ -40,14 +40,7 @@ const userController = new UserController();
  *       '500':
  *         description: Internal server error
  */
-router.get(
-  "/",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
-  userController.getAllUsers
-);
+router.get("/", auth, userController.getAllUsers);
 /**
  * @openapi
  * /api/v1/users/:
@@ -112,11 +105,8 @@ router.post("/login", validate(LoginUserSchema), userController.loginUser);
  */
 router.post(
   "/forgot-password",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(ForgotPasswordSchema);
-  },
+  auth,
+  validate(ForgotPasswordSchema),
   userController.forgotPassword
 );
 /**
@@ -150,12 +140,8 @@ router.post(
  */
 router.patch(
   "/password/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(UpdatePasswordSchema);
-  },
-
+  auth,
+  validate(UpdatePasswordSchema),
   userController.updatePassword
 );
 /**
@@ -196,13 +182,9 @@ router.patch(
  */
 router.patch(
   "/driver-license/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    checkFileUpload(req, res, next);
-    validate(UpdateDriverLicenseSchema);
-  },
-
+  auth,
+  checkFileUpload,
+  validate(UpdateDriverLicenseSchema),
   userController.uploadDriverLicense
 );
 /**
@@ -220,10 +202,6 @@ router.patch(
  *         description: ID of the user
  *         schema:
  *          type: string
- *       - in: formData
- *         name: file
- *         type: file
- *         description: File for user insurance
  *     requestBody:
  *       content:
  *         multipart/form-data:
@@ -241,11 +219,8 @@ router.patch(
  */
 router.patch(
   "/insurance/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    checkFileUpload(req, res, next);
-  },
+  auth,
+  checkFileUpload,
   userController.uploadInsurance
 );
 /**
@@ -263,10 +238,6 @@ router.patch(
  *         description: ID of the user
  *         schema:
  *          type: string
- *       - in: formData
- *         name: file
- *         type: file
- *         description: File for profile image
  *     requestBody:
  *       content:
  *         multipart/form-data:
@@ -284,11 +255,8 @@ router.patch(
  */
 router.patch(
   "/profile-image/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    checkFileUpload(req, res, next);
-  },
+  auth,
+  checkFileUpload,
   userController.updateProfileImage
 );
 /**
@@ -322,12 +290,8 @@ router.patch(
  */
 router.patch(
   "/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-    validate(UpdateUserSchema);
-  },
-
+  auth,
+  validate(UpdateUserSchema),
   userController.updateUser
 );
 /**
@@ -353,14 +317,7 @@ router.patch(
  *       '500':
  *         description: Internal server error
  */
-router.delete(
-  "/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
-  userController.deleteUser
-);
+router.delete("/:id", auth, userController.deleteUser);
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -384,13 +341,6 @@ router.delete(
  *       '500':
  *         description: Internal server error
  */
-router.get(
-  "/:id",
-  (req: Request, res: Response, next: NextFunction) => {
-    // Call the middleware function with req, res, and next
-    auth(req, res, next);
-  },
-  userController.getUser
-);
+router.get("/:id", auth, userController.getUser);
 
 export default router;
