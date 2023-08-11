@@ -9,7 +9,7 @@ export const validate =
     try {
       // Check if req.body is empty
       if (Object.keys(req.body).length === 0) {
-        throw next(new HttpException(400, "No data found"));
+        throw next(new InvalidInputException("No data provided"));
       }
 
       schema.parse({

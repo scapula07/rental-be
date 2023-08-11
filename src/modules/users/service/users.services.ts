@@ -1,5 +1,5 @@
-import Users from "../../models/users/users.model";
-import logger from "../../utils/logger";
+import Users from "../models/users.model";
+import logger from "../../../utils/logger";
 
 interface IUser {
   firstname: string;

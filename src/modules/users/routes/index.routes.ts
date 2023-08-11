@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
-import UserController from "../../../modules/users/users.controller";
-import { validate } from "../../middlewares/validate.middleware";
-import checkFileUpload from "../../middlewares/checkFileUpload.middleware";
-import auth from "../../middlewares/auth.middleware";
+import UserController from "../controller";
+import { validate } from "../../../apis/middlewares/validate.middleware";
+import checkFileUpload from "../../../apis/middlewares/checkFileUpload.middleware";
+import auth from "../../../apis/middlewares/auth.middleware";
 import {
   CreateUserSchema,
   LoginUserSchema,
@@ -11,7 +11,7 @@ import {
   UpdatePasswordSchema,
   UpdateUserSchema,
   UpdateDriverLicenseSchema,
-} from "../../../models/users/zod.schema";
+} from "../validation/zod.schema";
 
 const router = Router();
 
