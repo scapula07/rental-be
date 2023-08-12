@@ -30,8 +30,8 @@ const options: swaggerJsDocs.Options = {
 
   apis: [
     "./src/apis/routes/*.ts",
-    "./src/apis/routes/users/*.ts",
-    "./src/models/users/*.ts",
+    "./src/modules/users/routes/*.ts",
+    "./src/modules/users/validation/*.ts",
   ],
 };
 
