@@ -50,6 +50,7 @@ interface IUpdateUser {
     uploaded: boolean;
     approved: boolean;
   };
+  roles?: string[];
 }
 
 export default class UsersService {

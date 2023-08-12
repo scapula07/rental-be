@@ -107,6 +107,62 @@ export default class UsersController {
     }
   };
 
+  registerPartner = async (req: Request, res: Response, next: NextFunction) => {
+    const {
+      firstname,
+      lastname,
+      email,
+      password,
+      phone,
+      dateOfBirth,
+      address,
+    } = req.body;
+
+    try {
+      // Check if email already exists
+      const user = await this.usersService.getUserByEmail(email);
+
+      if (user) {
+        throw next(new HttpException(409, "Email already exists"));
+      }
+
+      const newUser = await this.usersService.createUser({
+        firstname,
+        lastname,
+        email,
+        password,
+        phone,
+        dateOfBirth,
+        address,
+      });
+
+      await this.usersService.updateUser(newUser?.id, {
+        roles: ["partner"],
+      });
+
+      const token = signJwt(newUser?.id);
+
+      const data = {
+        id: newUser?.id,
+        firstname: newUser?.firstname,
+        lastname: newUser?.lastname,
+        email: newUser?.email,
+        phone: newUser?.phone,
+        dateOfBirth: newUser?.dateOfBirth,
+        address: { ...newUser?.address },
+        driverLicense: { ...newUser?.driverLicense },
+        insurance: { ...newUser?.insurance },
+      };
+
+      res
+        .status(201)
+        .json({ status: "success", message: "user created", data, token });
+    } catch (error) {
+      logger.error(error);
+      console.log(error);
+    }
+  };
+
   loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
