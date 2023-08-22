@@ -1,14 +1,18 @@
 import { Request, Response, NextFunction } from "express";
-import UsersService from "./service/users.services";
-import HttpException from "../../exception/HttpException";
-import InvalidInputException from "../../exception/InvalidInput";
-import NotFoundException from "../../exception/NotFound";
-import UnAuthorizedException from "../../exception/Unauthorized";
-import { signJwt } from "../../utils/jwt";
-import { matchPassword } from "../../utils/matchPassword";
-import { generateShortCode } from "../../utils/generateShortCode";
-import logger from "../../utils/logger";
-import { fileUploader, fileDestroyer, folders } from "../../utils/fileUploader";
+import UsersService from "../service/users.services";
+import HttpException from "../../../exception/HttpException";
+import InvalidInputException from "../../../exception/InvalidInput";
+import NotFoundException from "../../../exception/NotFound";
+import UnAuthorizedException from "../../../exception/Unauthorized";
+import { signJwt } from "../../../utils/jwt";
+import { matchPassword } from "../../../utils/matchPassword";
+import { generateShortCode } from "../../../utils/generateShortCode";
+import logger from "../../../utils/logger";
+import {
+  fileUploader,
+  fileDestroyer,
+  folders,
+} from "../../../utils/fileUploader";
 import { FileArray } from "express-fileupload";
 import { type } from "os";
 
@@ -62,6 +66,7 @@ type IInsurance = {
 export default class UsersController {
   usersService = new UsersService();
 
+  // User Methods
   registerUser = async (req: Request, res: Response, next: NextFunction) => {
     const {
       firstname,
@@ -107,86 +112,6 @@ export default class UsersController {
         driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
         insurance: { ...newUser?.insurance } as IInsurance,
       };
-
-      res
-        .status(201)
-        .json({ status: "success", message: "user created", data, token });
-    } catch (error) {
-      logger.error(error);
-      console.log(error);
-    }
-  };
-
-  registerPartner = async (req: Request, res: Response, next: NextFunction) => {
-    const {
-      firstname,
-      lastname,
-      email,
-      password,
-      phone,
-      dateOfBirth,
-      address,
-    } = req.body;
-
-    try {
-      // Check if email already exists
-      const user = await this.usersService.getUserByEmail(email);
-      let data: IUserOutput;
-      let token: string;
-
-      if (user) {
-        // Check user role
-        if ((user?.roles as Array<String>)?.includes("user")) {
-          // Update user role
-          await this.usersService.updateUser(user?.id, {
-            roles: ["partner"],
-          });
-        }
-
-        token = signJwt(user?.id);
-
-        data = {
-          id: user?.id as string,
-          firstname: user?.firstname as string,
-          lastname: user?.lastname as string,
-          email: user?.email as string,
-          phone: user?.phone as string,
-          dateOfBirth: user?.dateOfBirth as Date,
-          profileImage: { ...user?.profileImage } as IProfileImage,
-          address: { ...user?.address } as IAddress,
-          driverLicense: { ...user?.driverLicense } as IDriverLicense,
-          insurance: { ...user?.insurance } as IInsurance,
-        };
-      } else {
-        const newUser = await this.usersService.createUser({
-          firstname,
-          lastname,
-          email,
-          password,
-          phone,
-          dateOfBirth,
-          address,
-        });
-
-        await this.usersService.updateUser(newUser?.id, {
-          roles: ["partner"],
-        });
-
-        token = signJwt(newUser?.id);
-
-        data = {
-          id: newUser?.id as string,
-          firstname: newUser?.firstname as string,
-          lastname: newUser?.lastname as string,
-          email: newUser?.email as string,
-          phone: newUser?.phone as string,
-          dateOfBirth: newUser?.dateOfBirth as Date,
-          profileImage: { ...newUser?.profileImage } as IProfileImage,
-          address: { ...newUser?.address } as IAddress,
-          driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
-          insurance: { ...newUser?.insurance } as IInsurance,
-        };
-      }
 
       res
         .status(201)
@@ -619,4 +544,87 @@ export default class UsersController {
       logger.error(error);
     }
   };
+
+  // Partner Methods
+  registerPartner = async (req: Request, res: Response, next: NextFunction) => {
+    const {
+      firstname,
+      lastname,
+      email,
+      password,
+      phone,
+      dateOfBirth,
+      address,
+    } = req.body;
+
+    try {
+      // Check if email already exists
+      const user = await this.usersService.getUserByEmail(email);
+      let data: IUserOutput;
+      let token: string;
+
+      if (user) {
+        // Check user role
+        if ((user?.roles as Array<String>)?.includes("user")) {
+          // Update user role
+          await this.usersService.updateUser(user?.id, {
+            roles: ["partner"],
+          });
+        }
+
+        token = signJwt(user?.id);
+
+        data = {
+          id: user?.id as string,
+          firstname: user?.firstname as string,
+          lastname: user?.lastname as string,
+          email: user?.email as string,
+          phone: user?.phone as string,
+          dateOfBirth: user?.dateOfBirth as Date,
+          profileImage: { ...user?.profileImage } as IProfileImage,
+          address: { ...user?.address } as IAddress,
+          driverLicense: { ...user?.driverLicense } as IDriverLicense,
+          insurance: { ...user?.insurance } as IInsurance,
+        };
+      } else {
+        const newUser = await this.usersService.createUser({
+          firstname,
+          lastname,
+          email,
+          password,
+          phone,
+          dateOfBirth,
+          address,
+        });
+
+        await this.usersService.updateUser(newUser?.id, {
+          roles: ["partner"],
+        });
+
+        token = signJwt(newUser?.id);
+
+        data = {
+          id: newUser?.id as string,
+          firstname: newUser?.firstname as string,
+          lastname: newUser?.lastname as string,
+          email: newUser?.email as string,
+          phone: newUser?.phone as string,
+          dateOfBirth: newUser?.dateOfBirth as Date,
+          profileImage: { ...newUser?.profileImage } as IProfileImage,
+          address: { ...newUser?.address } as IAddress,
+          driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
+          insurance: { ...newUser?.insurance } as IInsurance,
+        };
+      }
+
+      res
+        .status(201)
+        .json({ status: "success", message: "user created", data, token });
+    } catch (error) {
+      logger.error(error);
+      console.log(error);
+    }
+  };
+
+  loginPartner = async (req: Request, res: Response, next: NextFunction) => {};
 }
