@@ -6,9 +6,9 @@ interface IUser {
   lastname: string;
   email: string;
   password: string;
-  phone: string;
+  phone?: string;
   dateOfBirth?: Date;
-  address: {
+  address?: {
     houseNumber: string;
     street: string;
     city: string;

@@ -534,7 +534,7 @@ export default class UsersController {
       }
 
       //Check if user is admin
-      if (!(user?.roles as Array<String>)?.includes("admin")) {
+      if (!(user?.roles as Array<String>)?.includes("admin" || "super-admin")) {
         throw next(new UnAuthorizedException());
       }
 
@@ -656,6 +656,85 @@ export default class UsersController {
       res
         .status(200)
         .json({ status: "success", message: "partners found", data: data });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  // Admin Methods
+  registerAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    const { firstname, lastname, email, password } = req.body;
+
+    try {
+      // Check if email already exists
+      const user = await this.usersService.getUserByEmail(email);
+      let data: IUserOutput;
+      let token: string;
+
+      if (user) {
+        throw next(new HttpException(409, "User with email already exists"));
+      }
+
+      const newUser = await this.usersService.createUser({
+        firstname,
+        lastname,
+        email,
+        password,
+        role: "admin",
+      });
+
+      token = signJwt(newUser?.id);
+
+      data = {
+        id: newUser?.id as string,
+        firstname: newUser?.firstname as string,
+        lastname: newUser?.lastname as string,
+        email: newUser?.email as string,
+        phone: newUser?.phone as string,
+        dateOfBirth: newUser?.dateOfBirth as Date,
+        profileImage: { ...newUser?.profileImage } as IProfileImage,
+        address: { ...newUser?.address } as IAddress,
+        driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
+        insurance: { ...newUser?.insurance } as IInsurance,
+      };
+
+      res
+        .status(201)
+        .json({ status: "success", message: "admin created", data, token });
+    } catch (error) {
+      logger.error(error);
+      console.log(error);
+    }
+  };
+
+  getAllAdmins = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await this.usersService.getUserByRole("admin");
+
+      if (users?.length === 0) {
+        throw next(new NotFoundException("Admins not found"));
+      }
+
+      const data: IUserOutput[] = [];
+
+      users?.forEach((user) => {
+        data.push({
+          id: user?.id as string,
+          firstname: user?.firstname as string,
+          lastname: user?.lastname as string,
+          email: user?.email as string,
+          phone: user?.phone as string,
+          dateOfBirth: user?.dateOfBirth as Date,
+          profileImage: { ...user?.profileImage } as IProfileImage,
+          address: { ...user?.address } as IAddress,
+          driverLicense: { ...user?.driverLicense } as IDriverLicense,
+          insurance: { ...user?.insurance } as IInsurance,
+        });
+      });
+
+      res
+        .status(200)
+        .json({ status: "success", message: "admins found", data: data });
     } catch (error) {
       logger.error(error);
     }

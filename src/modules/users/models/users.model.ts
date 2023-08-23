@@ -93,14 +93,14 @@ const UserSchema = new Schema<IUser>(
     // Investment details
     investmentType: {
       type: String,
-      enums: ["monthly", "quaterly"],
+      enums: ["monthly", "bi-monthly", "quaterly"],
       default: "monthly",
     },
 
     // User Role
     roles: {
       type: String,
-      enum: { values: ["customer", "partner", "admin"] },
+      enum: { values: ["customer", "partner", "admin", "super-admin"] },
       required: true,
     },
   },
