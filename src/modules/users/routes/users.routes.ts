@@ -6,6 +6,8 @@ import checkFileUpload from "../../../apis/middlewares/checkFileUpload.middlewar
 import auth from "../../../apis/middlewares/auth.middleware";
 import {
   CreateUserSchema,
+  CreatePartnerSchema,
+  CreateAdminSchema,
   LoginUserSchema,
   ForgotPasswordSchema,
   UpdatePasswordSchema,
@@ -117,6 +119,59 @@ router.get("/admins", auth, userController.getAllAdmins);
  *         description: Internal server error
  */
 router.post("/", validate(CreateUserSchema), userController.registerUser);
+
+/**
+ * @openapi
+ * /api/v1/users/partner:
+ *  post:
+ *     tags: [Users]
+ *     summary: Create / Register a new Partner
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schema/CreatePartnerInput'
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post(
+  "/partner",
+  validate(CreatePartnerSchema),
+  userController.registerPartner
+);
+
+/**
+ * @openapi
+ * /api/v1/users/admin:
+ *  post:
+ *     tags: [Users]
+ *     summary: Create / Register a new Admin
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schema/CreateAdminInput'
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post(
+  "/admin",
+  validate(CreateAdminSchema),
+  userController.registerAdmin
+);
+
 /**
  * @openapi
  * /api/v1/users/login:
