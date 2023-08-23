@@ -45,6 +45,7 @@ export interface IUser extends Document {
     uploaded: boolean;
     approved: boolean;
   };
+  investmentType: string;
   roles: SchemaDefinitionProperty<string[]>;
 }
 
@@ -55,17 +56,18 @@ const UserSchema = new Schema<IUser>(
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
-    phone: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    phone: { type: String, unique: true },
+    dateOfBirth: { type: Date },
     profileImage: { publicId: String, url: String },
+
     // Address
     address: {
-      houseNumber: { type: String, required: true },
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      country: { type: String, required: true },
-      postalCode: { type: Number, required: true },
+      houseNumber: { type: String },
+      street: { type: String },
+      city: { type: String },
+      state: { type: String },
+      country: { type: String },
+      postalCode: { type: Number },
     },
 
     // File upload
@@ -88,11 +90,17 @@ const UserSchema = new Schema<IUser>(
       approved: Boolean,
     },
 
+    // Investment details
+    investmentType: {
+      type: String,
+      enums: ["monthly", "bi-monthly", "quaterly"],
+      default: "monthly",
+    },
+
     // User Role
     roles: {
-      type: [String],
-      enum: { values: ["user", "partner", "admin"] },
-      default: ["user"],
+      type: String,
+      enum: { values: ["customer", "partner", "admin", "super-admin"] },
       required: true,
     },
   },

@@ -6,9 +6,9 @@ interface IUser {
   lastname: string;
   email: string;
   password: string;
-  phone: string;
-  dateOfBirth: Date;
-  address: {
+  phone?: string;
+  dateOfBirth?: Date;
+  address?: {
     houseNumber: string;
     street: string;
     city: string;
@@ -16,6 +16,7 @@ interface IUser {
     country: string;
     postalCode: Number;
   };
+  role: string;
 }
 
 interface IUpdateUser {
@@ -50,6 +51,7 @@ interface IUpdateUser {
     uploaded: boolean;
     approved: boolean;
   };
+  roles?: string[];
 }
 
 export default class UsersService {
@@ -116,6 +118,14 @@ export default class UsersService {
   getAllUsers = async () => {
     try {
       const users = await this.users.find({}, { password: 0 });
+
+      return users;
+    } catch (error) {}
+  };
+
+  getUserByRole = async (role: string) => {
+    try {
+      const users = await this.users.find({ role: role }, { password: 0 });
 
       return users;
     } catch (error) {}
