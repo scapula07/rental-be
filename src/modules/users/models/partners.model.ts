@@ -72,6 +72,6 @@ PartnerSchema.pre("save", async function (next) {
 //   return await bcrypt.compare(enteredPassword, this.password);
 // };
 
-const Partners = model<IUser>("Partner", PartnerSchema);
+const Partners = model<IPartner>("Partner", PartnerSchema);
 
 export default Partners;
