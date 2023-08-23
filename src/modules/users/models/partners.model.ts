@@ -8,7 +8,7 @@ import {
 } from "mongoose";
 import bcrypt from "bcrypt";
 
-export interface IUser extends Document {
+export interface IPartner extends Document {
   firstname: string;
   lastname: string;
   email: string;
@@ -27,28 +27,10 @@ export interface IUser extends Document {
     country: string;
     postalCode: Number;
   };
-  driverLicense: {
-    publicId: string;
-    url: string;
-    details: {
-      licenseNumber: string;
-      expiryDate: Date;
-      issuedDate: Date;
-      licenseClass: string;
-    };
-    uploaded: boolean;
-    approved: boolean;
-  };
-  insurance: {
-    publicId: string;
-    url: string;
-    uploaded: boolean;
-    approved: boolean;
-  };
-  roles: SchemaDefinitionProperty<string[]>;
+  investmentType: string;
 }
 
-const PartnerSchema = new Schema<IUser>(
+const PartnerSchema = new Schema<IPartner>(
   {
     // Personal details
     firstname: { type: String, required: true },
@@ -67,33 +49,10 @@ const PartnerSchema = new Schema<IUser>(
       country: { type: String, required: true },
       postalCode: { type: Number, required: true },
     },
-
-    // File upload
-    driverLicense: {
-      publicId: String,
-      url: String,
-      details: {
-        licenseNumber: String,
-        expiryDate: Date,
-        issuedDate: Date,
-        licenseClass: String,
-      },
-      uploaded: Boolean,
-      approved: Boolean,
-    },
-    insurance: {
-      publicId: String,
-      url: String,
-      uploaded: Boolean,
-      approved: Boolean,
-    },
-
-    // User Role
-    roles: {
-      type: [String],
-      enum: { values: ["user", "partner", "admin"] },
-      default: ["user"],
-      required: true,
+    investmentType: {
+      type: String,
+      enums: ["monthly", "quaterly"],
+      default: "monthly",
     },
   },
   {
