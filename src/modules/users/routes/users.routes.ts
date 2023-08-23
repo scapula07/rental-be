@@ -41,6 +41,61 @@ const userController = new UserController();
  *         description: Internal server error
  */
 router.get("/", auth, userController.getAllUsers);
+
+/**
+ * @openapi
+ * /api/v1/users/customers:
+ *  get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Customers not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.get("/customers", auth, userController.getAllCustomers);
+
+/**
+ * @openapi
+ * /api/v1/users/partners:
+ *  get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Partners not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.get("/partners", auth, userController.getAllPartners);
+
+/**
+ * @openapi
+ * /api/v1/users/admins:
+ *  get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Partners not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.get("/admins", auth, userController.getAllAdmins);
+
 /**
  * @openapi
  * /api/v1/users/:
