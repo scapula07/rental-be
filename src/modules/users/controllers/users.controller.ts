@@ -7,6 +7,7 @@ import UnAuthorizedException from "../../../exception/Unauthorized";
 import { signJwt } from "../../../utils/jwt";
 import { matchPassword } from "../../../utils/matchPassword";
 import { generateShortCode } from "../../../utils/generateShortCode";
+import { decodeJwt, IJwtPayload } from "../../../utils/jwt";
 import logger from "../../../utils/logger";
 import {
   fileUploader,
@@ -375,6 +376,15 @@ export default class UsersController {
 
   getUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    const token = req.headers["authorization"]?.split(" ")[1];
+
+    const decodedToken = await decodeJwt(token as string);
+
+    if (!decodedToken) {
+      throw next(new UnAuthorizedException());
+    }
+
+    console.log("decoded token: ", decodedToken);
 
     try {
       const user = await this.usersService.getUserById(id);
@@ -525,8 +535,25 @@ export default class UsersController {
 
   deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    const token = req.headers["authorization"]?.split(" ")[1];
 
     try {
+      // Decode token
+      const decodedToken: IJwtPayload | null = await decodeJwt(token as string);
+
+      if (!decodedToken) {
+        throw next(new UnAuthorizedException());
+      }
+
+      // Check if user calling the method is admin
+      if (
+        !(decodedToken?.payload as any)?.roles?.includes(
+          "admin" || "super-admin"
+        )
+      ) {
+        throw next(new UnAuthorizedException());
+      }
+
       const user = await this.usersService.getUserById(id);
 
       if (!user) {
@@ -664,8 +691,23 @@ export default class UsersController {
   // Admin Methods
   registerAdmin = async (req: Request, res: Response, next: NextFunction) => {
     const { firstname, lastname, email, password } = req.body;
+    const authToken = req.headers["authorization"]?.split(" ")[1];
 
     try {
+      // Decode token
+      const decodedToken: IJwtPayload | null = await decodeJwt(
+        authToken as string
+      );
+
+      if (!decodedToken) {
+        throw next(new UnAuthorizedException());
+      }
+
+      // Check if user calling the method is super-admin
+      if (!(decodedToken?.payload as any)?.roles?.includes("super-admin")) {
+        throw next(new UnAuthorizedException());
+      }
+
       // Check if email already exists
       const user = await this.usersService.getUserByEmail(email);
       let data: IUserOutput;
@@ -708,7 +750,23 @@ export default class UsersController {
   };
 
   getAllAdmins = async (req: Request, res: Response, next: NextFunction) => {
+    const authToken = req.headers["authorization"]?.split(" ")[1];
+
     try {
+      // Decode token
+      const decodedToken: IJwtPayload | null = await decodeJwt(
+        authToken as string
+      );
+
+      if (!decodedToken) {
+        throw next(new UnAuthorizedException());
+      }
+
+      // Check if user calling the method is super-admin
+      if (!(decodedToken?.payload as any)?.roles?.includes("super-admin")) {
+        throw next(new UnAuthorizedException());
+      }
+
       const users = await this.usersService.getUserByRole("admin");
 
       if (users?.length === 0) {

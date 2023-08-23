@@ -50,7 +50,7 @@ router.get("/", auth, userController.getAllUsers);
  *  get:
  *     security:
  *       - bearerAuth: []
- *     summary: Get all users
+ *     summary: Get all Customers
  *     tags: [Users]
  *     responses:
  *       '200':
@@ -68,7 +68,7 @@ router.get("/customers", auth, userController.getAllCustomers);
  *  get:
  *     security:
  *       - bearerAuth: []
- *     summary: Get all users
+ *     summary: Get all Partner
  *     tags: [Users]
  *     responses:
  *       '200':
@@ -86,7 +86,7 @@ router.get("/partners", auth, userController.getAllPartners);
  *  get:
  *     security:
  *       - bearerAuth: []
- *     summary: Get all users
+ *     summary: Get all Admins
  *     tags: [Users]
  *     responses:
  *       '200':
@@ -168,6 +168,7 @@ router.post(
  */
 router.post(
   "/admin",
+  auth,
   validate(CreateAdminSchema),
   userController.registerAdmin
 );
