@@ -45,6 +45,7 @@ export interface IUser extends Document {
     uploaded: boolean;
     approved: boolean;
   };
+  investmentType: string;
   roles: SchemaDefinitionProperty<string[]>;
 }
 
@@ -58,6 +59,7 @@ const UserSchema = new Schema<IUser>(
     phone: { type: String, unique: true },
     dateOfBirth: { type: Date },
     profileImage: { publicId: String, url: String },
+
     // Address
     address: {
       houseNumber: { type: String },
@@ -88,9 +90,16 @@ const UserSchema = new Schema<IUser>(
       approved: Boolean,
     },
 
+    // Investment details
+    investmentType: {
+      type: String,
+      enums: ["monthly", "quaterly"],
+      default: "monthly",
+    },
+
     // User Role
     roles: {
-      type: [String],
+      type: String,
       enum: { values: ["customer", "partner", "admin"] },
       required: true,
     },
