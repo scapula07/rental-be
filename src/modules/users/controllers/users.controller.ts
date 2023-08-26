@@ -15,7 +15,6 @@ import {
   folders,
 } from "../../../utils/fileUploader";
 import { FileArray } from "express-fileupload";
-import { type } from "os";
 
 type IUserOutput = {
   id: any;

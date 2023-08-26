@@ -4,14 +4,25 @@ import logger from "../../../utils/logger";
 interface ICar {
   carname: string;
   modelNumber: string;
+  priceWeekly: number;
   carImage: {
     publicId: string;
     url: string;
   };
   engine: string;
+  power: string;
   mileage: string;
   colour: string;
   seat: string;
+}
+
+interface IUpdateCar {
+  priceWeekly?: number;
+  carImage?: {
+    publicId?: string;
+    url?: string;
+  };
+  mileage?: string;
 }
 
 export default class CarsService {
@@ -38,7 +49,20 @@ export default class CarsService {
     } catch (err) {}
   };
 
-  //   updateCar = async (carId: string, carData: IUpdateCar) => {};
+  updateCar = async (carId: string, carData: IUpdateCar) => {
+    try {
+      const car = await this.cars.findByIdAndUpdate(
+        carId,
+        {
+          ...carData,
+        },
+
+        { new: true }
+      );
+
+      return car;
+    } catch (err) {}
+  };
 
   deleteCar = async (carId: string) => {
     try {

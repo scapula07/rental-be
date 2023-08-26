@@ -12,11 +12,13 @@ import { string } from "zod";
 export interface ICar extends Document {
   carname: string;
   modelNumber: string;
+  priceWeekly: number;
   carImage: {
     publicId: string;
     url: string;
   };
   engine: string;
+  power: string;
   mileage: string;
   colour: string;
   seat: string;
@@ -34,6 +36,10 @@ const CarSchema = new Schema<ICar>(
       type: String,
       required: true,
     },
+    priceWeekly: {
+      type: Number,
+      required: true,
+    },
     carImage: {
       publicId: string,
       url: string,
@@ -42,6 +48,11 @@ const CarSchema = new Schema<ICar>(
       type: String,
       required: true,
       enum: ["automatic", "manual"],
+    },
+    power: {
+      type: String,
+      enum: ["petrol", "diesel", "electric", "hybrid"],
+      required: true,
     },
     mileage: {
       type: String,
