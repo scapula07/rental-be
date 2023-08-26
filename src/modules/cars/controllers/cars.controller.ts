@@ -164,8 +164,9 @@ export default class CarsController {
       }
 
       // Delete image from cloud
-      await fileDestroyer(car!.carImage.publicId);
+      if (!car!.carImage.publicId) await fileDestroyer(car!.carImage.publicId);
 
+      // Delete car from db
       await this.carService.deleteCar(id);
 
       res.status(200).json({
