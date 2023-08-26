@@ -276,7 +276,7 @@ export default class UsersController {
         await fileDestroyer(user?.insurance.publicId);
       }
 
-      // Extract file and delete previous and upload to cloud
+      // Extract file and upload to cloud
       const { public_id, secure_url } = await fileUploader(
         req.files as FileArray,
         folders.driverLicense

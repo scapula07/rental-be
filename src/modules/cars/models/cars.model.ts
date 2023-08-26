@@ -24,7 +24,7 @@ export interface ICar extends Document {
   power: string;
   mileage: string;
   colour: string;
-  seat: string;
+  seats: string;
   reserved: boolean;
 }
 
@@ -89,7 +89,7 @@ const CarSchema = new Schema<ICar>(
         "pink",
       ],
     },
-    seat: {
+    seats: {
       type: String,
       enum: ["2", "4"],
     },

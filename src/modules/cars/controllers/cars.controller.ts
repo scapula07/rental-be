@@ -12,34 +12,107 @@ import {
 } from "../../../utils/fileUploader";
 import { FileArray } from "express-fileupload";
 
+interface ICarOutput {}
+
 export default class CarsController {
   carService = new CarsService();
 
   createCar = async (req: Request, res: Response, next: NextFunction) => {
-    const { carname, modelNumber, priceWeekly, engine, brand, model, year } =
-      req.body;
+    const {
+      carname,
+      priceWeekly,
+      engine,
+      brand,
+      model,
+      modelNumber,
+      year,
+      power,
+      mileage,
+      colour,
+      seats,
+    } = req.body;
     try {
       const files = req.files as FileArray;
 
+      // Extract file and upload to cloud
+      const { public_id, secure_url } = await fileUploader(
+        files,
+        folders.carImage
+      );
+
       const car = await this.carService.createCar({
-        name,
-        price,
-        description,
+        carname,
+        priceWeekly,
+        engine,
         brand,
         model,
+        modelNumber,
         year,
-        images: files,
+        power,
+        mileage,
+        colour,
+        seats,
+        carImage: {
+          publicId: public_id,
+          url: secure_url,
+        },
       });
+
+      const data = {
+        id: car!._id,
+        carname: car!.carname,
+        priceWeekly: car!.priceWeekly,
+        engine: car!.engine,
+        brand: car!.brand,
+        model: car!.model,
+        modelNumber: car!.modelNumber,
+        carImage: car!.carImage,
+        year: car!.year,
+        power: car!.power,
+        mileage: car!.mileage,
+        colour: car!.colour,
+        seats: car!.seats,
+        reserved: car!.reserved,
+      };
+
       res.status(201).json({
-        success: true,
-        data: car,
+        status: "success",
+        message: "Car created",
+        data,
       });
     } catch (error) {
       next(error);
     }
   };
 
-  getAllCars = async (req: Request, res: Response, next: NextFunction) => {};
+  getAllCars = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const cars = await this.carService.getAllCars();
+
+      const data: ICarOutput[] = cars!.map((car) => ({
+        id: car._id,
+        carname: car.carname,
+        priceWeekly: car.priceWeekly,
+        engine: car.engine,
+        brand: car.brand,
+        model: car.model,
+        modelNumber: car.modelNumber,
+        carImage: car.carImage,
+        year: car.year,
+        power: car.power,
+        mileage: car.mileage,
+        colour: car.colour,
+        seats: car.seats,
+        reserved: car.reserved,
+      }));
+
+      res.status(200).json({
+        status: "success",
+        message: "Cars fetched",
+        data,
+      });
+    } catch (err) {}
+  };
 
   getCarById = async (req: Request, res: Response, next: NextFunction) => {};
 

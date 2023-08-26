@@ -16,7 +16,7 @@ interface ICar {
   power: string;
   mileage: string;
   colour: string;
-  seat: string;
+  seats: string;
 }
 
 interface IUpdateCar {

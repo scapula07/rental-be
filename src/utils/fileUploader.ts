@@ -16,13 +16,15 @@ interface Ifolder {
   products: string;
   insurance: string;
   driverLicense: string;
+  carImage: string;
 }
 
 export const folders: Ifolder = {
-  profileImage: "profileImage",
+  profileImage: "profile-image",
   products: "products",
   insurance: "insurance",
-  driverLicense: "driverLicense",
+  driverLicense: "driver-license",
+  carImage: "car-mage",
 };
 
 export const fileUploader = async (
