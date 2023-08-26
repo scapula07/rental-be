@@ -89,6 +89,10 @@ export default class CarsController {
     try {
       const cars = await this.carService.getAllCars();
 
+      if (cars?.length === 0) {
+        throw next(new NotFoundException("Cars not found"));
+      }
+
       const data: ICarOutput[] = cars!.map((car) => ({
         id: car._id,
         carname: car.carname,

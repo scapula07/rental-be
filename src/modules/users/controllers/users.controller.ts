@@ -102,16 +102,16 @@ export default class UsersController {
       const token = signJwt(newUser?.id);
 
       const data: IUserOutput = {
-        id: newUser?.id as string,
-        firstname: newUser?.firstname as string,
-        lastname: newUser?.lastname as string,
-        email: newUser?.email as string,
-        phone: newUser?.phone as string,
-        dateOfBirth: newUser?.dateOfBirth as Date,
-        profileImage: { ...newUser?.profileImage } as IProfileImage,
-        address: { ...newUser?.address } as IAddress,
-        driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
-        insurance: { ...newUser?.insurance } as IInsurance,
+        id: newUser!.id,
+        firstname: newUser!.firstname,
+        lastname: newUser!.lastname,
+        email: newUser!.email,
+        phone: newUser!.phone,
+        dateOfBirth: newUser!.dateOfBirth,
+        profileImage: { ...newUser!.profileImage },
+        address: { ...newUser!.address },
+        driverLicense: { ...newUser!.driverLicense },
+        insurance: { ...newUser!.insurance },
       };
 
       res
@@ -142,16 +142,16 @@ export default class UsersController {
       const token = signJwt(user?.id);
 
       const data: IUserOutput = {
-        id: user?.id as string,
-        firstname: user?.firstname as string,
-        lastname: user?.lastname as string,
-        email: user?.email as string,
-        phone: user?.phone as string,
-        dateOfBirth: user?.dateOfBirth as Date,
-        profileImage: { ...user?.profileImage } as IProfileImage,
-        address: { ...user?.address } as IAddress,
-        driverLicense: { ...user?.driverLicense } as IDriverLicense,
-        insurance: { ...user?.insurance } as IInsurance,
+        id: user!.id,
+        firstname: user!.firstname,
+        lastname: user!.lastname,
+        email: user!.email,
+        phone: user!.phone,
+        dateOfBirth: user!.dateOfBirth,
+        profileImage: { ...user!.profileImage },
+        address: { ...user!.address },
+        driverLicense: { ...user!.driverLicense },
+        insurance: { ...user!.insurance },
       };
 
       res
@@ -179,16 +179,16 @@ export default class UsersController {
       });
 
       const data: IUserOutput = {
-        id: updatedUser?.id as string,
-        firstname: updatedUser?.firstname as string,
-        lastname: updatedUser?.lastname as string,
-        email: updatedUser?.email as string,
-        phone: updatedUser?.phone as string,
-        dateOfBirth: updatedUser?.dateOfBirth as Date,
-        profileImage: { ...updatedUser?.profileImage } as IProfileImage,
-        address: { ...updatedUser?.address } as IAddress,
-        driverLicense: { ...updatedUser?.driverLicense } as IDriverLicense,
-        insurance: { ...updatedUser?.insurance } as IInsurance,
+        id: updatedUser!.id,
+        firstname: updatedUser!.firstname,
+        lastname: updatedUser!.lastname,
+        email: updatedUser!.email,
+        phone: updatedUser!.phone,
+        dateOfBirth: updatedUser!.dateOfBirth,
+        profileImage: { ...updatedUser!.profileImage },
+        address: { ...updatedUser!.address },
+        driverLicense: { ...updatedUser!.driverLicense },
+        insurance: { ...updatedUser!.insurance },
       };
 
       res
@@ -234,16 +234,16 @@ export default class UsersController {
       });
 
       const data: IUserOutput = {
-        id: updatedUser?.id as string,
-        firstname: updatedUser?.firstname as string,
-        lastname: updatedUser?.lastname as string,
-        email: updatedUser?.email as string,
-        phone: updatedUser?.phone as string,
-        dateOfBirth: updatedUser?.dateOfBirth as Date,
-        profileImage: { ...updatedUser?.profileImage } as IProfileImage,
-        address: { ...updatedUser?.address } as IAddress,
-        driverLicense: { ...updatedUser?.driverLicense } as IDriverLicense,
-        insurance: { ...updatedUser?.insurance } as IInsurance,
+        id: updatedUser!.id,
+        firstname: updatedUser!.firstname,
+        lastname: updatedUser!.lastname,
+        email: updatedUser!.email,
+        phone: updatedUser!.phone,
+        dateOfBirth: updatedUser!.dateOfBirth,
+        profileImage: { ...updatedUser!.profileImage },
+        address: { ...updatedUser!.address },
+        driverLicense: { ...updatedUser!.driverLicense },
+        insurance: { ...updatedUser!.insurance },
       };
 
       res
@@ -299,16 +299,16 @@ export default class UsersController {
       });
 
       const data: IUserOutput = {
-        id: updatedUser?.id as string,
-        firstname: updatedUser?.firstname as string,
-        lastname: updatedUser?.lastname as string,
-        email: updatedUser?.email as string,
-        phone: updatedUser?.phone as string,
-        dateOfBirth: updatedUser?.dateOfBirth as Date,
-        profileImage: { ...updatedUser?.profileImage } as IProfileImage,
-        address: { ...updatedUser?.address } as IAddress,
-        driverLicense: { ...updatedUser?.driverLicense } as IDriverLicense,
-        insurance: { ...updatedUser?.insurance } as IInsurance,
+        id: updatedUser!.id,
+        firstname: updatedUser!.firstname,
+        lastname: updatedUser!.lastname,
+        email: updatedUser!.email,
+        phone: updatedUser!.phone,
+        dateOfBirth: updatedUser!.dateOfBirth,
+        profileImage: { ...updatedUser!.profileImage },
+        address: { ...updatedUser!.address },
+        driverLicense: { ...updatedUser!.driverLicense },
+        insurance: { ...updatedUser!.insurance },
       };
 
       res
@@ -352,16 +352,16 @@ export default class UsersController {
       });
 
       const data: IUserOutput = {
-        id: updatedUser?.id as string,
-        firstname: updatedUser?.firstname as string,
-        lastname: updatedUser?.lastname as string,
-        email: updatedUser?.email as string,
-        phone: updatedUser?.phone as string,
-        dateOfBirth: updatedUser?.dateOfBirth as Date,
-        profileImage: { ...updatedUser?.profileImage } as IProfileImage,
-        address: { ...updatedUser?.address } as IAddress,
-        driverLicense: { ...updatedUser?.driverLicense } as IDriverLicense,
-        insurance: { ...updatedUser?.insurance } as IInsurance,
+        id: updatedUser!.id,
+        firstname: updatedUser!.firstname,
+        lastname: updatedUser!.lastname,
+        email: updatedUser!.email,
+        phone: updatedUser!.phone,
+        dateOfBirth: updatedUser!.dateOfBirth,
+        profileImage: { ...updatedUser!.profileImage },
+        address: { ...updatedUser!.address },
+        driverLicense: { ...updatedUser!.driverLicense },
+        insurance: { ...updatedUser!.insurance },
       };
 
       res
@@ -393,16 +393,16 @@ export default class UsersController {
       }
 
       const data: IUserOutput = {
-        id: user?.id as string,
-        firstname: user?.firstname as string,
-        lastname: user?.lastname as string,
-        email: user?.email as string,
-        phone: user?.phone as string,
-        dateOfBirth: user?.dateOfBirth as Date,
-        profileImage: { ...user?.profileImage } as IProfileImage,
-        address: { ...user?.address } as IAddress,
-        driverLicense: { ...user?.driverLicense } as IDriverLicense,
-        insurance: { ...user?.insurance } as IInsurance,
+        id: user!.id,
+        firstname: user!.firstname,
+        lastname: user!.lastname,
+        email: user!.email,
+        phone: user!.phone,
+        dateOfBirth: user!.dateOfBirth,
+        profileImage: { ...user!.profileImage },
+        address: { ...user!.address },
+        driverLicense: { ...user!.driverLicense },
+        insurance: { ...user!.insurance },
       };
 
       res.status(200).json({ status: "success", message: "user found", data });
@@ -419,22 +419,18 @@ export default class UsersController {
         throw next(new NotFoundException("Users not found"));
       }
 
-      const data: IUserOutput[] = [];
-
-      users?.forEach((user) => {
-        data.push({
-          id: user?.id as string,
-          firstname: user?.firstname as string,
-          lastname: user?.lastname as string,
-          email: user?.email as string,
-          phone: user?.phone as string,
-          dateOfBirth: user?.dateOfBirth as Date,
-          profileImage: { ...user?.profileImage } as IProfileImage,
-          address: { ...user?.address } as IAddress,
-          driverLicense: { ...user?.driverLicense } as IDriverLicense,
-          insurance: { ...user?.insurance } as IInsurance,
-        });
-      });
+      const data: IUserOutput[] = users!.map((user) => ({
+        id: user!.id,
+        firstname: user!.firstname,
+        lastname: user!.lastname,
+        email: user!.email,
+        phone: user!.phone,
+        dateOfBirth: user!.dateOfBirth,
+        profileImage: { ...user!.profileImage },
+        address: { ...user!.address },
+        driverLicense: { ...user!.driverLicense },
+        insurance: { ...user!.insurance },
+      }));
 
       res
         .status(200)
@@ -468,16 +464,16 @@ export default class UsersController {
       );
 
       const data: IUserOutput = {
-        id: updatedUser?.id as string,
-        firstname: updatedUser?.firstname as string,
-        lastname: updatedUser?.lastname as string,
-        email: updatedUser?.email as string,
-        phone: updatedUser?.phone as string,
-        dateOfBirth: updatedUser?.dateOfBirth as Date,
-        profileImage: { ...updatedUser?.profileImage } as IProfileImage,
-        address: { ...updatedUser?.address } as IAddress,
-        driverLicense: { ...updatedUser?.driverLicense } as IDriverLicense,
-        insurance: { ...updatedUser?.insurance } as IInsurance,
+        id: updatedUser!.id,
+        firstname: updatedUser!.firstname,
+        lastname: updatedUser!.lastname,
+        email: updatedUser!.email,
+        phone: updatedUser!.phone,
+        dateOfBirth: updatedUser!.dateOfBirth,
+        profileImage: { ...updatedUser!.profileImage },
+        address: { ...updatedUser!.address },
+        driverLicense: { ...updatedUser!.driverLicense },
+        insurance: { ...updatedUser!.insurance },
       };
 
       res
@@ -510,16 +506,16 @@ export default class UsersController {
       // send email with new password
 
       const data: IUserOutput = {
-        id: updatedUser?.id as string,
-        firstname: updatedUser?.firstname as string,
-        lastname: updatedUser?.lastname as string,
-        email: updatedUser?.email as string,
-        phone: updatedUser?.phone as string,
-        dateOfBirth: updatedUser?.dateOfBirth as Date,
-        profileImage: { ...updatedUser?.profileImage } as IProfileImage,
-        address: { ...updatedUser?.address } as IAddress,
-        driverLicense: { ...updatedUser?.driverLicense } as IDriverLicense,
-        insurance: { ...updatedUser?.insurance } as IInsurance,
+        id: updatedUser!.id,
+        firstname: updatedUser!.firstname,
+        lastname: updatedUser!.lastname,
+        email: updatedUser!.email,
+        phone: updatedUser!.phone,
+        dateOfBirth: updatedUser!.dateOfBirth,
+        profileImage: { ...updatedUser!.profileImage },
+        address: { ...updatedUser!.address },
+        driverLicense: { ...updatedUser!.driverLicense },
+        insurance: { ...updatedUser!.insurance },
       };
 
       res.status(200).json({
@@ -581,22 +577,18 @@ export default class UsersController {
         throw next(new NotFoundException("Customers not found"));
       }
 
-      const data: IUserOutput[] = [];
-
-      users?.forEach((user) => {
-        data.push({
-          id: user?.id as string,
-          firstname: user?.firstname as string,
-          lastname: user?.lastname as string,
-          email: user?.email as string,
-          phone: user?.phone as string,
-          dateOfBirth: user?.dateOfBirth as Date,
-          profileImage: { ...user?.profileImage } as IProfileImage,
-          address: { ...user?.address } as IAddress,
-          driverLicense: { ...user?.driverLicense } as IDriverLicense,
-          insurance: { ...user?.insurance } as IInsurance,
-        });
-      });
+      const data: IUserOutput[] = users!.map((user) => ({
+        id: user!.id,
+        firstname: user!.firstname,
+        lastname: user!.lastname,
+        email: user!.email,
+        phone: user!.phone,
+        dateOfBirth: user!.dateOfBirth,
+        profileImage: { ...user!.profileImage },
+        address: { ...user!.address },
+        driverLicense: { ...user!.driverLicense },
+        insurance: { ...user!.insurance },
+      }));
 
       res
         .status(200)
@@ -633,16 +625,16 @@ export default class UsersController {
       token = signJwt(newUser?.id);
 
       data = {
-        id: newUser?.id as string,
-        firstname: newUser?.firstname as string,
-        lastname: newUser?.lastname as string,
-        email: newUser?.email as string,
-        phone: newUser?.phone as string,
-        dateOfBirth: newUser?.dateOfBirth as Date,
-        profileImage: { ...newUser?.profileImage } as IProfileImage,
-        address: { ...newUser?.address } as IAddress,
-        driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
-        insurance: { ...newUser?.insurance } as IInsurance,
+        id: newUser?.id,
+        firstname: newUser!.firstname,
+        lastname: newUser!.lastname,
+        email: newUser!.email,
+        phone: newUser!.phone,
+        dateOfBirth: newUser!.dateOfBirth,
+        profileImage: { ...newUser!.profileImage },
+        address: { ...newUser!.address },
+        driverLicense: { ...newUser!.driverLicense },
+        insurance: { ...newUser!.insurance },
       };
 
       res
@@ -662,22 +654,18 @@ export default class UsersController {
         throw next(new NotFoundException("Partners not found"));
       }
 
-      const data: IUserOutput[] = [];
-
-      users?.forEach((user) => {
-        data.push({
-          id: user?.id as string,
-          firstname: user?.firstname as string,
-          lastname: user?.lastname as string,
-          email: user?.email as string,
-          phone: user?.phone as string,
-          dateOfBirth: user?.dateOfBirth as Date,
-          profileImage: { ...user?.profileImage } as IProfileImage,
-          address: { ...user?.address } as IAddress,
-          driverLicense: { ...user?.driverLicense } as IDriverLicense,
-          insurance: { ...user?.insurance } as IInsurance,
-        });
-      });
+      const data: IUserOutput[] = users!.map((user) => ({
+        id: user!.id,
+        firstname: user!.firstname,
+        lastname: user!.lastname,
+        email: user!.email,
+        phone: user!.phone,
+        dateOfBirth: user!.dateOfBirth,
+        profileImage: { ...user!.profileImage },
+        address: { ...user!.address },
+        driverLicense: { ...user!.driverLicense },
+        insurance: { ...user!.insurance },
+      }));
 
       res
         .status(200)
@@ -727,16 +715,16 @@ export default class UsersController {
       token = signJwt(newUser?.id);
 
       data = {
-        id: newUser?.id as string,
-        firstname: newUser?.firstname as string,
-        lastname: newUser?.lastname as string,
-        email: newUser?.email as string,
-        phone: newUser?.phone as string,
-        dateOfBirth: newUser?.dateOfBirth as Date,
-        profileImage: { ...newUser?.profileImage } as IProfileImage,
-        address: { ...newUser?.address } as IAddress,
-        driverLicense: { ...newUser?.driverLicense } as IDriverLicense,
-        insurance: { ...newUser?.insurance } as IInsurance,
+        id: newUser?.id,
+        firstname: newUser!.firstname,
+        lastname: newUser!.lastname,
+        email: newUser!.email,
+        phone: newUser!.phone,
+        dateOfBirth: newUser!.dateOfBirth,
+        profileImage: { ...newUser!.profileImage },
+        address: { ...newUser!.address },
+        driverLicense: { ...newUser!.driverLicense },
+        insurance: { ...newUser!.insurance },
       };
 
       res
@@ -772,22 +760,18 @@ export default class UsersController {
         throw next(new NotFoundException("Admins not found"));
       }
 
-      const data: IUserOutput[] = [];
-
-      users?.forEach((user) => {
-        data.push({
-          id: user?.id as string,
-          firstname: user?.firstname as string,
-          lastname: user?.lastname as string,
-          email: user?.email as string,
-          phone: user?.phone as string,
-          dateOfBirth: user?.dateOfBirth as Date,
-          profileImage: { ...user?.profileImage } as IProfileImage,
-          address: { ...user?.address } as IAddress,
-          driverLicense: { ...user?.driverLicense } as IDriverLicense,
-          insurance: { ...user?.insurance } as IInsurance,
-        });
-      });
+      const data: IUserOutput[] = users!.map((user) => ({
+        id: user!.id,
+        firstname: user!.firstname,
+        lastname: user!.lastname,
+        email: user!.email,
+        phone: user!.phone,
+        dateOfBirth: user!.dateOfBirth,
+        profileImage: { ...user!.profileImage },
+        address: { ...user!.address },
+        driverLicense: { ...user!.driverLicense },
+        insurance: { ...user!.insurance },
+      }));
 
       res
         .status(200)
