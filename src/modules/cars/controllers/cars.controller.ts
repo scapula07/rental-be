@@ -16,7 +16,8 @@ export default class CarsController {
   carService = new CarsService();
 
   createCar = async (req: Request, res: Response, next: NextFunction) => {
-    const { carname, p, description, brand, model, year } = req.body;
+    const { carname, modelNumber, priceWeekly, engine, brand, model, year } =
+      req.body;
     try {
       const files = req.files as FileArray;
 

@@ -11,7 +11,10 @@ import { string } from "zod";
 
 export interface ICar extends Document {
   carname: string;
+  brand: string;
+  model: string;
   modelNumber: string;
+  year: string;
   priceWeekly: number;
   carImage: {
     publicId: string;
@@ -29,6 +32,18 @@ const CarSchema = new Schema<ICar>(
   {
     // Car details
     carname: {
+      type: String,
+      required: true,
+    },
+    brand: {
+      type: String,
+      required: true,
+    },
+    model: {
+      type: String,
+      required: true,
+    },
+    year: {
       type: String,
       required: true,
     },

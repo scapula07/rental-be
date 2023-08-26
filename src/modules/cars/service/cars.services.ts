@@ -3,7 +3,10 @@ import logger from "../../../utils/logger";
 
 interface ICar {
   carname: string;
+  brand: string;
+  model: string;
   modelNumber: string;
+  year: string;
   priceWeekly: number;
   carImage: {
     publicId: string;
