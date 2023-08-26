@@ -375,15 +375,6 @@ export default class UsersController {
 
   getUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const token = req.headers["authorization"]?.split(" ")[1];
-
-    const decodedToken = await decodeJwt(token as string);
-
-    if (!decodedToken) {
-      throw next(new UnAuthorizedException());
-    }
-
-    console.log("decoded token: ", decodedToken);
 
     try {
       const user = await this.usersService.getUserById(id);

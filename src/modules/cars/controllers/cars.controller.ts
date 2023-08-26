@@ -58,7 +58,7 @@ export default class CarsController {
         },
       });
 
-      const data = {
+      const data: ICarOutput = {
         id: car!._id,
         carname: car!.carname,
         priceWeekly: car!.priceWeekly,
@@ -118,9 +118,60 @@ export default class CarsController {
     } catch (err) {}
   };
 
-  getCarById = async (req: Request, res: Response, next: NextFunction) => {};
+  getCar = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+      const car = await this.carService.getCarById(id);
 
-  // updateCar = async (req: Request, res: Response, next: NextFunction) => { }
+      if (!car) {
+        throw next(new NotFoundException("Car not found"));
+      }
 
-  deleteCar = async (req: Request, res: Response, next: NextFunction) => {};
+      const data: ICarOutput = {
+        id: car!._id,
+        carname: car!.carname,
+        priceWeekly: car!.priceWeekly,
+        engine: car!.engine,
+        brand: car!.brand,
+        model: car!.model,
+        modelNumber: car!.modelNumber,
+        carImage: car!.carImage,
+        year: car!.year,
+        power: car!.power,
+        mileage: car!.mileage,
+        colour: car!.colour,
+        seats: car!.seats,
+        reserved: car!.reserved,
+      };
+
+      res.status(200).json({
+        status: "success",
+        message: "Car fetched",
+        data,
+      });
+    } catch (err) {}
+  };
+
+  updateCar = async (req: Request, res: Response, next: NextFunction) => {};
+
+  deleteCar = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+      const car = await this.carService.getCarById(id);
+
+      if (!car) {
+        throw next(new NotFoundException("Car not found"));
+      }
+
+      // Delete image from cloud
+      await fileDestroyer(car!.carImage.publicId);
+
+      await this.carService.deleteCar(id);
+
+      res.status(200).json({
+        status: "success",
+        message: "Car deleted",
+      });
+    } catch (err) {}
+  };
 }
