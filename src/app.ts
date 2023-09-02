@@ -20,7 +20,14 @@ import config from "./config";
 const client_url_dev = config.urls.client_dev || "";
 const client_url_prod = config.urls.client_prod || "";
 
-var whitelist = [client_url_dev, client_url_prod];
+var whitelist = [
+  client_url_dev,
+  client_url_prod,
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://perzsi-rental-app.vercel.app",
+  "https://www.perzsirentals.com",
+];
 
 var corsOptions = {
   origin: whitelist,
