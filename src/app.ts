@@ -27,6 +27,7 @@ var whitelist = [
   "http://localhost:3001",
   "https://perzsi-rental-app.vercel.app",
   "https://www.perzsirentals.com",
+  "https://perzi-backup.vercel.app",
 ];
 
 var corsOptions = {
