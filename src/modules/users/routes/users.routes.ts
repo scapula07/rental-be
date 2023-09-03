@@ -1,9 +1,12 @@
 import { Router } from "express";
-import { Request, Response, NextFunction } from "express";
 import UserController from "../controllers/users.controller";
 import { validate } from "../../../apis/middlewares/validate.middleware";
 import checkFileUpload from "../../../apis/middlewares/checkFileUpload.middleware";
 import auth from "../../../apis/middlewares/auth.middleware";
+import {
+  adminGuard,
+  superAdminGuard,
+} from "../../../apis/middlewares/adminGuard.middleware";
 import {
   CreateUserSchema,
   CreatePartnerSchema,
@@ -42,7 +45,7 @@ const userController = new UserController();
  *       '500':
  *         description: Internal server error
  */
-router.get("/", auth, userController.getAllUsers);
+router.get("/", auth, adminGuard, userController.getAllUsers);
 
 /**
  * @openapi
@@ -60,7 +63,7 @@ router.get("/", auth, userController.getAllUsers);
  *       '500':
  *         description: Internal server error
  */
-router.get("/customers", auth, userController.getAllCustomers);
+router.get("/customers", auth, adminGuard, userController.getAllCustomers);
 
 /**
  * @openapi
@@ -78,7 +81,7 @@ router.get("/customers", auth, userController.getAllCustomers);
  *       '500':
  *         description: Internal server error
  */
-router.get("/partners", auth, userController.getAllPartners);
+router.get("/partners", auth, adminGuard, userController.getAllPartners);
 
 /**
  * @openapi
@@ -96,11 +99,11 @@ router.get("/partners", auth, userController.getAllPartners);
  *       '500':
  *         description: Internal server error
  */
-router.get("/admins", auth, userController.getAllAdmins);
+router.get("/admins", auth, superAdminGuard, userController.getAllAdmins);
 
 /**
  * @openapi
- * /api/v1/users/:
+ * /api/v1/users/customer:
  *  post:
  *     tags: [Users]
  *     summary: Create / Register a new user
@@ -118,7 +121,11 @@ router.get("/admins", auth, userController.getAllAdmins);
  *       '500':
  *         description: Internal server error
  */
-router.post("/", validate(CreateUserSchema), userController.registerUser);
+router.post(
+  "/customer",
+  validate(CreateUserSchema),
+  userController.registerCustomer
+);
 
 /**
  * @openapi
@@ -169,6 +176,7 @@ router.post(
 router.post(
   "/admin",
   auth,
+  superAdminGuard,
   validate(CreateAdminSchema),
   userController.registerAdmin
 );
@@ -194,6 +202,7 @@ router.post(
  *         description: Internal server error
  */
 router.post("/login", validate(LoginUserSchema), userController.loginUser);
+
 /**
  * @openapi
  * /api/v1/users/forgot-password:
@@ -220,6 +229,7 @@ router.post(
   validate(ForgotPasswordSchema),
   userController.forgotPassword
 );
+
 /**
  * @openapi
  * /api/v1/users/password/{id}:
@@ -255,6 +265,7 @@ router.patch(
   validate(UpdatePasswordSchema),
   userController.updatePassword
 );
+
 /**
  * @openapi
  * /api/v1/users/driver-license/{id}:
@@ -293,6 +304,7 @@ router.patch(
   validate(UpdateDriverLicenseSchema),
   userController.uploadDriverLicense
 );
+
 /**
  * @openapi
  * /api/v1/users/insurance/{id}:
@@ -331,6 +343,7 @@ router.patch(
   checkFileUpload,
   userController.uploadInsurance
 );
+
 /**
  * @openapi
  * /api/v1/users/profile-image/{id}:
@@ -367,6 +380,7 @@ router.patch(
   checkFileUpload,
   userController.updateProfileImage
 );
+
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -402,6 +416,7 @@ router.patch(
   validate(UpdateUserSchema),
   userController.updateUser
 );
+
 /**
  * @openapi
  * /api/v1/users/{id}:
@@ -425,7 +440,8 @@ router.patch(
  *       '500':
  *         description: Internal server error
  */
-router.delete("/:id", auth, userController.deleteUser);
+router.delete("/:id", auth, superAdminGuard, userController.deleteUser);
+
 /**
  * @openapi
  * /api/v1/users/{id}:

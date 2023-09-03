@@ -67,7 +67,11 @@ export default class UsersController {
   usersService = new UsersService();
 
   // User Methods
-  registerUser = async (req: Request, res: Response, next: NextFunction) => {
+  registerCustomer = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const {
       firstname,
       lastname,
@@ -521,25 +525,8 @@ export default class UsersController {
 
   deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const token = req.headers["authorization"]?.split(" ")[1];
 
     try {
-      // Decode token
-      const decodedToken: IJwtPayload | null = await decodeJwt(token as string);
-
-      if (!decodedToken) {
-        throw next(new UnAuthorizedException());
-      }
-
-      // Check if user calling the method is admin
-      if (
-        !(decodedToken?.payload as any)?.roles?.includes(
-          "admin" || "super-admin"
-        )
-      ) {
-        throw next(new UnAuthorizedException());
-      }
-
       const user = await this.usersService.getUserById(id);
 
       if (!user) {
@@ -548,13 +535,13 @@ export default class UsersController {
 
       // Delete user image and files from cloud
       if (user?.profileImage.publicId)
-        await fileDestroyer(user?.profileImage.publicId);
+        await fileDestroyer(user!.profileImage.publicId);
 
       if (user?.driverLicense.publicId)
-        await fileDestroyer(user?.driverLicense.publicId);
+        await fileDestroyer(user!.driverLicense.publicId);
 
       if (user?.insurance.publicId)
-        await fileDestroyer(user?.insurance.publicId);
+        await fileDestroyer(user!.insurance.publicId);
 
       // Delete user from db
       await this.usersService.deleteUser(id);
@@ -565,7 +552,7 @@ export default class UsersController {
     }
   };
 
-  // Customer Methods
+  // Customer are users who use the platforms to rent cars
   getAllCustomers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this.usersService.getUserByRole("user");

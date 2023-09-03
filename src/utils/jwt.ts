@@ -6,7 +6,7 @@ const accessTokenPublicKey = config.jwt.accessTokenPublicKey || "";
 const accessTokenExpiresIn = config.jwt.accessTokenExpiresIn || 15;
 
 export interface IJwtPayload {
-  payload: Object;
+  payload: string;
   iat: number;
   exp: number;
 }
