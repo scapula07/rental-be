@@ -67,7 +67,11 @@ export default class UsersController {
   usersService = new UsersService();
 
   // User Methods
-  registerUser = async (req: Request, res: Response, next: NextFunction) => {
+  registerCustomer = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const {
       firstname,
       lastname,
