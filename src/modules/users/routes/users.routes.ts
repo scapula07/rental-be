@@ -5,6 +5,10 @@ import { validate } from "../../../apis/middlewares/validate.middleware";
 import checkFileUpload from "../../../apis/middlewares/checkFileUpload.middleware";
 import auth from "../../../apis/middlewares/auth.middleware";
 import {
+  adminGuard,
+  superAdminGuard,
+} from "../../../apis/middlewares/adminGuard.middleware";
+import {
   CreateUserSchema,
   CreatePartnerSchema,
   CreateAdminSchema,
@@ -60,7 +64,7 @@ router.get("/", auth, userController.getAllUsers);
  *       '500':
  *         description: Internal server error
  */
-router.get("/customers", auth, userController.getAllCustomers);
+router.get("/customers", auth, adminGuard, userController.getAllCustomers);
 
 /**
  * @openapi
@@ -78,7 +82,7 @@ router.get("/customers", auth, userController.getAllCustomers);
  *       '500':
  *         description: Internal server error
  */
-router.get("/partners", auth, userController.getAllPartners);
+router.get("/partners", auth, adminGuard, userController.getAllPartners);
 
 /**
  * @openapi
@@ -96,7 +100,7 @@ router.get("/partners", auth, userController.getAllPartners);
  *       '500':
  *         description: Internal server error
  */
-router.get("/admins", auth, userController.getAllAdmins);
+router.get("/admins", auth, superAdminGuard, userController.getAllAdmins);
 
 /**
  * @openapi
@@ -425,7 +429,7 @@ router.patch(
  *       '500':
  *         description: Internal server error
  */
-router.delete("/:id", auth, userController.deleteUser);
+router.delete("/:id", auth, adminGuard, userController.deleteUser);
 /**
  * @openapi
  * /api/v1/users/{id}:
