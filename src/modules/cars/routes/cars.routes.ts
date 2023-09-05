@@ -12,6 +12,13 @@ const router = Router();
 
 const carsController = new cardController();
 
+/**
+ * @openapi
+ * tags:
+ *   name: Cars
+ *   description: Car management
+ */
+
 router.get("/", auth, adminGuard, carsController.getAllCars);
 
 router.post("/", auth, adminGuard, checkFileUpload, carsController.createCar);

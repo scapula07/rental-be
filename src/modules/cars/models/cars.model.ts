@@ -56,8 +56,8 @@ const CarSchema = new Schema<ICar>(
       required: true,
     },
     carImage: {
-      publicId: string,
-      url: string,
+      publicId: String,
+      url: String,
     },
     engine: {
       type: String,

@@ -662,23 +662,8 @@ export default class UsersController {
   // Admin Methods
   registerAdmin = async (req: Request, res: Response, next: NextFunction) => {
     const { firstname, lastname, email, password } = req.body;
-    const authToken = req.headers["authorization"]?.split(" ")[1];
 
     try {
-      // Decode token
-      const decodedToken: IJwtPayload | null = await decodeJwt(
-        authToken as string
-      );
-
-      if (!decodedToken) {
-        throw next(new UnAuthorizedException());
-      }
-
-      // Check if user calling the method is super-admin
-      if (!(decodedToken?.payload as any)?.roles?.includes("super-admin")) {
-        throw next(new UnAuthorizedException());
-      }
-
       // Check if email already exists
       const user = await this.usersService.getUserByEmail(email);
       let data: IUserOutput;
@@ -721,23 +706,7 @@ export default class UsersController {
   };
 
   getAllAdmins = async (req: Request, res: Response, next: NextFunction) => {
-    const authToken = req.headers["authorization"]?.split(" ")[1];
-
     try {
-      // Decode token
-      const decodedToken: IJwtPayload | null = await decodeJwt(
-        authToken as string
-      );
-
-      if (!decodedToken) {
-        throw next(new UnAuthorizedException());
-      }
-
-      // Check if user calling the method is super-admin
-      if (!(decodedToken?.payload as any)?.roles?.includes("super-admin")) {
-        throw next(new UnAuthorizedException());
-      }
-
       const users = await this.usersService.getUserByRole("admin");
 
       if (users?.length === 0) {
