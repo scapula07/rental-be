@@ -261,7 +261,6 @@ router.post(
  */
 router.patch(
   "/password/:id",
-  auth,
   validate(UpdatePasswordSchema),
   userController.updatePassword
 );

@@ -6,31 +6,7 @@ import { verifyJwt, decodeJwt, IJwtPayload } from "../../utils/jwt";
 
 import UsersService from "../../modules/users/service/users.services";
 
-export function adminGuard(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader!.split(" ")[1];
-
-  const userService = new UsersService();
-
-  // Decode token
-  const decodedToken: IJwtPayload | null = decodeJwt(token as string);
-
-  if (!decodedToken) {
-    throw next(new UnAuthorizedException());
-  }
-
-  // fetch user from using id from decoded token
-  const user = userService.getUserById(decodedToken.payload);
-
-  // Check if user calling the method is admin
-  //@ts-ignore
-  if (!user.roles.includes("admin" || "super-admin")) {
-    throw next(new UnAuthorizedException());
-  }
-
-  next();
-}
-export function superAdminGuard(
+export async function adminGuard(
   req: Request,
   res: Response,
   next: NextFunction
@@ -48,7 +24,39 @@ export function superAdminGuard(
   }
 
   // fetch user from using id from decoded token
-  const user = userService.getUserById(decodedToken.payload);
+  const user = await userService.getUserById(decodedToken.payload);
+
+  console.log("user", user);
+
+  // Check if user calling the method is admin
+  //@ts-ignore
+  if (!user.roles.includes("admin" || "super-admin")) {
+    throw next(new UnAuthorizedException());
+  }
+
+  next();
+}
+export async function superAdminGuard(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader!.split(" ")[1];
+
+  const userService = new UsersService();
+
+  // Decode token
+  const decodedToken: IJwtPayload | null = decodeJwt(token as string);
+
+  if (!decodedToken) {
+    throw next(new UnAuthorizedException());
+  }
+
+  // fetch user from using id from decoded token
+  const user = await userService.getUserById(decodedToken.payload);
+
+  console.log("user", user);
 
   // Check if user calling the method is superAdmin
   //@ts-ignore
