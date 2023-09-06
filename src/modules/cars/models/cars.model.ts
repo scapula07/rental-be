@@ -25,7 +25,7 @@ export interface ICar extends Document {
   mileage: string;
   colour: string;
   seats: string;
-  reserved: boolean;
+  status: string;
 }
 
 const CarSchema = new Schema<ICar>(
@@ -95,9 +95,9 @@ const CarSchema = new Schema<ICar>(
     },
 
     // Availability details
-    reserved: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ["available", "unavailable", "reserved", "maintenance"],
     },
   },
   { timestamps: true }
