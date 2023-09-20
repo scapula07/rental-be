@@ -72,7 +72,7 @@ export default class CarsController {
         mileage: car!.mileage,
         colour: car!.colour,
         seats: car!.seats,
-        reserved: car!.reserved,
+        reserved: car!.status,
       };
 
       res.status(201).json({
@@ -107,7 +107,7 @@ export default class CarsController {
         mileage: car.mileage,
         colour: car.colour,
         seats: car.seats,
-        reserved: car.reserved,
+        reserved: car.status,
       }));
 
       res.status(200).json({
@@ -141,7 +141,7 @@ export default class CarsController {
         mileage: car!.mileage,
         colour: car!.colour,
         seats: car!.seats,
-        reserved: car!.reserved,
+        reserved: car!.status,
       };
 
       res.status(200).json({
