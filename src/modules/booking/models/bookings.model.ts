@@ -17,6 +17,7 @@ export interface IBooking extends Document {
   endDate: string;
   totalPrice: number;
   paymentId: ObjectId;
+  pickupStatus: string;
   bookingStatus: string;
 }
 
@@ -49,6 +50,10 @@ const CarSchema = new Schema<IBooking>(
       ref: "Payment",
       required: true,
     },
+    pickupStatus: {
+      type: String,
+      enum: ["picked", "notPicked", "returned", "notReturned"],
+    },
     bookingStatus: {
       type: String,
       enum: [
@@ -59,6 +64,7 @@ const CarSchema = new Schema<IBooking>(
         "completed",
         "active",
       ],
+      default: "pending",
       required: true,
     },
   },
