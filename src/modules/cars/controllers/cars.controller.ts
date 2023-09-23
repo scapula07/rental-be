@@ -12,7 +12,25 @@ import {
 } from "../../../utils/fileUploader";
 import { FileArray } from "express-fileupload";
 
-interface ICarOutput {}
+interface ICarOutput {
+  id: string;
+  carname: string;
+  brand: string;
+  model: string;
+  modelNumber: string;
+  year: string;
+  priceWeekly: number;
+  carImage: {
+    publicId: string;
+    url: string;
+  };
+  engine: string;
+  power: string;
+  mileage: string;
+  colour: string;
+  seats: string;
+  status: string;
+}
 
 export default class CarsController {
   carService = new CarsService();
@@ -72,7 +90,7 @@ export default class CarsController {
         mileage: car!.mileage,
         colour: car!.colour,
         seats: car!.seats,
-        reserved: car!.status,
+        status: car!.status,
       };
 
       res.status(201).json({
@@ -107,7 +125,7 @@ export default class CarsController {
         mileage: car.mileage,
         colour: car.colour,
         seats: car.seats,
-        reserved: car.status,
+        status: car.status,
       }));
 
       res.status(200).json({
@@ -141,7 +159,7 @@ export default class CarsController {
         mileage: car!.mileage,
         colour: car!.colour,
         seats: car!.seats,
-        reserved: car!.status,
+        status: car!.status,
       };
 
       res.status(200).json({
