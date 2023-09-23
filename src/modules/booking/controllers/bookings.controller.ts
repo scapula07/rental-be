@@ -15,6 +15,17 @@ import {
 } from "../../../utils/fileUploader";
 import { FileArray } from "express-fileupload";
 
+interface IBookingOutput {
+  id: string;
+  user: string;
+  car: string;
+  startDate: string;
+  endDate: string;
+  totalPrice: number;
+  pickupStatus: string;
+  bookingStatus: string;
+}
+
 export default class BookingsController {
   bookingService = new BookingsService();
   carService = new CarsService();
@@ -60,17 +71,84 @@ export default class BookingsController {
     } catch (err) {}
   };
 
-  getUserBooking = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+  getUserBooking = async (req: Request, res: Response, next: NextFunction) => {
+    const { bookingId, userId } = req.params;
+    try {
+      //check booking id
+      const booking = await this.bookingService.getBookingById(bookingId);
+      if (!booking) {
+        throw new NotFoundException("Booking not found");
+      }
+
+      // check user id
+      const user = await this.userService.getUserById(userId);
+      if (!user) {
+        throw new NotFoundException("User not found");
+      }
+
+      // check if user is authorized to view booking
+      if (booking.user.toString() !== userId) {
+        throw new UnAuthorizedException("Unauthorized");
+      }
+
+      // return booking
+
+      const data: IBookingOutput = {
+        id: booking._id,
+        user: booking.user.toString(),
+        car: booking.car.toString(),
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        totalPrice: booking.totalPrice,
+        pickupStatus: booking.pickupStatus,
+        bookingStatus: booking.bookingStatus,
+      };
+
+      res.status(200).json({
+        status: "success",
+        message: "Booking fetched",
+        data,
+      });
+    } catch (err) {}
+  };
 
   getAllUserBookings = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {};
+  ) => {
+    const { userId } = req.params;
+    try {
+      // check user id
+      const user = await this.userService.getUserById(userId);
+      if (!user) {
+        throw new NotFoundException("User not found");
+      }
+
+      // get all bookings by user id
+      const bookings = await this.bookingService.getAllUserBooking(userId);
+
+      // return bookings
+      const data: IBookingOutput[] = bookings!.map((booking) => {
+        return {
+          id: booking._id,
+          user: booking.user.toString(),
+          car: booking.car.toString(),
+          startDate: booking.startDate,
+          endDate: booking.endDate,
+          totalPrice: booking.totalPrice,
+          pickupStatus: booking.pickupStatus,
+          bookingStatus: booking.bookingStatus,
+        };
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Bookings fetched",
+        data,
+      });
+    } catch (err) {}
+  };
 
   // admin booking function
   approveBooking = async (

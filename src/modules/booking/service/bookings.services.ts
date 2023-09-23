@@ -41,6 +41,13 @@ export default class BookingService {
     } catch (err) {}
   };
 
+  getAllUserBooking = async (userId: string) => {
+    try {
+      const bookings = await this.bookings.find({ user: userId });
+      return bookings;
+    } catch (err) {}
+  };
+
   updateBooking = async (bookingId: string, bookingData: IBooking) => {
     try {
       const booking = await this.bookings.findByIdAndUpdate(
