@@ -171,13 +171,74 @@ export default class BookingsController {
 
   cancelBooking = async (req: Request, res: Response, next: NextFunction) => {};
 
-  getBooking = async (req: Request, res: Response, next: NextFunction) => {};
+  getBooking = async (req: Request, res: Response, next: NextFunction) => {
+    const { bookingId } = req.params;
+    try {
+      const booking = await this.bookingService.getBookingById(bookingId);
 
-  getAllBookings = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+      if (!booking) {
+        throw new NotFoundException("Booking not found");
+      }
 
-  deleteBooking = async (req: Request, res: Response, next: NextFunction) => {};
+      const data: IBookingOutput = {
+        id: booking._id,
+        user: booking.user.toString(),
+        car: booking.car.toString(),
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        totalPrice: booking.totalPrice,
+        pickupStatus: booking.pickupStatus,
+        bookingStatus: booking.bookingStatus,
+      };
+
+      res.status(200).json({
+        status: "success",
+        message: "Booking fetched",
+        data,
+      });
+    } catch (err) {}
+  };
+
+  getAllBookings = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const bookings = await this.bookingService.getAllBookings();
+
+      const data: IBookingOutput[] = bookings!.map((booking) => {
+        return {
+          id: booking._id,
+          user: booking.user.toString(),
+          car: booking.car.toString(),
+          startDate: booking.startDate,
+          endDate: booking.endDate,
+          totalPrice: booking.totalPrice,
+          pickupStatus: booking.pickupStatus,
+          bookingStatus: booking.bookingStatus,
+        };
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Bookings fetched",
+        data,
+      });
+    } catch (err) {}
+  };
+
+  deleteBooking = async (req: Request, res: Response, next: NextFunction) => {
+    const { bookingId } = req.params;
+    try {
+      const booking = await this.bookingService.getBookingById(bookingId);
+
+      if (!booking) {
+        throw new NotFoundException("Booking not found");
+      }
+
+      await this.bookingService.deleteBooking(bookingId);
+
+      res.status(200).json({
+        status: "success",
+        message: "Booking deleted",
+      });
+    } catch (err) {}
+  };
 }
