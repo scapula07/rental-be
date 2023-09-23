@@ -21,7 +21,7 @@ export interface IBooking extends Document {
   bookingStatus: string;
 }
 
-const CarSchema = new Schema<IBooking>(
+const BookingSchema = new Schema<IBooking>(
   {
     user: {
       type: Types.ObjectId,
@@ -71,6 +71,6 @@ const CarSchema = new Schema<IBooking>(
   { timestamps: true }
 );
 
-const Cars: Model<IBooking> = model<IBooking>("Car", CarSchema);
+const Cars: Model<IBooking> = model<IBooking>("Booking", BookingSchema);
 
 export default Cars;
