@@ -40,37 +40,6 @@ router.get("/", auth, adminGuard, bookingsController.getAllBookings);
 
 /**
  * @openapi
- * /api/v1/bookings/:
- *  post:
- *     security:
- *       - bearerAuth: []
- *     tags: [Bookings]
- *     summary: Create a new booking
- *     consumes:
- *       - multipart/form-data
- *     requestBody:
- *        required: true
- *        content:
- *          multipart/form-data:
- *              schema:
- *                  $ref: '#/components/schema/CreateBookingInput'
- *     responses:
- *       '200':
- *         description: Successful response
- *       '404':
- *         description: Booking not found
- *       '500':
- *         description: Internal server error
- */
-router.post(
-  "/",
-  auth,
-  validate(CreateBookingSchema),
-  bookingsController.createBooking
-);
-
-/**
- * @openapi
  * /api/v1/bookings/user-bookings/{userId}/{bookingId}:
  *  get:
  *     security:
@@ -104,6 +73,7 @@ router.get(
   adminGuard,
   bookingsController.getUserBooking
 );
+
 /**
  * @openapi
  * /api/v1/bookings/user-bookings/{userId}:
@@ -132,6 +102,140 @@ router.get(
   auth,
   adminGuard,
   bookingsController.getAllUserBookings
+);
+
+/**
+ * @openapi
+ * /api/v1/bookings/:
+ *  post:
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Bookings]
+ *     summary: Create a new booking
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          multipart/form-data:
+ *              schema:
+ *                  $ref: '#/components/schema/CreateBookingInput'
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Booking not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post(
+  "/",
+  auth,
+  validate(CreateBookingSchema),
+  bookingsController.createBooking
+);
+
+/**
+ * @openapi
+ * /api/v1/bookings/pickup-status/{bookingId}:
+ *  post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: update booking pickup status
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: bookingId
+ *         required: true
+ *         description: ID of the booking
+ *         schema:
+ *           type: string
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          multipart/form-data:
+ *              schema:
+ *                type: object
+ *                required:
+ *                  - pickupStatus
+ *                properties:
+ *                  pickupStatus:
+ *                   type: string
+ *                   example: picked
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Booking not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post(
+  "/pickup-status/:bookingId",
+  auth,
+  adminGuard,
+  bookingsController.updatePickupStatus
+);
+
+/**
+ * @openapi
+ * /api/v1/bookings/complete-bookings/{bookingId}:
+ *  post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Complete booking
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: bookingId
+ *         required: true
+ *         description: ID of the booking
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Bookings not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post(
+  "/complete-bookings/:bookingId",
+  auth,
+  adminGuard,
+  bookingsController.completeBooking
+);
+/**
+ * @openapi
+ * /api/v1/bookings/cancel-bookings/{bookingId}:
+ *  post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Caancel booking
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: bookingId
+ *         required: true
+ *         description: ID of the booking
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *       '404':
+ *         description: Bookings not found
+ *       '500':
+ *         description: Internal server error
+ */
+router.post(
+  "/cancel-bookings/:bookingId",
+  auth,
+  adminGuard,
+  bookingsController.cancelBooking
 );
 
 /**
