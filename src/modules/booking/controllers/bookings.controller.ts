@@ -150,24 +150,53 @@ export default class BookingsController {
     } catch (err) {}
   };
 
-  // admin booking function
-  approveBooking = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+  completeBooking = async (req: Request, res: Response, next: NextFunction) => {
+    const { bookingId } = req.params;
+    try {
+      // check booking id
+      const booking = await this.bookingService.getBookingById(bookingId);
+      if (!booking) {
+        throw new NotFoundException("Booking not found");
+      }
 
-  completeBooking = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+      // update booking status to completed
+      const bookingData = {
+        pickupStatus: "returned",
+        bookingStatus: "completed",
+      };
 
-  declineBooking = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+      const updatedBooking = await this.bookingService.updateBooking(
+        bookingId,
+        bookingData
+      );
+
+      // update car status to available
+      const carId = booking.car.toString();
+      const carData = {
+        status: "available",
+      };
+
+      const updatedCar = await this.carService.updateCar(carId, carData);
+
+      // return booking
+      const data: IBookingOutput = {
+        id: updatedBooking!._id,
+        user: updatedBooking!.user.toString(),
+        car: updatedBooking!.car.toString(),
+        startDate: updatedBooking!.startDate,
+        endDate: updatedBooking!.endDate,
+        totalPrice: updatedBooking!.totalPrice,
+        pickupStatus: updatedBooking!.pickupStatus,
+        bookingStatus: updatedBooking!.bookingStatus,
+      };
+
+      res.status(200).json({
+        status: "success",
+        message: "Booking completed",
+        data,
+      });
+    } catch (err) {}
+  };
 
   cancelBooking = async (req: Request, res: Response, next: NextFunction) => {};
 
