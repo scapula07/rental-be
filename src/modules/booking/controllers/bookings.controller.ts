@@ -150,6 +150,64 @@ export default class BookingsController {
     } catch (err) {}
   };
 
+  // admin booking functions
+
+  updatePickupStatus = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { bookingId } = req.params;
+    const { pickupStatus } = req.body;
+    try {
+      const booking = await this.bookingService.getBookingById(bookingId);
+      if (!booking) {
+        throw new NotFoundException("Booking not found");
+      }
+
+      // check if pickup status is valid
+      const validPickupStatus = [
+        "picked",
+        "notPicked",
+        "returned",
+        "notReturned",
+      ];
+
+      if (!validPickupStatus.includes(pickupStatus)) {
+        throw new InvalidInputException("Invalid pickup status");
+      }
+
+      // update booking
+
+      const bookingData = {
+        pickupStatus,
+      };
+
+      const updatedBooking = await this.bookingService.updateBooking(
+        bookingId,
+        bookingData
+      );
+
+      // return booking
+      const data: IBookingOutput = {
+        id: updatedBooking!._id,
+        user: updatedBooking!.user.toString(),
+        car: updatedBooking!.car.toString(),
+        startDate: updatedBooking!.startDate,
+        endDate: updatedBooking!.endDate,
+        totalPrice: updatedBooking!.totalPrice,
+        pickupStatus: updatedBooking!.pickupStatus,
+        bookingStatus: updatedBooking!.bookingStatus,
+      };
+
+      res.status(200).json({
+        status: "success",
+        message: "Booking updated",
+        data,
+      });
+    } catch (err) {}
+  };
+
   completeBooking = async (req: Request, res: Response, next: NextFunction) => {
     const { bookingId } = req.params;
     try {
@@ -176,7 +234,7 @@ export default class BookingsController {
         status: "available",
       };
 
-      const updatedCar = await this.carService.updateCar(carId, carData);
+      await this.carService.updateCar(carId, carData);
 
       // return booking
       const data: IBookingOutput = {
@@ -198,7 +256,52 @@ export default class BookingsController {
     } catch (err) {}
   };
 
-  cancelBooking = async (req: Request, res: Response, next: NextFunction) => {};
+  cancelBooking = async (req: Request, res: Response, next: NextFunction) => {
+    const { bookingId } = req.params;
+    try {
+      // check booking id
+      const booking = await this.bookingService.getBookingById(bookingId);
+      if (!booking) {
+        throw new NotFoundException("Booking not found");
+      }
+
+      // update booking status to cancelled
+      const bookingData = {
+        bookingStatus: "cancelled",
+      };
+
+      const updatedBooking = await this.bookingService.updateBooking(
+        bookingId,
+        bookingData
+      );
+
+      // update car status to available
+      const carId = booking.car.toString();
+      const carData = {
+        status: "available",
+      };
+
+      await this.carService.updateCar(carId, carData);
+
+      // return booking
+      const data: IBookingOutput = {
+        id: updatedBooking!._id,
+        user: updatedBooking!.user.toString(),
+        car: updatedBooking!.car.toString(),
+        startDate: updatedBooking!.startDate,
+        endDate: updatedBooking!.endDate,
+        totalPrice: updatedBooking!.totalPrice,
+        pickupStatus: updatedBooking!.pickupStatus,
+        bookingStatus: updatedBooking!.bookingStatus,
+      };
+
+      res.status(200).json({
+        status: "success",
+        message: "Booking cancelled",
+        data,
+      });
+    } catch (err) {}
+  };
 
   getBooking = async (req: Request, res: Response, next: NextFunction) => {
     const { bookingId } = req.params;
