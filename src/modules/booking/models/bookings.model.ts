@@ -53,17 +53,11 @@ const BookingSchema = new Schema<IBooking>(
     pickupStatus: {
       type: String,
       enum: ["picked", "notPicked", "returned", "notReturned"],
+      default: "notPicked",
     },
     bookingStatus: {
       type: String,
-      enum: [
-        "pending",
-        "approved",
-        "declined",
-        "cancelled",
-        "completed",
-        "active",
-      ],
+      enum: ["cancelled", "completed", "active"],
       default: "pending",
       required: true,
     },

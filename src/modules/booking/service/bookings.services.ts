@@ -8,13 +8,11 @@ interface IBooking {
   endDate: string;
   totalPrice: number;
   paymentId: string;
-  pickupStatus: string;
-  bookingStatus: string;
 }
 
-interface IBooking {
-  pickupStatus: string;
-  bookingStatus: string;
+interface IUpdateBooking {
+  pickupStatus?: string;
+  bookingStatus?: string;
 }
 
 export default class BookingService {
@@ -48,7 +46,7 @@ export default class BookingService {
     } catch (err) {}
   };
 
-  updateBooking = async (bookingId: string, bookingData: IBooking) => {
+  updateBooking = async (bookingId: string, bookingData: IUpdateBooking) => {
     try {
       const booking = await this.bookings.findByIdAndUpdate(
         bookingId,

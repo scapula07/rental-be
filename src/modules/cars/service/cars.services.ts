@@ -26,6 +26,7 @@ interface IUpdateCar {
     url?: string;
   };
   mileage?: string;
+  status?: string;
 }
 
 export default class CarsService {
