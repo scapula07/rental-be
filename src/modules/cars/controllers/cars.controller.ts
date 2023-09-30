@@ -74,6 +74,7 @@ export default class CarsController {
       // Create car
       const car = await this.carService.createCar({
         carname,
+        priceId: price.id,
         priceWeekly,
         engine,
         brand,
@@ -89,6 +90,8 @@ export default class CarsController {
           url: secure_url,
         },
       });
+
+      // Send mail to user to verify email address
 
       const data: ICarOutput = {
         id: car!._id,

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import stripe from "../../../utils/stripe";
 import UsersService from "../service/users.service";
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";

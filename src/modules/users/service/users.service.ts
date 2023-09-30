@@ -5,6 +5,7 @@ interface IUser {
   firstname: string;
   lastname: string;
   email: string;
+  customerId?: string;
   password: string;
   phone?: string;
   dateOfBirth?: Date;
@@ -20,6 +21,7 @@ interface IUser {
 }
 
 interface IUpdateUser {
+  customerId?: string;
   profileImage?: {
     publicId: string;
     url: string;

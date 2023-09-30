@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
+import stripe from "../../../utils/stripe";
 import BookingsService from "../service/bookings.service";
 import CarsService from "../../cars/service/cars.service";
 import UsersService from "../../users/service/users.service";
+import PaymentsService from "../../payment/service/payments.service";
 
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
@@ -30,6 +32,7 @@ export default class BookingsController {
   bookingService = new BookingsService();
   carService = new CarsService();
   userService = new UsersService();
+  paymentService = new PaymentsService();
 
   // customer booking function
 
@@ -65,11 +68,35 @@ export default class BookingsController {
       const priceWeekly = car.priceWeekly;
       const totalPrice = priceWeekly * durationInWeeks;
 
-      // create customer(billing) ID for user if it doesn't exist
+      // create customer(billing) ID for user
+      // update customer ID for user
+      const customer = await stripe.customers.create({
+        email: user.email,
+      });
+
+      const customerData = {
+        customerId: customer.id,
+      };
+
+      await this.userService.updateUser(userId, customerData);
+
+      // Fetch price ID from database
+
+      const priceId = car.priceId;
+
+      // create subscription ID for recurring payments
+
+      const subscription = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{ price: priceId }],
+        expand: ["latest_invoice.payment_intent"],
+      });
 
       // create payment and payment id. Payment is sheduled every 1 week (7 days)
 
-      // prompt user to pay
+      // redirect user to payment page
+
+      // prompt user to pay / charge user
 
       // if payment is successful, create booking
     } catch (err) {}
