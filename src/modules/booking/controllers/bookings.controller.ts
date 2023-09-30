@@ -67,7 +67,7 @@ export default class BookingsController {
 
       // create customer(billing) ID for user if it doesn't exist
 
-      // create payment and payment id. Payment is sheduled every two weeks (14 days)
+      // create payment and payment id. Payment is sheduled every 1 week (7 days)
 
       // prompt user to pay
 

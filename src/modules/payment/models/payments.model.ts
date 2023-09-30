@@ -10,7 +10,7 @@ import {
 
 export interface IPayment extends Document {
   customerId: string;
-  productId: string;
+  priceId: string;
   subscriptionId: string;
   completedPayments: number;
 }
@@ -21,7 +21,7 @@ const PaymentSchema = new Schema<IPayment>(
       type: String,
       required: true,
     },
-    productId: {
+    priceId: {
       type: String,
       required: true,
     },
