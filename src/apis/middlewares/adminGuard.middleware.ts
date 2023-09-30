@@ -4,7 +4,7 @@ import HttpException from "../../exception/HttpException";
 import UnAuthorizedException from "../../exception/Unauthorized";
 import { verifyJwt, decodeJwt, IJwtPayload } from "../../utils/jwt";
 
-import UsersService from "../../modules/users/service/users.services";
+import UsersService from "../../modules/users/service/users.service";
 
 export async function adminGuard(
   req: Request,

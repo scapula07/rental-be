@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import CarsService from "../service/cars.services";
+import CarsService from "../service/cars.service";
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
 import NotFoundException from "../../../exception/NotFound";

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import UsersService from "../service/users.services";
+import UsersService from "../service/users.service";
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
 import NotFoundException from "../../../exception/NotFound";

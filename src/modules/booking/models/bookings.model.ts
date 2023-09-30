@@ -7,8 +7,6 @@ import {
   SchemaDefinitionProperty,
   ObjectId,
 } from "mongoose";
-import bcrypt from "bcrypt";
-import { string } from "zod";
 
 export interface IBooking extends Document {
   user: ObjectId;
@@ -33,6 +31,11 @@ const BookingSchema = new Schema<IBooking>(
       ref: "Car",
       required: true,
     },
+    paymentId: {
+      type: Types.ObjectId,
+      ref: "Payment",
+      required: true,
+    },
     startDate: {
       type: String,
       required: true,
@@ -43,11 +46,6 @@ const BookingSchema = new Schema<IBooking>(
     },
     totalPrice: {
       type: Number,
-      required: true,
-    },
-    paymentId: {
-      type: Types.ObjectId,
-      ref: "Payment",
       required: true,
     },
     pickupStatus: {
@@ -65,6 +63,6 @@ const BookingSchema = new Schema<IBooking>(
   { timestamps: true }
 );
 
-const Cars: Model<IBooking> = model<IBooking>("Booking", BookingSchema);
+const Bookings: Model<IBooking> = model<IBooking>("Booking", BookingSchema);
 
-export default Cars;
+export default Bookings;

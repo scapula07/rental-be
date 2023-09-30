@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import BookingsService from "../service/bookings.services";
-import CarsService from "../../cars/service/cars.services";
-import UsersService from "../../users/service/users.services";
+import BookingsService from "../service/bookings.service";
+import CarsService from "../../cars/service/cars.service";
+import UsersService from "../../users/service/users.service";
 
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
@@ -65,8 +65,12 @@ export default class BookingsController {
       const priceWeekly = car.priceWeekly;
       const totalPrice = priceWeekly * durationInWeeks;
 
+      // create customer(billing) ID for user if it doesn't exist
+
       // create payment and payment id. Payment is sheduled every two weeks (14 days)
+
       // prompt user to pay
+
       // if payment is successful, create booking
     } catch (err) {}
   };
