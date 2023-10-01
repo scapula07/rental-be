@@ -92,13 +92,11 @@ export default class BookingsController {
         payment_behavior: "default_incomplete",
         payment_settings: { save_default_payment_method: "on_subscription" },
         expand: ["latest_invoice.payment_intent"],
+        cancel_at: endDate,
+        collection_method: "charge_automatically",
       });
 
-      const subscriptionSchedule = await stripe.subscriptionSchedules.create(
-        {}
-      );
-
-      // create payment and payment id for payment service. Payment is sheduled every 1 week (7 days)
+      // create payment and payment id for payment service. Payment is sheduled every 2 week (14 days)
       const payment = await this.paymentService.createPayment({
         customerId: customer.id,
         priceId,

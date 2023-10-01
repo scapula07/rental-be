@@ -68,7 +68,7 @@ export default class CarsController {
         unit_amount: priceWeekly,
         currency: "USD",
         product: product.id,
-        recurring: { interval: "week", interval_count: 2 },
+        recurring: { interval: "week", interval_count: 2 }, // 2 weeks
       });
 
       // Create car
