@@ -54,6 +54,7 @@ interface IUpdateUser {
     approved: boolean;
   };
   roles?: string[];
+  emailVerified?: boolean;
 }
 
 export default class UsersService {

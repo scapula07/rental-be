@@ -3,11 +3,11 @@ import logger from "../../../utils/logger";
 
 interface IBooking {
   user: string;
-  booking: string;
+  car: string;
+  paymentId: string;
   startDate: string;
   endDate: string;
   totalPrice: number;
-  paymentId: string;
 }
 
 interface IUpdateBooking {

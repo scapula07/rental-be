@@ -68,7 +68,7 @@ export default class CarsController {
         unit_amount: priceWeekly,
         currency: "USD",
         product: product.id,
-        recurring: { interval: "week" },
+        recurring: { interval: "week", interval_count: 2 },
       });
 
       // Create car
@@ -90,8 +90,6 @@ export default class CarsController {
           url: secure_url,
         },
       });
-
-      // Send mail to user to verify email address
 
       const data: ICarOutput = {
         id: car!._id,

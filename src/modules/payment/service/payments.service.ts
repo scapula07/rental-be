@@ -5,7 +5,7 @@ interface IPayment {
   customerId: string;
   priceId: string;
   subscriptionId: string;
-  completedPayments: number;
+  completedPayments?: number;
 }
 
 interface IUpdatePayment {

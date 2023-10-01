@@ -48,6 +48,7 @@ export interface IUser extends Document {
   };
   investmentType: string;
   roles: SchemaDefinitionProperty<string[]>;
+  emailVerified: boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -104,6 +105,12 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: { values: ["customer", "partner", "admin", "super-admin"] },
       required: true,
+    },
+
+    // Email verification
+    emailVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -68,7 +68,7 @@ export default class BookingsController {
       const priceWeekly = car.priceWeekly;
       const totalPrice = priceWeekly * durationInWeeks;
 
-      // create customer(billing) ID for user
+      // create stripe customer(billing) ID for user
       // update customer ID for user
       const customer = await stripe.customers.create({
         email: user.email,
@@ -80,25 +80,68 @@ export default class BookingsController {
 
       await this.userService.updateUser(userId, customerData);
 
-      // Fetch price ID from database
+      // Fetch price ID from car database
 
       const priceId = car.priceId;
 
-      // create subscription ID for recurring payments
+      // create stripe subscription ID for recurring payments
 
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{ price: priceId }],
+        payment_behavior: "default_incomplete",
+        payment_settings: { save_default_payment_method: "on_subscription" },
         expand: ["latest_invoice.payment_intent"],
       });
 
-      // create payment and payment id. Payment is sheduled every 1 week (7 days)
+      const subscriptionSchedule = await stripe.subscriptionSchedules.create(
+        {}
+      );
 
-      // redirect user to payment page
+      // create payment and payment id for payment service. Payment is sheduled every 1 week (7 days)
+      const payment = await this.paymentService.createPayment({
+        customerId: customer.id,
+        priceId,
+        subscriptionId: subscription.id,
+      });
 
-      // prompt user to pay / charge user
+      // create booking
+      const booking = await this.bookingService.createBooking({
+        user: userId,
+        car: carId,
+        paymentId: payment!._id,
+        startDate,
+        endDate,
+        totalPrice,
+      });
 
-      // if payment is successful, create booking
+      // update car status to unavailable (booked)
+      const carData = {
+        status: "reserved",
+      };
+
+      await this.carService.updateCar(carId, carData);
+
+      const data: IBookingOutput = {
+        id: booking!._id,
+        user: booking!.user.toString(),
+        car: booking!.car.toString(),
+        startDate: booking!.startDate,
+        endDate: booking!.endDate,
+        totalPrice: booking!.totalPrice,
+        pickupStatus: booking!.pickupStatus,
+        bookingStatus: booking!.bookingStatus,
+      };
+
+      // return booking, client secret and subscription ID
+      res.status(201).json({
+        status: "success",
+        message: "Booking created",
+        data,
+        clientSecret: (subscription.latest_invoice as any).payment_intent
+          .client_secret,
+        subscriptionId: subscription.id,
+      });
     } catch (err) {}
   };
 
