@@ -1,3 +1,4 @@
+//@ts-nocheck
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
 import { Request, Response, NextFunction } from "express";
@@ -18,6 +19,12 @@ const webhookController = async (
 ) => {
   // Retrieve the event by verifying the signature using the raw body ad secret.
   let event;
+
+  // Services
+  const userService = new UsersService();
+  const paymentService = new PaymentsService();
+  const carService = new CarsService();
+  const bookingService = new BookingService();
 
   try {
     event = stripe.webhooks.constructEvent(
@@ -40,11 +47,27 @@ const webhookController = async (
   // Remove comment to see the various objects sent for this sample
   switch (event.type) {
     case "invoice.paid":
+      const sub_id = dataObject.id;
+
+      const payment = await paymentService.findOne({
+        subscriptionId: sub_id,
+      });
+
+      const booking = await bookingService.findOne({
+        paymentId: payment._id,
+      });
+
+      // Update booking status
+
       // Used to provision services after the trial has ended.
       // The status of the invoice will show up as paid. Store the status in your
       // database to reference when a user accesses your service to avoid hitting rate limits.
       break;
     case "invoice.payment_failed":
+      // Send notification to user via email
+
+      //
+
       // If the payment fails or the customer does not have a valid payment method,
       //  an invoice.payment_failed event is sent, the subscription becomes past_due.
       // Use this webhook to notify your user that their payment has

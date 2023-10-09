@@ -64,6 +64,11 @@ export default class BookingsController {
         throw new InvalidInputException("Minimum duration is 2 months/8 weeks");
       }
 
+      // Check if duration in weeks is even. Since billing is every 2 weeks, duration must be even
+      if (durationInWeeks % 2 !== 0) {
+        throw new InvalidInputException("Duration in weeks must be even");
+      }
+
       // calculate total price
       const priceWeekly = car.priceWeekly;
       const totalPrice = priceWeekly * durationInWeeks;

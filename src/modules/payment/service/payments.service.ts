@@ -12,6 +12,13 @@ interface IUpdatePayment {
   completedPayments: number;
 }
 
+interface IPaymentQuery {
+  customerId?: string;
+  priceId?: string;
+  subscriptionId?: string;
+  completedPayments?: number;
+}
+
 export default class PaymentsService {
   payments = Payments;
 
@@ -48,6 +55,20 @@ export default class PaymentsService {
       );
 
       return payment;
+    } catch (err) {}
+  };
+
+  findOnePayment = async (query: IPaymentQuery) => {
+    try {
+      const payment = await this.payments.findOne(query);
+      return payment;
+    } catch (err) {}
+  };
+
+  findPayment = async (query: IPaymentQuery) => {
+    try {
+      const payments = await this.payments.find(query);
+      return payments;
     } catch (err) {}
   };
 
