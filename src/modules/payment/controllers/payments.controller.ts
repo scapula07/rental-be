@@ -48,11 +48,46 @@ export default class PaymentsController {
   userService = new UsersService();
   paymentService = new PaymentsService();
 
-  getPayment = async (req: Request, res: Response, next: NextFunction) => {};
+  getPayment = async (req: Request, res: Response, next: NextFunction) => {
+    const { paymentId } = req.params;
+    try {
+      const payment = await this.paymentService.getPaymentById(paymentId);
+
+      if (!payment) {
+        throw new NotFoundException("Payment not found");
+      }
+
+      const data: IPaymentOutput = {
+        id: payment!.id,
+        customerId: payment!.customerId,
+        priceId: payment!.priceId,
+        subscriptionId: payment!.subscriptionId,
+        completedPayments: payment!.completedPayments,
+        paymentStatus: payment!.paymentStatus,
+      };
+    } catch (err) {}
+  };
 
   getAllPayments = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const payments = await this.paymentService.getAllPayments();
+
+      const data: IPaymentOutput[] = payments!.map((payment) => {
+        return {
+          id: payment.id,
+          customerId: payment.customerId,
+          priceId: payment.priceId,
+          subscriptionId: payment.subscriptionId,
+          completedPayments: payment.completedPayments,
+          paymentStatus: payment.paymentStatus,
+        };
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Payments fetched",
+        data,
+      });
     } catch (err) {}
   };
 
@@ -107,6 +142,12 @@ export default class PaymentsController {
           paymentMethod: invoice!.payment_intent,
           paymentMethodType: invoice!.payment_intent,
         };
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Invoices fetched",
+        data,
       });
     } catch (err) {}
   };

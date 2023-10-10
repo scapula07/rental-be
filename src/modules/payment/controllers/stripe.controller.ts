@@ -58,6 +58,7 @@ const webhookController = async (
       // Update payment status
       await paymentService.updatePayment(payment!._id, {
         paymentStatus: "paid" as string,
+        completedPayments: Number(payment!.completedPayments + 1),
       });
 
       // Find booking
