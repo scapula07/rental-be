@@ -18,6 +18,22 @@ import logger from "../../../utils/logger";
 
 interface IPaymentOutput {}
 
+interface IInvoiceOutput {
+  id: string;
+  amountDue: number;
+  amountPaid: number;
+  amountRemaining: number;
+  currency: string;
+  periodEnd: number;
+  periodStart: number;
+  paid: boolean;
+  status: string | any;
+  subscription: string | any;
+  nextPaymentAttempt: number | any;
+  paymentMethod: string | any;
+  paymentMethodType: string | any;
+}
+
 export default class PaymentsController {
   bookingService = new BookingsService();
   carService = new CarsService();
@@ -50,8 +66,41 @@ export default class PaymentsController {
       }
 
       // Use customerId in user Id to fetch for paymentId
-      const payment = this.paymentService.findOne({
-        customerId: user.stripeCustomerId,
+      const payment = await this.paymentService.findOnePayment({
+        customerId: user.customerId,
+      });
+
+      if (!payment) {
+        throw new NotFoundException("Payment not found");
+      }
+
+      // Fetch all invoices from stripe
+      const invoices = await Stripe.invoices.list({
+        customer: user.customerId,
+        subscription: payment.subscriptionId,
+      });
+
+      if (!invoices) {
+        throw new NotFoundException("Invoices not found");
+      }
+
+      // Return invoices to client
+      const data: IInvoiceOutput[] = invoices.data.map((invoice) => {
+        return {
+          id: invoice!.id,
+          amountDue: invoice!.amount_due,
+          amountPaid: invoice!.amount_paid,
+          amountRemaining: invoice!.amount_remaining,
+          currency: invoice!.currency,
+          periodEnd: invoice!.period_end,
+          periodStart: invoice!.period_start,
+          paid: invoice!.paid,
+          status: invoice!.status,
+          subscription: invoice!.subscription,
+          nextPaymentAttempt: invoice!.next_payment_attempt,
+          paymentMethod: invoice!.payment_intent,
+          paymentMethodType: invoice!.payment_intent,
+        };
       });
     } catch (err) {}
   };
