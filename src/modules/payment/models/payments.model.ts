@@ -13,6 +13,7 @@ export interface IPayment extends Document {
   priceId: string;
   subscriptionId: string;
   completedPayments: number;
+  paymentStatus: string;
 }
 
 const PaymentSchema = new Schema<IPayment>(
@@ -32,6 +33,12 @@ const PaymentSchema = new Schema<IPayment>(
     completedPayments: {
       type: Number, // Number of successful subscription payments for booking duration
       default: 0,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["paid", "unpaid", "pending"],
+      default: "pending",
+      required: true,
     },
   },
   { timestamps: true }

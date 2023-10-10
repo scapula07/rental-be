@@ -9,7 +9,8 @@ interface IPayment {
 }
 
 interface IUpdatePayment {
-  completedPayments: number;
+  completedPayments?: number;
+  paymentStatus?: string;
 }
 
 interface IPaymentQuery {
@@ -17,6 +18,7 @@ interface IPaymentQuery {
   priceId?: string;
   subscriptionId?: string;
   completedPayments?: number;
+  paymentStatus?: string;
 }
 
 export default class PaymentsService {

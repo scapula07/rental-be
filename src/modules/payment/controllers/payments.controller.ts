@@ -4,6 +4,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import Stripe from "../../../utils/stripe";
+import stripe from "stripe";
 
 import BookingsService from "../../booking/service/bookings.service";
 import CarsService from "../../cars/service/cars.service";
@@ -16,7 +17,14 @@ import NotFoundException from "../../../exception/NotFound";
 import UnAuthorizedException from "../../../exception/Unauthorized";
 import logger from "../../../utils/logger";
 
-interface IPaymentOutput {}
+interface IPaymentOutput {
+  id: string;
+  customerId: string;
+  priceId: string;
+  subscriptionId: string;
+  completedPayments: number;
+  paymentStatus: string;
+}
 
 interface IInvoiceOutput {
   id: string;
@@ -28,7 +36,7 @@ interface IInvoiceOutput {
   periodStart: number;
   paid: boolean;
   status: string | any;
-  subscription: string | any;
+  subscription: string | any | stripe.Invoice;
   nextPaymentAttempt: number | any;
   paymentMethod: string | any;
   paymentMethodType: string | any;
@@ -42,15 +50,13 @@ export default class PaymentsController {
 
   getPayment = async (req: Request, res: Response, next: NextFunction) => {};
 
-  getAllPayments = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {};
+  getAllPayments = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const payments = await this.paymentService.getAllPayments();
+    } catch (err) {}
+  };
 
-  // Stripe methods
-  // Fetch user invoices based on subscription Id
-
+  // Fetch user invoices from stripe
   getAllUserSubscriptionInvoice = async (
     req: Request,
     res: Response,

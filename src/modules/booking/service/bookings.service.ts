@@ -15,6 +15,17 @@ interface IUpdateBooking {
   bookingStatus?: string;
 }
 
+interface IBookingQuery {
+  user?: string;
+  car?: string;
+  startDate?: string;
+  endDate?: string;
+  totalPrice?: number;
+  paymentId?: string;
+  pickupStatus?: string;
+  bookingStatus?: string;
+}
+
 export default class BookingService {
   bookings = Bookings;
 
@@ -57,6 +68,20 @@ export default class BookingService {
         { new: true }
       );
 
+      return booking;
+    } catch (err) {}
+  };
+
+  findOneBooking = async (query: IBookingQuery) => {
+    try {
+      const booking = await this.bookings.findOne(query);
+      return booking;
+    } catch (err) {}
+  };
+
+  findPayment = async (query: IBookingQuery) => {
+    try {
+      const booking = await this.bookings.find(query);
       return booking;
     } catch (err) {}
   };
