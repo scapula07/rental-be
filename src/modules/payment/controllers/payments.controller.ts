@@ -65,6 +65,12 @@ export default class PaymentsController {
         completedPayments: payment!.completedPayments,
         paymentStatus: payment!.paymentStatus,
       };
+
+      res.status(200).json({
+        status: "success",
+        message: "Payment fetched",
+        data,
+      });
     } catch (err) {}
   };
 
