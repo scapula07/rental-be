@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import BookingsService from "../service/bookings.services";
-import CarsService from "../../cars/service/cars.services";
-import UsersService from "../../users/service/users.services";
+import stripe from "../../../utils/stripe";
+import BookingsService from "../service/bookings.service";
+import CarsService from "../../cars/service/cars.service";
+import UsersService from "../../users/service/users.service";
+import PaymentsService from "../../payment/service/payments.service";
 
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
@@ -30,6 +32,7 @@ export default class BookingsController {
   bookingService = new BookingsService();
   carService = new CarsService();
   userService = new UsersService();
+  paymentService = new PaymentsService();
 
   // customer booking function
 
@@ -61,13 +64,87 @@ export default class BookingsController {
         throw new InvalidInputException("Minimum duration is 2 months/8 weeks");
       }
 
+      // Check if duration in weeks is even. Since billing is every 2 weeks, duration must be even
+      if (durationInWeeks % 2 !== 0) {
+        throw new InvalidInputException("Duration in weeks must be even");
+      }
+
       // calculate total price
       const priceWeekly = car.priceWeekly;
       const totalPrice = priceWeekly * durationInWeeks;
 
-      // create payment and payment id. Payment is sheduled every two weeks (14 days)
-      // prompt user to pay
-      // if payment is successful, create booking
+      // create stripe customer(billing) ID for user
+      // update customer ID for user
+      const customer = await stripe.customers.create({
+        email: user.email,
+      });
+
+      const customerData = {
+        customerId: customer.id,
+      };
+
+      await this.userService.updateUser(userId, customerData);
+
+      // Fetch price ID from car database
+
+      const priceId = car.priceId;
+
+      // create stripe subscription ID for recurring payments
+
+      const subscription = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{ price: priceId }],
+        payment_behavior: "default_incomplete",
+        payment_settings: { save_default_payment_method: "on_subscription" },
+        expand: ["latest_invoice.payment_intent"],
+        cancel_at: endDate,
+        collection_method: "charge_automatically",
+      });
+
+      // create payment and payment id for payment service. Payment is sheduled every 2 week (14 days)
+      const payment = await this.paymentService.createPayment({
+        customerId: customer.id,
+        priceId,
+        subscriptionId: subscription.id,
+      });
+
+      // create booking
+      const booking = await this.bookingService.createBooking({
+        user: userId,
+        car: carId,
+        paymentId: payment!._id,
+        startDate,
+        endDate,
+        totalPrice,
+      });
+
+      // update car status to unavailable (booked)
+      const carData = {
+        status: "reserved",
+      };
+
+      await this.carService.updateCar(carId, carData);
+
+      const data: IBookingOutput = {
+        id: booking!._id,
+        user: booking!.user.toString(),
+        car: booking!.car.toString(),
+        startDate: booking!.startDate,
+        endDate: booking!.endDate,
+        totalPrice: booking!.totalPrice,
+        pickupStatus: booking!.pickupStatus,
+        bookingStatus: booking!.bookingStatus,
+      };
+
+      // return booking, client secret and subscription ID
+      res.status(201).json({
+        status: "success",
+        message: "Booking created",
+        data,
+        clientSecret: (subscription.latest_invoice as any).payment_intent
+          .client_secret,
+        subscriptionId: subscription.id,
+      });
     } catch (err) {}
   };
 

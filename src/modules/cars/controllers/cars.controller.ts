@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import CarsService from "../service/cars.services";
+import CarsService from "../service/cars.service";
+import stripe from "../../../utils/stripe";
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
 import NotFoundException from "../../../exception/NotFound";
@@ -58,8 +59,22 @@ export default class CarsController {
         folders.carImage
       );
 
+      // Stripe Product and Price Ids
+      const product = await stripe.products.create({
+        name: carname,
+      });
+
+      const price = await stripe.prices.create({
+        unit_amount: priceWeekly,
+        currency: "USD",
+        product: product.id,
+        recurring: { interval: "week", interval_count: 2 }, // 2 weeks
+      });
+
+      // Create car
       const car = await this.carService.createCar({
         carname,
+        priceId: price.id,
         priceWeekly,
         engine,
         brand,

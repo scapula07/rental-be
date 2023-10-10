@@ -3,6 +3,7 @@ import logger from "../../../utils/logger";
 
 interface ICar {
   carname: string;
+  priceId: string;
   brand: string;
   model: string;
   modelNumber: string;

@@ -12,6 +12,7 @@ export interface IUser extends Document {
   firstname: string;
   lastname: string;
   email: string;
+  customerId: string;
   password: string;
   phone: string;
   dateOfBirth: Date;
@@ -47,6 +48,7 @@ export interface IUser extends Document {
   };
   investmentType: string;
   roles: SchemaDefinitionProperty<string[]>;
+  emailVerified: boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -55,6 +57,7 @@ const UserSchema = new Schema<IUser>(
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
+    customerId: { type: String },
     password: { type: String, required: true },
     phone: { type: String, unique: true },
     dateOfBirth: { type: Date },
@@ -102,6 +105,12 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: { values: ["customer", "partner", "admin", "super-admin"] },
       required: true,
+    },
+
+    // Email verification
+    emailVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

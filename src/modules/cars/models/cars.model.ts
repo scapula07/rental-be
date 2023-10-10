@@ -11,6 +11,7 @@ import { string } from "zod";
 
 export interface ICar extends Document {
   carname: string;
+  priceId: string;
   brand: string;
   model: string;
   modelNumber: string;

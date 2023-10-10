@@ -36,6 +36,8 @@ const options: swaggerJsDocs.Options = {
     "./src/modules/cars/validation/*.ts",
     "./src/modules/booking/routes/*.ts",
     "./src/modules/booking/validation/*.ts",
+    "./src/modules/payment/routes/*.ts",
+    "./src/modules/payment/validation/*.ts",
   ],
 };
 

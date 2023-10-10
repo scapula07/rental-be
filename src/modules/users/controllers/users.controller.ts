@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import UsersService from "../service/users.services";
+import stripe from "../../../utils/stripe";
+import UsersService from "../service/users.service";
 import HttpException from "../../../exception/HttpException";
 import InvalidInputException from "../../../exception/InvalidInput";
 import NotFoundException from "../../../exception/NotFound";
@@ -100,8 +101,7 @@ export default class UsersController {
         role: "user",
       });
 
-      console.log(newUser);
-      console.log(newUser?.id);
+      // Send mail to user to verify email address
 
       const token = signJwt(newUser?.id);
 
@@ -164,6 +164,11 @@ export default class UsersController {
     } catch (error) {
       logger.error(error);
     }
+  };
+
+  verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+    } catch (error) {}
   };
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
