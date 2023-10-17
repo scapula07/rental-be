@@ -53,7 +53,7 @@ interface IUpdateUser {
     uploaded: boolean;
     approved: boolean;
   };
-  roles?: string[];
+  roles?: string;
   emailVerified?: boolean;
 }
 

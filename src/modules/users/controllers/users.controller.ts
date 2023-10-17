@@ -98,7 +98,7 @@ export default class UsersController {
         phone,
         dateOfBirth,
         address,
-        role: "user",
+        role: "customer",
       });
 
       // Send mail to user to verify email address
