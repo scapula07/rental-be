@@ -17,7 +17,7 @@ interface IUser {
     country: string;
     postalCode: Number;
   };
-  role: string;
+  roles: string;
 }
 
 interface IUpdateUser {
@@ -53,7 +53,6 @@ interface IUpdateUser {
     uploaded: boolean;
     approved: boolean;
   };
-  roles?: string;
   emailVerified?: boolean;
 }
 

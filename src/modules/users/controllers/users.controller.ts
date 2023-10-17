@@ -98,7 +98,7 @@ export default class UsersController {
         phone,
         dateOfBirth,
         address,
-        role: "customer",
+        roles: "customer",
       });
 
       // Send mail to user to verify email address
@@ -608,7 +608,7 @@ export default class UsersController {
         password,
         phone,
         address,
-        role: "partner",
+        roles: "partner",
       });
 
       token = signJwt(newUser?.id);
@@ -683,7 +683,7 @@ export default class UsersController {
         lastname,
         email,
         password,
-        role: "admin",
+        roles: "admin",
       });
 
       token = signJwt(newUser?.id);
