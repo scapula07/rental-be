@@ -28,6 +28,7 @@ export const verifyJwt = <T>(token: string): T | null => {
 };
 
 export const decodeJwt = <T>(token: string): T | IJwtPayload | null => {
+  console.log(jwt.decode(token) as T | IJwtPayload)
   try {
     return jwt.decode(token) as T | IJwtPayload;
   } catch (error) {

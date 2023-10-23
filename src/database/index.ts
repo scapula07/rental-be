@@ -14,7 +14,6 @@ let password = config.mongoDb.mongoPass;
 let path = config.mongoDb.mongoPath;
 
 const MONGO_URI = `mongodb+srv://${username}:${password}${path}`;
-
 const connectDB = async () => {
   try {
     // mongodb connection string

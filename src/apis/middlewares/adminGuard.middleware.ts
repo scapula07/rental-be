@@ -49,14 +49,12 @@ export async function superAdminGuard(
   // Decode token
   const decodedToken: IJwtPayload | null = decodeJwt(token as string);
 
-  if (!decodedToken) {
+  if (!decodedToken) {console.log('you are welcome wizard')
     throw next(new UnAuthorizedException());
   }
 
   // fetch user from using id from decoded token
   const user = await userService.getUserById(decodedToken.payload);
-
-  console.log("user", user);
 
   // Check if user calling the method is superAdmin
   //@ts-ignore

@@ -16,10 +16,11 @@ export default function auth(req: Request, res: Response, next: NextFunction) {
     throw next(new HttpException(401, "No token provided"));
   }
   const payload = verifyJwt(token);
-
   if (!payload) {
     logger.warn("Invalid token");
     throw next(new HttpException(401, "Invalid token"));
+  }else{
+    console.log('......')
   }
 
   next();
