@@ -381,6 +381,7 @@ export default class BookingsController {
 
   getBooking = async (req: Request, res: Response, next: NextFunction) => {
     const { bookingId } = req.params;
+    console.log(bookingId)
     try {
       const booking = await this.bookingService.getBookingById(bookingId);
 

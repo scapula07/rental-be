@@ -236,7 +236,7 @@ router.post(
 router.post(
   "/cancel-bookings/:bookingId",
   auth,
-  adminGuard,
+  // adminGuard,
   bookingsController.cancelBooking
 );
 
@@ -263,7 +263,9 @@ router.post(
  *       '500':
  *         description: Internal server error
  */
-router.delete("/:id", auth, superAdminGuard, bookingsController.deleteBooking);
+router.delete("/:bookingId", auth, 
+// superAdminGuard, 
+bookingsController.deleteBooking);
 
 /**
  * @openapi
@@ -288,6 +290,8 @@ router.delete("/:id", auth, superAdminGuard, bookingsController.deleteBooking);
  *       '500':
  *         description: Internal server error
  */
-router.get("/:id", auth, adminGuard, bookingsController.getBooking);
+router.get("/:bookingId", auth, 
+// adminGuard,
+ bookingsController.getBooking);
 
 export default router;

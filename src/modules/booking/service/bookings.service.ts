@@ -33,12 +33,14 @@ export default class BookingService {
     try {
       const booking = await this.bookings.create({ ...bookingData });
       return booking;
-    } catch (err) {console.log(err)}
+    } catch (err) {}
   };
 
   getBookingById = async (bookingId: string) => {
+    
     try {
       const booking = await this.bookings.findById(bookingId);
+      console.log(booking)
       return booking;
     } catch (err) {}
   };
