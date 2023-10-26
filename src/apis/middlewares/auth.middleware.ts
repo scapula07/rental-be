@@ -19,8 +19,6 @@ export default function auth(req: Request, res: Response, next: NextFunction) {
   if (!payload) {
     logger.warn("Invalid token");
     throw next(new HttpException(401, "Invalid token"));
-  }else{
-    console.log('......')
   }
 
   next();

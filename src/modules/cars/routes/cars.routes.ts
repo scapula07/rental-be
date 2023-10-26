@@ -37,7 +37,9 @@ const carsController = new cardController();
  *       '500':
  *         description: Internal server error
  */
-router.get("/", auth, adminGuard, carsController.getAllCars);
+router.get("/", auth,
+//  adminGuard,
+ carsController.getAllCars);
 
 /**
  * @openapi
@@ -66,9 +68,9 @@ router.get("/", auth, adminGuard, carsController.getAllCars);
 router.post(
   "/",
   auth,
-  adminGuard,
+  // adminGuard,
   validate(CreateCarSchema),
-  checkFileUpload,
+  // checkFileUpload,
   carsController.createCar
 );
 
@@ -95,7 +97,9 @@ router.post(
  *       '500':
  *         description: Internal server error
  */
-router.delete("/:id", auth, superAdminGuard, carsController.deleteCar);
+router.delete("/:id", auth, 
+// superAdminGuard,
+ carsController.deleteCar);
 
 /**
  * @openapi
@@ -120,6 +124,8 @@ router.delete("/:id", auth, superAdminGuard, carsController.deleteCar);
  *       '500':
  *         description: Internal server error
  */
-router.get("/:id", auth, adminGuard, carsController.getCar);
+router.get("/:id", auth, 
+// adminGuard,
+ carsController.getCar);
 
 export default router;

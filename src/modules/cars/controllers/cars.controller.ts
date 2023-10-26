@@ -14,7 +14,7 @@ import {
 import { FileArray } from "express-fileupload";
 
 interface ICarOutput {
-  id: string;
+  // _id: string;
   carname: string;
   brand: string;
   model: string;
@@ -38,6 +38,7 @@ export default class CarsController {
 
   createCar = async (req: Request, res: Response, next: NextFunction) => {
     const {
+      _id,
       carname,
       priceWeekly,
       engine,
@@ -51,13 +52,16 @@ export default class CarsController {
       seats,
     } = req.body;
     try {
-      const files = req.files as FileArray;
+      // const files = req.files as FileArray;
 
       // Extract file and upload to cloud
-      const { public_id, secure_url } = await fileUploader(
-        files,
-        folders.carImage
-      );
+      // const { public_id, secure_url } = await fileUploader(
+      //   files,
+      //   folders.carImage
+      // );
+
+      let public_id = '3458otjdgogjro';
+      let secure_url = "https://img.freepik.com/free-photo/luxurious-car-parked-highway-with-illuminated-headlight-sunset_181624-60607.jpg"
 
       // Stripe Product and Price Ids
       const product = await stripe.products.create({
@@ -92,7 +96,7 @@ export default class CarsController {
       });
 
       const data: ICarOutput = {
-        id: car!._id,
+        // _id: car!._id,
         carname: car!.carname,
         priceWeekly: car!.priceWeekly,
         engine: car!.engine,
@@ -127,7 +131,7 @@ export default class CarsController {
       }
 
       const data: ICarOutput[] = cars!.map((car) => ({
-        id: car._id,
+        _id: car._id,
         carname: car.carname,
         priceWeekly: car.priceWeekly,
         engine: car.engine,
@@ -161,7 +165,7 @@ export default class CarsController {
       }
 
       const data: ICarOutput = {
-        id: car!._id,
+        // _id: car!._id,
         carname: car!.carname,
         priceWeekly: car!.priceWeekly,
         engine: car!.engine,

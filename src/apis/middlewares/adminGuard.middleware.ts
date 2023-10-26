@@ -26,8 +26,6 @@ export async function adminGuard(
   // fetch user from using id from decoded token
   const user = await userService.getUserById(decodedToken.payload);
 
-  console.log("user", user);
-
   // Check if user calling the method is admin
   //@ts-ignore
   if (!user.roles.includes("admin" || "super-admin")) {
@@ -49,7 +47,7 @@ export async function superAdminGuard(
   // Decode token
   const decodedToken: IJwtPayload | null = decodeJwt(token as string);
 
-  if (!decodedToken) {console.log('you are welcome wizard')
+  if (!decodedToken) {
     throw next(new UnAuthorizedException());
   }
 

@@ -1,5 +1,6 @@
 import Cars from "../models/cars.model";
 import logger from "../../../utils/logger";
+import mongoose from "mongoose";
 
 interface ICar {
   carname: string;
@@ -37,7 +38,7 @@ export default class CarsService {
     try {
       const car = await this.cars.create({ ...carData });
       return car;
-    } catch (err) {}
+    } catch (err) {console.log(err)}
   };
 
   getCarById = async (carId: string) => {

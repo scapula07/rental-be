@@ -278,7 +278,6 @@ export default class UsersController {
       if (!user) {
         throw next(new NotFoundException("User not found"));
       }
-
       // Check if file is uploaded
       if (user?.driverLicense.publicId) {
         // Delete file from cloud
@@ -685,6 +684,8 @@ export default class UsersController {
         password,
         roles: "admin",
       });
+
+      
 
       token = signJwt(newUser?.id);
 

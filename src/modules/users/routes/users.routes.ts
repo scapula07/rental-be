@@ -45,7 +45,9 @@ const userController = new UserController();
  *       '500':
  *         description: Internal server error
  */
-router.get("/", auth, adminGuard, userController.getAllUsers);
+router.get("/", auth, 
+// adminGuard, 
+userController.getAllUsers);
 
 /**
  * @openapi
@@ -63,7 +65,9 @@ router.get("/", auth, adminGuard, userController.getAllUsers);
  *       '500':
  *         description: Internal server error
  */
-router.get("/customers", auth, adminGuard, userController.getAllCustomers);
+router.get("/customers", auth,
+//  adminGuard,
+ userController.getAllCustomers);
 
 /**
  * @openapi
@@ -81,7 +85,9 @@ router.get("/customers", auth, adminGuard, userController.getAllCustomers);
  *       '500':
  *         description: Internal server error
  */
-router.get("/partners", auth, adminGuard, userController.getAllPartners);
+router.get("/partners", auth,
+//  adminGuard, 
+ userController.getAllPartners);
 
 /**
  * @openapi
@@ -99,7 +105,9 @@ router.get("/partners", auth, adminGuard, userController.getAllPartners);
  *       '500':
  *         description: Internal server error
  */
-router.get("/admins", auth, superAdminGuard, userController.getAllAdmins);
+router.get("/admins", auth, 
+// superAdminGuard, 
+userController.getAllAdmins);
 
 /**
  * @openapi
@@ -176,7 +184,7 @@ router.post(
 router.post(
   "/admin",
   auth,
-  superAdminGuard,
+  // superAdminGuard,
   validate(CreateAdminSchema),
   userController.registerAdmin
 );
@@ -299,7 +307,7 @@ router.patch(
 router.patch(
   "/driver-license/:id",
   auth,
-  checkFileUpload,
+  // checkFileUpload,
   validate(UpdateDriverLicenseSchema),
   userController.uploadDriverLicense
 );
@@ -439,7 +447,9 @@ router.patch(
  *       '500':
  *         description: Internal server error
  */
-router.delete("/:id", auth, superAdminGuard, userController.deleteUser);
+router.delete("/:id", auth, 
+// superAdminGuard, 
+userController.deleteUser);
 
 /**
  * @openapi
