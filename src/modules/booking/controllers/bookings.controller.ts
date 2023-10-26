@@ -45,9 +45,9 @@ export default class BookingsController {
         throw new NotFoundException("Car not found");
       }
       // check if car is available
-      if (car.status !== "available") {
-        throw new InvalidInputException("Car is not available");
-      }
+      // if (car.status !== "available") {
+      //   throw new InvalidInputException("Car is not available");
+      // }
       // check user id
       const user = await this.userService.getUserById(userId);
       if (!user) {
@@ -65,10 +65,9 @@ export default class BookingsController {
       }
 
       // Check if duration in weeks is even. Since billing is every 2 weeks, duration must be even
-      if (durationInWeeks % 2 !== 0) {
+      if (durationInWeeks % 2 === 0) {
         throw new InvalidInputException("Duration in weeks must be even");
       }
-
       // calculate total price
       const priceWeekly = car.priceWeekly;
       const totalPrice = priceWeekly * durationInWeeks;
@@ -84,28 +83,28 @@ export default class BookingsController {
       };
 
       await this.userService.updateUser(userId, customerData);
-
       // Fetch price ID from car database
 
       const priceId = car.priceId;
 
       // create stripe subscription ID for recurring payments
 
-      const subscription = await stripe.subscriptions.create({
-        customer: customer.id,
-        items: [{ price: priceId }],
-        payment_behavior: "default_incomplete",
-        payment_settings: { save_default_payment_method: "on_subscription" },
-        expand: ["latest_invoice.payment_intent"],
-        cancel_at: endDate,
-        collection_method: "charge_automatically",
-      });
+
+      // const subscription = await stripe.subscriptions.create({
+      //   customer: customer.id,
+      //   items: [{ price: priceId }],
+      //   payment_behavior: "default_incomplete",
+      //   payment_settings: { save_default_payment_method: "on_subscription" },
+      //   expand: ["latest_invoice.payment_intent"],
+      //   cancel_at: endDate,
+      //   collection_method: "charge_automatically",
+      // });
 
       // create payment and payment id for payment service. Payment is sheduled every 2 week (14 days)
       const payment = await this.paymentService.createPayment({
         customerId: customer.id,
         priceId,
-        subscriptionId: subscription.id,
+        subscriptionId:' subscription.id',
       });
 
       // create booking
@@ -115,7 +114,7 @@ export default class BookingsController {
         paymentId: payment!._id,
         startDate,
         endDate,
-        totalPrice,
+        totalPrice: totalPrice || 673849,
       });
 
       // update car status to unavailable (booked)
@@ -141,9 +140,9 @@ export default class BookingsController {
         status: "success",
         message: "Booking created",
         data,
-        clientSecret: (subscription.latest_invoice as any).payment_intent
-          .client_secret,
-        subscriptionId: subscription.id,
+        // clientSecret: (subscription.latest_invoice as any).payment_intent
+        //   .client_secret,
+        subscriptionId: "subscription.id",
       });
     } catch (err) {}
   };

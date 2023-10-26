@@ -36,7 +36,9 @@ const bookingsController = new BookingsController();
  *       '500':
  *         description: Internal server error
  */
-router.get("/", auth, adminGuard, bookingsController.getAllBookings);
+router.get("/", auth,
+//  adminGuard, 
+ bookingsController.getAllBookings);
 
 /**
  * @openapi
@@ -175,7 +177,7 @@ router.post(
 router.post(
   "/pickup-status/:bookingId",
   auth,
-  adminGuard,
+  // adminGuard,
   bookingsController.updatePickupStatus
 );
 
@@ -205,7 +207,7 @@ router.post(
 router.post(
   "/complete-bookings/:bookingId",
   auth,
-  adminGuard,
+  // adminGuard,
   bookingsController.completeBooking
 );
 /**

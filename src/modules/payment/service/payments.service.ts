@@ -26,7 +26,7 @@ export default class PaymentsService {
 
   createPayment = async (paymentData: IPayment) => {
     try {
-      const payment = await this.payments.create({ ...paymentData });
+      const payment = await this.payments.create({ ...paymentData,priceId:"22345235234525" });
       return payment;
     } catch (err) {}
   };

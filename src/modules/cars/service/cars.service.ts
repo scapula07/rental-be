@@ -45,7 +45,7 @@ export default class CarsService {
     try {
       const car = await this.cars.findById(carId);
       return car;
-    } catch (err) {}
+    } catch (err) {console.log(err)}
   };
 
   getAllCars = async () => {
