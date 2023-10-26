@@ -203,7 +203,7 @@ router.post(
  *         description: Bookings not found
  *       '500':
  *         description: Internal server error
- */
+ *///
 router.post(
   "/complete-bookings/:bookingId",
   auth,
