@@ -23,7 +23,7 @@ export async function adminGuard(
     throw next(new UnAuthorizedException());
   }
 
-  // fetch user from using id from decoded token
+  
   const user = await userService.getUserById(decodedToken.payload);
 
   // Check if user calling the method is admin
