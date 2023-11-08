@@ -1,0 +1,9 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[5462],{31929:function(e,r,t){Promise.resolve().then(t.bind(t,28240))},28240:function(e,r,t){"use strict";t.r(r);var n=t(57437);t(2265),r.default=function(){return(0,n.jsx)("div",{className:"min-h-[40vh] flex items-center justify-center",children:(0,n.jsxs)("div",{className:"text-center space-y-6",children:[(0,n.jsx)("h4",{className:"text-3xl",children:"Request Approved"}),(0,n.jsx)("p",{className:"text-lg w-full md:w-8/12 mx-auto ",children:"You will recieve an email or text containing the VIN number, year, car model. Note: You will be able to provide a full insurance of the vehicle"}),(0,n.jsx)("button",{className:"btn btn-primary mt-4 rounded-3xl",onClick:()=>{},children:"Dashboard"})]})})}},30622:function(e,r,t){"use strict";/**
+ * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */var n=t(2265),o=Symbol.for("react.element"),s=Symbol.for("react.fragment"),l=Object.prototype.hasOwnProperty,i=n.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,c={key:!0,ref:!0,__self:!0,__source:!0};function q(e,r,t){var n,s={},a=null,u=null;for(n in void 0!==t&&(a=""+t),void 0!==r.key&&(a=""+r.key),void 0!==r.ref&&(u=r.ref),r)l.call(r,n)&&!c.hasOwnProperty(n)&&(s[n]=r[n]);if(e&&e.defaultProps)for(n in r=e.defaultProps)void 0===s[n]&&(s[n]=r[n]);return{$$typeof:o,type:e,key:a,ref:u,props:s,_owner:i.current}}r.Fragment=s,r.jsx=q,r.jsxs=q},57437:function(e,r,t){"use strict";e.exports=t(30622)}},function(e){e.O(0,[2971,2472,1744],function(){return e(e.s=31929)}),_N_E=e.O()}]);
