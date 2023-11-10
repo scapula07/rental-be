@@ -28,6 +28,7 @@ var whitelist = [
   "https://perzsi-rental-app.vercel.app",
   "https://www.perzsirentals.com",
   "https://perzi-backup.vercel.app",
+  "https://rental-fe-nyuh.vercel.app"
 ];
 
 var corsOptions = {
