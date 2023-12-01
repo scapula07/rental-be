@@ -7,6 +7,8 @@ import {
 } from "../../../apis/middlewares/adminGuard.middleware";
 
 import PaymentsController from "../controllers/payments.controller";
+import handler from "../controllers/stripe";
+
 
 const router = Router();
 
@@ -86,5 +88,6 @@ router.get("/invoices/:uerId", auth, adminGuard, paymentsController.getPayment);
  *         description: Internal server error
  */
 router.get("/:id", auth, adminGuard, paymentsController.getPayment);
+router.get("/stripe", auth, adminGuard, handler);
 
 export default router;

@@ -2482,10 +2482,10 @@
   dependencies:
     "ansi-regex" "^5.0.1"
 
-"stripe@^13.7.0":
-  "integrity" "sha512-0cbUNl5aDwt5rIZeE/WgyTxZN/PtwyeA5KcVJrHj260tjN4IOo2BZikN+dxhKoeBfI4aSRAd3E5vHRKmjjaSbA=="
-  "resolved" "https://registry.npmjs.org/stripe/-/stripe-13.7.0.tgz"
-  "version" "13.7.0"
+"stripe@^14.7.0":
+  "integrity" "sha512-A6XWH76K0K7IgEBz4odIVxjhkdPduSPafZju6ltAFU0oMbWJlfeaDyMTfRJ9vcYA9zqENfwRizExD/2nZ4rQ1A=="
+  "resolved" "https://registry.npmjs.org/stripe/-/stripe-14.7.0.tgz"
+  "version" "14.7.0"
   dependencies:
     "@types/node" ">=8.1.0"
     "qs" "^6.11.0"

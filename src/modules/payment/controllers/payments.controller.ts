@@ -156,5 +156,5 @@ export default class PaymentsController {
         data,
       });
     } catch (err) {}
-  };
+  }
 }

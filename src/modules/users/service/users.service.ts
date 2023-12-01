@@ -60,10 +60,12 @@ export default class UsersService {
   users = Users;
 
   createUser = async (userData: IUser) => {
+       console.log(userData,"data")
     try {
       const newUser = await this.users.create({
         ...userData,
       });
+      console.log(userData,"data")
       return newUser;
     } catch (error) {
       logger.error(error);

@@ -665,7 +665,7 @@ export default class UsersController {
 
   // Admin Methods
   registerAdmin = async (req: Request, res: Response, next: NextFunction) => {
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password,phone} = req.body;
 
     try {
       // Check if email already exists
@@ -688,6 +688,8 @@ export default class UsersController {
       
 
       token = signJwt(newUser?.id);
+
+      console.log(newUser,"new user")
 
       data = {
         id: newUser?.id,
